@@ -436,8 +436,18 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     <div class="pg-sub">13 companies • IRDAI IC38 Certified</div>
   </div>
   <div class="pg-content">
-    <div class="card" style="margin-bottom:14px;">
-      <div class="sec-title">Your Details</div>
+
+    <!-- INSURANCE TYPE TABS -->
+    <div style="display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;">
+      <button class="ins-type-tab btn btn-primary btn-sm" data-ins-type="term">🛡️ Term Life</button>
+      <button class="ins-type-tab btn btn-outline btn-sm" data-ins-type="health">🏥 Health</button>
+      <button class="ins-type-tab btn btn-outline btn-sm" data-ins-type="car">🚗 Car</button>
+      <button class="ins-type-tab btn btn-outline btn-sm" data-ins-type="home">🏠 Home</button>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="card" style="margin-bottom:14px;" id="ins-filters-card">
+      <div class="sec-title" id="ins-filter-title">Term Life Insurance</div>
       <div class="grid2">
         <div>
           <label>Age</label>
@@ -451,20 +461,32 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
           </select>
         </div>
       </div>
-      <label>Cover Amount</label>
-      <select id="ins-cover" onchange="buildIns()" style="margin-bottom:0;">
-        <option>₹25 Lakh</option>
-        <option>₹50 Lakh</option>
-        <option selected>₹1 Crore</option>
-        <option>₹2 Crore</option>
-      </select>
+      <div id="ins-cover-row">
+        <label>Cover Amount</label>
+        <select id="ins-cover" onchange="buildIns()" style="margin-bottom:0;">
+          <option>₹25 Lakh</option>
+          <option>₹50 Lakh</option>
+          <option selected>₹1 Crore</option>
+          <option>₹2 Crore</option>
+        </select>
+      </div>
+      <div id="ins-health-row" style="display:none;">
+        <label>Sum Insured</label>
+        <select id="ins-health-cover" onchange="buildIns()" style="margin-bottom:0;">
+          <option>₹3 Lakh</option>
+          <option>₹5 Lakh</option>
+          <option selected>₹10 Lakh</option>
+          <option>₹20 Lakh</option>
+          <option>₹50 Lakh</option>
+        </select>
+      </div>
     </div>
-    <div class="sec-title">Best Quotes — Sorted by Price</div>
+
+    <div class="sec-title" id="ins-results-title">Best Quotes — Sorted by Price</div>
     <div id="ins-results"></div>
   </div>
 </div>
 
-<!-- ══════════════ MUTUAL FUNDS ══════════════ -->
 <div class="pg" id="p-mf">
   <div class="pg-hdr">
     <button class="pg-back" onclick="navTo('p-home','nb-home')">← Back</button>
@@ -1703,28 +1725,128 @@ var insPlans = [
   {name:'Edelweiss Tokio Zindagi Plus',base:755,csr:98.5,claim:'24h',founded:2009}
 ];
 function buildIns() {
-  var age=parseInt(($('ins-age')||{}).value)||30;
-  var gend=($('ins-gender')||{}).value||'Male';
-  var covIdx=($('ins-cover')||{}).selectedIndex||2;
-  var covers=[25,50,100,200]; var cov=covers[covIdx]||100;
-  var aM=age<25?0.8:age<30?1:age<35?1.25:age<40?1.55:age<45?1.9:age<50?2.35:2.8;
-  var gM=gend==='Female'?0.9:1;
-  var cM=cov===25?0.55:cov===50?0.75:cov===100?1:1.65;
-  var priced=insPlans.map(function(p){return Object.assign({},p,{premium:Math.round(p.base*aM*gM*cM/100)*100});});
-  priced.sort(function(a,b){return a.premium-b.premium;});
-  var h='';
-  priced.forEach(function(p,i){
-    h+='<div class="ins-card">'
-      +(i===0?'<div class="ins-best">✓ Lowest Price</div>':'')
-      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;">'
-      +'<div class="ins-name">'+p.name+'</div>'
-      +'<div style="font-size:10px;color:var(--gray);">CSR '+p.csr+'%</div></div>'
-      +'<div class="ins-price">₹'+n(p.premium)+' <span style="font-size:13px;color:var(--gray);font-weight:400;">/yr</span></div>'
-      +'<div class="ins-details">Cover: ₹'+cov+' Lakh | Age: '+age+' | Claim: '+p.claim+'</div>'
-      +'<button class="btn btn-primary btn-sm" style="margin-top:10px;width:100%;" data-ins="'+p.name+'" data-prem="'+p.premium+'">Get Quote via WhatsApp</button>'
-      +'</div>';
-  });
-  var el=$('ins-results'); if(el) el.innerHTML=h;
+  var insType = window._insType || 'term';
+  var age = parseInt(($('ins-age')||{}).value)||30;
+  var gend = ($('ins-gender')||{}).value||'Male';
+  var aM = age<25?0.8:age<30?1:age<35?1.25:age<40?1.55:age<45?1.9:age<50?2.35:2.8;
+  var gM = gend==='Female'?0.9:1;
+  var h = '';
+
+  if (insType === 'term') {
+    var covIdx = ($('ins-cover')||{}).selectedIndex||2;
+    var covers = [25,50,100,200]; var cov = covers[covIdx]||100;
+    var cM = cov===25?0.55:cov===50?0.75:cov===100?1:1.65;
+    var plans = [
+      {name:'HDFC Life Click2Protect',base:850,csr:98.0,claim:'48h'},
+      {name:'Max Life Smart Secure Plus',base:820,csr:99.2,claim:'24h'},
+      {name:'Tata AIA Sampoorna Raksha',base:900,csr:98.8,claim:'48h'},
+      {name:'ICICI Pru iProtect Smart',base:870,csr:97.9,claim:'24h'},
+      {name:'LIC Tech Term Plan',base:950,csr:98.6,claim:'72h'},
+      {name:'SBI Life eShield Next',base:800,csr:94.5,claim:'48h'},
+      {name:'Bajaj Allianz eTouch',base:780,csr:98.2,claim:'24h'},
+      {name:'Kotak e-Term Plan',base:760,csr:97.4,claim:'24h'},
+      {name:'Axis Max Life Smart Term',base:840,csr:99.0,claim:'24h'},
+      {name:'Aditya Birla DigiShield',base:790,csr:97.0,claim:'48h'},
+      {name:'Canara HSBC iSelect Star',base:810,csr:96.8,claim:'48h'},
+      {name:'PNB MetLife Mera Term Plan',base:770,csr:97.5,claim:'24h'},
+      {name:'Edelweiss Tokio Zindagi Plus',base:755,csr:98.5,claim:'24h'}
+    ];
+    var priced = plans.map(function(p){return Object.assign({},p,{premium:Math.round(p.base*aM*gM*cM/100)*100});});
+    priced.sort(function(a,b){return a.premium-b.premium;});
+    priced.forEach(function(p,i){
+      h += '<div class="ins-card">'
+        +(i===0?'<div class="ins-best">✓ Lowest Price</div>':'')
+        +'<div style="display:flex;justify-content:space-between;align-items:flex-start;">'
+        +'<div class="ins-name">'+p.name+'</div>'
+        +'<div style="font-size:10px;color:var(--gray);">CSR '+p.csr+'%</div></div>'
+        +'<div class="ins-price">₹'+n(p.premium)+' <span style="font-size:13px;color:var(--gray);font-weight:400;">/yr</span></div>'
+        +'<div class="ins-details">Cover: ₹'+cov+' Lakh | Age: '+age+' | Claim: '+p.claim+'</div>'
+        +'<button class="btn btn-primary btn-sm ins-quote-btn" style="width:100%;margin-top:10px;" data-ins="'+p.name+'" data-prem="'+p.premium+'">Get Quote via WhatsApp</button>'
+        +'</div>';
+    });
+  }
+
+  else if (insType === 'health') {
+    var covH = [3,5,10,20,50]; var covIdx2 = ($('ins-health-cover')||{}).selectedIndex||2;
+    var cov2 = covH[covIdx2]||10;
+    var hM = cov2===3?0.5:cov2===5?0.75:cov2===10?1:cov2===20?1.6:2.5;
+    var healthPlans = [
+      {name:'Star Health Comprehensive',base:8500,csr:99.1,feat:'No Room Rent Limit'},
+      {name:'Care Health Supreme',base:7800,csr:95.2,feat:'Unlimited Restoration'},
+      {name:'Niva Bupa Reassure 2.0',base:8200,csr:94.8,feat:'Lock the Clock Benefit'},
+      {name:'HDFC ERGO Optima Secure',base:9100,csr:95.5,feat:'Super Restore Benefit'},
+      {name:'ICICI Lombard Complete Health',base:8800,csr:94.2,feat:'Wellness Benefits'},
+      {name:'Aditya Birla Activ Health',base:8400,csr:97.0,feat:'Chronic Care Cover'},
+      {name:'Max Bupa Health Recharge',base:7600,csr:95.8,feat:'Recharge Benefit'},
+      {name:'New India Assurance Mediclaim',base:6800,csr:92.0,feat:'Govt. Insurer'},
+      {name:'Oriental Happy Family Floater',base:6500,csr:90.5,feat:'Family Floater'},
+      {name:'United India UNI Criticare',base:7200,csr:91.0,feat:'Critical Illness Cover'},
+      {name:'Bajaj Allianz Health Guard',base:7400,csr:93.5,feat:'Day Care Procedures'},
+      {name:'Reliance General Health Infinity',base:7900,csr:93.0,feat:'Unlimited Cover'},
+      {name:'Tata AIG Medicare Premier',base:8600,csr:96.5,feat:'No Sub-Limits'}
+    ];
+    var priced2 = healthPlans.map(function(p){return Object.assign({},p,{premium:Math.round(p.base*aM*gM*hM/100)*100});});
+    priced2.sort(function(a,b){return a.premium-b.premium;});
+    priced2.forEach(function(p,i){
+      h += '<div class="ins-card">'
+        +(i===0?'<div class="ins-best">✓ Best Value</div>':'')
+        +'<div style="display:flex;justify-content:space-between;align-items:flex-start;">'
+        +'<div class="ins-name">'+p.name+'</div>'
+        +'<div style="font-size:10px;color:var(--gray);">CSR '+p.csr+'%</div></div>'
+        +'<div class="ins-price">₹'+n(p.premium)+' <span style="font-size:13px;color:var(--gray);font-weight:400;">/yr</span></div>'
+        +'<div class="ins-details">Sum Insured: ₹'+cov2+' Lakh | '+p.feat+'</div>'
+        +'<button class="btn btn-primary btn-sm ins-quote-btn" style="width:100%;margin-top:10px;" data-ins="'+p.name+' (Health ₹'+cov2+'L)" data-prem="'+p.premium+'">Get Quote via WhatsApp</button>'
+        +'</div>';
+    });
+  }
+
+  else if (insType === 'car') {
+    var carPlans = [
+      {name:'HDFC ERGO Comprehensive Car',base:4800,csr:97.0,feat:'Zero Depreciation'},
+      {name:'Bajaj Allianz Motor Comprehensive',base:4500,csr:98.0,feat:'24x7 Roadside Assist'},
+      {name:'ICICI Lombard Complete Cover',base:5200,csr:95.5,feat:'Garage Network: 7500+'},
+      {name:'Reliance General Private Car',base:4200,csr:94.0,feat:'Cashless Repairs'},
+      {name:'New India Assurance Motor',base:3800,csr:89.0,feat:'Govt. Backed'},
+      {name:'Tata AIG Auto Secure',base:5000,csr:96.0,feat:'Engine Protection'},
+      {name:'SBI General Comprehensive',base:4600,csr:93.5,feat:'Personal Accident Cover'},
+      {name:'Future Generali Total Motor',base:4300,csr:92.0,feat:'Key Replacement'}
+    ];
+    carPlans.sort(function(a,b){return a.base-b.base;});
+    carPlans.forEach(function(p,i){
+      h += '<div class="ins-card">'
+        +(i===0?'<div class="ins-best">✓ Lowest Premium</div>':'')
+        +'<div class="ins-name">'+p.name+'</div>'
+        +'<div class="ins-price">₹'+n(p.base)+' <span style="font-size:13px;color:var(--gray);font-weight:400;">/yr (approx)</span></div>'
+        +'<div class="ins-details">'+p.feat+' | CSR: '+p.csr+'%</div>'
+        +'<button class="btn btn-primary btn-sm ins-quote-btn" style="width:100%;margin-top:10px;" data-ins="'+p.name+'" data-prem="'+p.base+'">Get Quote via WhatsApp</button>'
+        +'</div>';
+    });
+  }
+
+  else if (insType === 'home') {
+    var homePlans = [
+      {name:'HDFC ERGO Home Shield',base:2500,csr:96.0,feat:'Structure + Contents'},
+      {name:'Bajaj Allianz Home Insurance',base:2200,csr:97.0,feat:'Natural Calamity Cover'},
+      {name:'ICICI Lombard Home Insurance',base:2800,csr:95.0,feat:'Burglary & Theft Cover'},
+      {name:'New India Householders Policy',base:1800,csr:88.0,feat:'Govt. Insurer'},
+      {name:'Reliance Home Shield',base:2100,csr:93.0,feat:'Personal Accident Incl.'},
+      {name:'Tata AIG HomeSafe',base:2600,csr:95.5,feat:'Worldwide Cover for Jewellery'},
+      {name:'SBI General Home Insurance',base:2300,csr:92.0,feat:'Rental Compensation'}
+    ];
+    homePlans.sort(function(a,b){return a.base-b.base;});
+    homePlans.forEach(function(p,i){
+      h += '<div class="ins-card">'
+        +(i===0?'<div class="ins-best">✓ Best Price</div>':'')
+        +'<div class="ins-name">'+p.name+'</div>'
+        +'<div class="ins-price">₹'+n(p.base)+' <span style="font-size:13px;color:var(--gray);font-weight:400;">/yr (approx)</span></div>'
+        +'<div class="ins-details">'+p.feat+' | CSR: '+p.csr+'%</div>'
+        +'<button class="btn btn-primary btn-sm ins-quote-btn" style="width:100%;margin-top:10px;" data-ins="'+p.name+'" data-prem="'+p.base+'">Get Quote via WhatsApp</button>'
+        +'</div>';
+    });
+  }
+
+  var el = $('ins-results');
+  if (el) el.innerHTML = h || '<div style="text-align:center;padding:30px;color:var(--gray);">No plans available</div>';
 }
 
 // ═══════════════════════════════════════
@@ -2270,6 +2392,23 @@ document.addEventListener('click', function(e) {
   }
 
   // Insurance quote
+  if(t.classList.contains('ins-type-tab')) {
+    window._insType = t.getAttribute('data-ins-type');
+    document.querySelectorAll('.ins-type-tab').forEach(function(b){
+      b.className='ins-type-tab btn btn-sm btn-outline';
+    });
+    t.className='ins-type-tab btn btn-sm btn-primary';
+    // Show/hide filter rows based on type
+    var type = window._insType;
+    var coverRow = $('ins-cover-row');
+    var healthRow = $('ins-health-row');
+    var title = $('ins-filter-title');
+    if(coverRow) coverRow.style.display = (type==='term')?'block':'none';
+    if(healthRow) healthRow.style.display = (type==='health')?'block':'none';
+    if(title) title.textContent = type==='term'?'Term Life Insurance':type==='health'?'Health Insurance':type==='car'?'Car Insurance':'Home Insurance';
+    buildIns();
+  }
+  if(t.classList.contains('ins-quote-btn')) { t.setAttribute('data-ins', t.getAttribute('data-ins')); }
   if(t.getAttribute('data-ins')) {
     var name=t.getAttribute('data-ins'), prem=t.getAttribute('data-prem');
     var stats=JSON.parse(localStorage.getItem('stk_stats')||'{}'); stats.ins=(stats.ins||0)+1; localStorage.setItem('stk_stats',JSON.stringify(stats));
