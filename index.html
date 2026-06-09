@@ -1436,8 +1436,8 @@ function buildCalcPane(k) {
   });
   h += '<div class="result-card" id="calc-result-'+k+'"></div>';
   h += '<div style="display:flex;gap:8px;margin-top:12px;">'
-    + '<button class="btn btn-primary btn-sm" onclick="calcPDF(\''+k+'\')">📄 PDF</button>'
-    + '<button class="btn btn-outline btn-sm" onclick="calcShare(\''+k+'\')">↑ Share</button>'
+    + '<button class="btn btn-primary btn-sm calc-pdf-btn" data-calc="'+k+'">📄 PDF</button>'
+    + '<button class="btn btn-outline btn-sm calc-share-btn" data-calc="'+k+'">↑ Share</button>'
     + '</div>';
   h += '<div style="font-size:10px;color:var(--gray);margin-top:10px;text-align:center;">⚠️ Projections indicative only. Subject to market risks.</div>';
   el.innerHTML = h;
@@ -1885,7 +1885,7 @@ function renderHealthQ() {
       +'<div style="font-size:12px;color:var(--gray);">out of 100</div>'
       +'<div style="margin-top:16px;font-size:13px;color:var(--light2);">'+getHealthAdvice(score)+'</div>'
       +'<button class="btn btn-primary" style="margin-top:20px;" onclick="buildHealthQuiz()">Retake Quiz</button>'
-      +'<button class="btn btn-gold" style="margin-top:10px;" onclick="navTo('p-appt','nb-more')">Book Free Consultation</button>'
+      +'<button class="btn btn-gold" style="margin-top:10px;" class="nav-btn" data-pg="p-appt" data-nb="nb-more">Book Free Consultation</button>'
       +'</div>';
     return;
   }
@@ -1942,7 +1942,7 @@ function showPortAddForm() {
     +'<label>Invested Amount (₹)</label><input id="pa-inv" type="number" placeholder="50000"/>'
     +'<label>Current Value (₹)</label><input id="pa-curr" type="number" placeholder="55000"/>'
     +'<div style="display:flex;gap:8px;"><button class="btn btn-primary" id="pa-save-btn" style="flex:1;">Save</button>'
-    +'<button class="btn btn-outline" onclick="$('port-add-form').style.display='none'" style="flex:1;">Cancel</button></div>'
+    +'<button class="btn btn-outline" onclick="document.getElementById(\'port-add-form\').style.display=\'none\'" style="flex:1;">Cancel</button></div>'
     +'</div>';
 }
 
@@ -2426,6 +2426,9 @@ document.addEventListener('click', function(e) {
   }
 
   // NAV refresh
+  if(t.classList.contains('nav-btn')) { navTo(t.getAttribute('data-pg'), t.getAttribute('data-nb')||'nb-more'); }
+  if(t.classList.contains('calc-pdf-btn')) calcPDF(t.getAttribute('data-calc'));
+  if(t.classList.contains('calc-share-btn')) calcShare(t.getAttribute('data-calc'));
   if(t.id==='nav-refresh-btn') {
     _mfNavDone=false;
     localStorage.removeItem('stk_nav_cache');
