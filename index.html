@@ -11,7 +11,199 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+// ═══════════════════════════════════════
+// FINANCE HUB
+// ═══════════════════════════════════════
+window._hubTab = 'learn';
+
+function switchHub(tab) {
+  window._hubTab = tab;
+  document.querySelectorAll('.hub-tab').forEach(function(b) {
+    b.className = 'hub-tab btn btn-sm ' + (b.getAttribute('data-hub')===tab ? 'btn-primary' : 'btn-outline');
+  });
+  document.querySelectorAll('.hub-pane').forEach(function(p) {
+    p.style.display = 'none';
+  });
+  var pane = document.getElementById('hub-'+tab);
+  if (pane) pane.style.display = 'block';
+  if (tab==='goals') updateGoalPlanner();
+  if (tab==='funds') buildTopFunds();
+  if (tab==='calendar') buildFinCalendar();
+  if (tab==='news') buildFinTips();
+}
+
+// ── Goal Planner
+function updateGoalPlanner() {
+  var target = parseFloat(document.getElementById('goal-target').value)||5000000;
+  var yrs = parseFloat(document.getElementById('goal-years').value)||10;
+  var ret = parseFloat(document.getElementById('goal-returns').value)||12;
+  document.getElementById('goal-years-v').textContent = yrs + ' yrs';
+  document.getElementById('goal-returns-v').textContent = ret + '%';
+  var r = ret/12/100, mn = yrs*12;
+  var sip = target * r / (Math.pow(1+r,mn)-1);
+  var lump = target / Math.pow(1+ret/100, yrs);
+  var invested = sip * mn;
+  var gains = target - invested;
+  document.getElementById('goal-sip').textContent = '₹'+n(Math.ceil(sip/100)*100)+'/mo';
+  document.getElementById('goal-lump').textContent = '₹'+n(Math.round(lump));
+  document.getElementById('goal-inv').textContent = '₹'+n(Math.round(invested));
+  document.getElementById('goal-gain').textContent = '₹'+n(Math.round(gains));
+  document.getElementById('goal-yr-v').textContent = yrs + ' years';
+}
+
+// ── Top Funds Data
+var topFunds = {
+  largecap: [
+    {n:'Mirae Asset Large Cap',r1:'18.4%',r3:'21.2%',r5:'19.8%',s:5},
+    {n:'Nippon India Large Cap',r1:'22.3%',r3:'23.8%',r5:'21.4%',s:5},
+    {n:'ICICI Pru Bluechip',r1:'19.6%',r3:'22.1%',r5:'20.3%',s:5}
+  ],
+  midcap: [
+    {n:'HDFC Mid-Cap Opportunities',r1:'28.6%',r3:'24.8%',r5:'22.1%',s:5},
+    {n:'Kotak Emerging Equity',r1:'26.4%',r3:'23.2%',r5:'21.8%',s:5},
+    {n:'Nippon India Small Cap',r1:'34.8%',r3:'30.2%',r5:'27.4%',s:5}
+  ],
+  elss: [
+    {n:'Motilal Oswal ELSS Tax Saver',r1:'22.4%',r3:'20.8%',r5:'19.4%',s:5},
+    {n:'Mirae Asset ELSS Tax Saver',r1:'20.4%',r3:'19.6%',r5:'18.8%',s:5},
+    {n:'Axis ELSS Tax Saver',r1:'16.8%',r3:'17.2%',r5:'16.0%',s:4}
+  ],
+  index: [
+    {n:'HDFC Index Fund Nifty 50',r1:'15.0%',r3:'17.4%',r5:'16.6%',s:5},
+    {n:'UTI Nifty 50 Index',r1:'14.6%',r3:'17.0%',r5:'16.2%',s:4},
+    {n:'Nippon India Nifty 50',r1:'14.8%',r3:'17.2%',r5:'16.4%',s:4}
+  ]
+};
+
+function buildTopFunds() {
+  ['largecap','midcap','elss','index'].forEach(function(cat) {
+    var el = document.getElementById('top-'+cat); if(!el) return;
+    var h = '';
+    topFunds[cat].forEach(function(f,i) {
+      var stars = '★'.repeat(f.s)+'☆'.repeat(5-f.s);
+      h += '<div class="mf-card" style="margin-bottom:8px;">'
+        + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">'
+        + '<div style="font-size:13px;font-weight:700;">'+(i===0?'🥇 ':i===1?'🥈 ':'🥉 ')+f.n+'</div>'
+        + '<div style="font-size:12px;color:var(--gold);">'+stars+'</div></div>'
+        + '<div class="mf-returns">'
+        + '<div class="mf-ret"><div class="mf-ret-val">'+f.r1+'</div><div class="mf-ret-lbl">1 Yr</div></div>'
+        + '<div class="mf-ret"><div class="mf-ret-val">'+f.r3+'</div><div class="mf-ret-lbl">3 Yr</div></div>'
+        + '<div class="mf-ret"><div class="mf-ret-val">'+f.r5+'</div><div class="mf-ret-lbl">5 Yr</div></div>'
+        + '</div></div>';
+    });
+    el.innerHTML = h;
+  });
+}
+
+// ── Financial Calendar
+var finCalendar = [
+  {month:'January',color:'var(--blue3)',events:[
+    {date:'Jan 15',title:'Advance Tax Q3 Due',type:'tax',imp:true},
+    {date:'Jan 26',title:'Republic Day',type:'holiday'},
+    {date:'Jan 31',title:'Last date for SIP pause/restart',type:'sip'}
+  ]},
+  {month:'February',color:'var(--gold)',events:[
+    {date:'Feb 1',title:'Union Budget 2026 Presentation',type:'market',imp:true},
+    {date:'Feb 14',title:'Valentines Day — Gift SIP to loved ones!',type:'tip'},
+    {date:'Feb 28',title:'SGB Tranche Investment Window',type:'invest'}
+  ]},
+  {month:'March',color:'var(--red)',events:[
+    {date:'Mar 15',title:'Advance Tax Q4 Final Due',type:'tax',imp:true},
+    {date:'Mar 31',title:'⚠️ Last day for 80C investments!',type:'tax',imp:true},
+    {date:'Mar 31',title:'Financial Year 2025-26 Ends',type:'market',imp:true}
+  ]},
+  {month:'April',color:'var(--green)',events:[
+    {date:'Apr 1',title:'New Financial Year 2026-27 Begins',type:'market'},
+    {date:'Apr 15',title:'ITR Filing Season Opens',type:'tax'},
+    {date:'Apr 30',title:'Form 16 expected from employer',type:'tax'}
+  ]},
+  {month:'May',color:'var(--blue3)',events:[
+    {date:'May 15',title:'Advance Tax Q1 (15%) Due',type:'tax',imp:true},
+    {date:'May 31',title:'TDS Certificate (Form 16A) due',type:'tax'}
+  ]},
+  {month:'June',color:'var(--gold)',events:[
+    {date:'Jun 8',title:'Today — Mid-year portfolio review time!',type:'invest',imp:true},
+    {date:'Jun 15',title:'Advance Tax Q1 Final Payment',type:'tax'},
+    {date:'Jun 30',title:'Half-year ends — Review SIP performance',type:'sip',imp:true}
+  ]},
+  {month:'July',color:'var(--green)',events:[
+    {date:'Jul 15',title:'SGB Interest Credit (2.5% annually)',type:'invest'},
+    {date:'Jul 31',title:'⚠️ ITR Filing Deadline (AY 2026-27)',type:'tax',imp:true}
+  ]},
+  {month:'August',color:'var(--blue3)',events:[
+    {date:'Aug 15',title:'Independence Day',type:'holiday'},
+    {date:'Aug 31',title:'Revised ITR filing window closes',type:'tax'}
+  ]},
+  {month:'September',color:'var(--gold)',events:[
+    {date:'Sep 15',title:'Advance Tax Q2 Due',type:'tax',imp:true},
+    {date:'Sep 30',title:'Q2 Results Season Begins',type:'market'}
+  ]},
+  {month:'October',color:'var(--red)',events:[
+    {date:'Oct 2',title:'Gandhi Jayanti',type:'holiday'},
+    {date:'Oct 15',title:'Dussehra — Invest in Gold SGB!',type:'invest'},
+    {date:'Oct 31',title:'Diwali — Muhurat Trading',type:'market',imp:true}
+  ]},
+  {month:'November',color:'var(--blue3)',events:[
+    {date:'Nov 15',title:'Advance Tax Q3 Due',type:'tax',imp:true},
+    {date:'Nov 30',title:'Review year-end tax saving strategy',type:'tax'}
+  ]},
+  {month:'December',color:'var(--green)',events:[
+    {date:'Dec 15',title:'SIP review — Increase by 10%',type:'sip',imp:true},
+    {date:'Dec 25',title:'Christmas Day',type:'holiday'},
+    {date:'Dec 31',title:'Last chance for year-end tax planning!',type:'tax',imp:true}
+  ]}
+];
+
+function buildFinCalendar() {
+  var el = document.getElementById('fin-calendar'); if(!el||el.innerHTML) return;
+  var h = '';
+  var typeColor = {tax:'var(--red)',invest:'var(--green)',sip:'var(--blue3)',market:'var(--gold)',holiday:'var(--gray)',tip:'var(--gold)'};
+  finCalendar.forEach(function(m) {
+    h += '<div style="margin-bottom:14px;">'
+      + '<div style="font-size:12px;font-weight:700;color:'+m.color+';text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">'+m.month+'</div>';
+    m.events.forEach(function(ev) {
+      var c = typeColor[ev.type]||'var(--gray)';
+      h += '<div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">'
+        + '<div style="font-size:10px;font-weight:700;color:var(--gray);min-width:40px;margin-top:2px;">'+ev.date.split(' ')[1]+'</div>'
+        + '<div style="flex:1;">'
+        + '<div style="font-size:12px;font-weight:'+(ev.imp?'700':'500')+';color:'+(ev.imp?'var(--white)':'var(--light2)')+';">'+ev.title+'</div>'
+        + '<div style="font-size:10px;color:'+c+';margin-top:2px;text-transform:uppercase;letter-spacing:0.5px;">'+ev.type+'</div>'
+        + '</div></div>';
+    });
+    h += '</div>';
+  });
+  el.innerHTML = h;
+}
+
+// ── Weekly Tips
+var finTips = [
+  {ico:'💡',title:'Start SIP Today, Not Tomorrow',tip:'The best time to start investing was yesterday. The second best time is today. Every month delayed costs you in compounding.',action:'Open SIP Calculator'},
+  {ico:'🛡️',title:'Insurance Before Investment',tip:'Before investing, ensure you have: 1) Term insurance (10x annual income) 2) Health insurance (min ₹10L family). These protect your wealth.',action:'Get Insurance Quote'},
+  {ico:'📊',title:'Review Portfolio Every 6 Months',tip:'Markets change. Your SIP allocation should be reviewed twice a year. Rebalance if any fund lags benchmark by more than 5%.',action:'Check My Portfolio'},
+  {ico:'🎯',title:'50-30-20 Budget Rule',tip:'50% for needs (rent, food, EMIs), 30% for wants (entertainment, dining), 20% for savings/investments. Simple but powerful!',action:'Try Budget Calculator'},
+  {ico:'🔄',title:'Step Up SIP by 10% Every Year',tip:'If you earn ₹1 Lakh/month and SIP ₹5,000, increase to ₹5,500 next year. Over 20 years, this difference is worth lakhs!',action:'Try Step-Up Calculator'},
+  {ico:'🏦',title:'Emergency Fund First',tip:'Before any investment, build 6 months expense fund in FD or liquid MF. This prevents selling long-term investments in emergency.',action:'Plan Emergency Fund'},
+  {ico:'📅',title:'Invest Lumpsum at Market Dips',tip:'Nifty fell 10%+ in early June 2026. These are golden opportunities for lumpsum investment. Use our Lumpsum Calculator!',action:'Try Lumpsum Calculator'},
+  {ico:'🥇',title:'SGB vs Physical Gold',tip:'Sovereign Gold Bonds give you gold returns PLUS 2.5% annual interest. Physical gold has 10-20% making charges. SGB wins clearly!',action:'Learn About SGB'}
+];
+
+function buildFinTips() {
+  var el = document.getElementById('fin-tips'); if(!el||el.innerHTML) return;
+  var h = '';
+  finTips.forEach(function(t) {
+    h += '<div class="card" style="margin-bottom:10px;">'
+      + '<div style="display:flex;gap:12px;align-items:flex-start;">'
+      + '<div style="font-size:26px;flex-shrink:0;">'+t.ico+'</div>'
+      + '<div>'
+      + '<div style="font-size:13px;font-weight:700;margin-bottom:6px;">'+t.title+'</div>'
+      + '<div style="font-size:12px;color:var(--gray);line-height:1.7;margin-bottom:8px;">'+t.tip+'</div>'
+      + '</div></div>'
+      + '</div>';
+  });
+  el.innerHTML = h;
+}
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
@@ -525,63 +717,186 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 
 <!-- ══════════════ MARKET ══════════════ -->
 <div class="pg" id="p-market">
-  <div class="pg-hdr">
-    <button class="pg-back" onclick="navTo('p-more','nb-more')">← Back</button>
-    <div class="pg-title">Live <span>Market</span></div>
-    <div class="pg-sub">Real-time data • TradingView</div>
+<div class="pg-hdr">
+  <button class="pg-back" onclick="navTo('p-home','nb-home')">← Back</button>
+  <div class="pg-title">Finance <span>Hub</span></div>
+  <div class="pg-sub">Learn • Plan • Grow</div>
+</div>
+<div class="pg-content">
+
+<!-- TABS -->
+<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none;">
+  <button class="hub-tab btn btn-primary btn-sm" data-hub="learn">📚 Learn</button>
+  <button class="hub-tab btn btn-outline btn-sm" data-hub="goals">🎯 Goals</button>
+  <button class="hub-tab btn btn-outline btn-sm" data-hub="funds">🏆 Top Funds</button>
+  <button class="hub-tab btn btn-outline btn-sm" data-hub="calendar">📅 Calendar</button>
+  <button class="hub-tab btn btn-outline btn-sm" data-hub="news">💡 Tips</button>
+</div>
+
+<!-- LEARN TAB -->
+<div class="hub-pane" id="hub-learn">
+  <div class="sec-title">Financial Education</div>
+
+  <div class="card" style="margin-bottom:10px;">
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <div style="font-size:28px;">📈</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">What is SIP?</div>
+        <div style="font-size:12px;color:var(--gray);line-height:1.7;">Systematic Investment Plan (SIP) lets you invest a fixed amount every month in mutual funds. Even ₹500/month can build wealth!<br/><br/><strong style="color:var(--gold);">Example:</strong> ₹5,000/month at 12% for 20 years = <strong style="color:var(--green);">₹49.9 Lakhs</strong></div>
+      </div>
+    </div>
   </div>
-  <div class="pg-content">
 
-    <div style="border-radius:14px;overflow:hidden;margin-bottom:12px;">
-      <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-        {"symbols":[{"proName":"NIFTY_INDEX:NIFTY50","title":"Nifty 50"},{"proName":"BSE:SENSEX","title":"Sensex"},{"proName":"OANDA:XAUUSD","title":"Gold"},{"proName":"OANDA:XAGUSD","title":"Silver"},{"proName":"FX_IDC:USDINR","title":"USD/INR"},{"proName":"NYMEX:CL1!","title":"Crude"}],"showSymbolLogo":false,"isTransparent":true,"displayMode":"adaptive","colorTheme":"dark","locale":"en"}
-        </script>
+  <div class="card" style="margin-bottom:10px;">
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <div style="font-size:28px;">💰</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Rule of 72</div>
+        <div style="font-size:12px;color:var(--gray);line-height:1.7;">Divide 72 by your return rate to know when your money doubles.<br/><br/>
+        <strong style="color:var(--gold);">At 12%:</strong> 72÷12 = <strong style="color:var(--green);">6 years to double!</strong><br/>
+        <strong style="color:var(--gold);">At 8%:</strong> 72÷8 = 9 years<br/>
+        <strong style="color:var(--gold);">At 6%:</strong> 72÷6 = 12 years</div>
       </div>
     </div>
+  </div>
 
-    <div style="border-radius:14px;overflow:hidden;height:420px;margin-bottom:12px;">
-      <div class="tradingview-widget-container" style="height:420px;">
-        <div class="tradingview-widget-container__widget" style="height:420px;"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
-        {"colorTheme":"dark","dateRange":"1D","showChart":true,"locale":"en","isTransparent":true,"width":"100%","height":"420","tabs":[{"title":"Indices","symbols":[{"s":"BSE:SENSEX","d":"Sensex"},{"s":"NIFTY_INDEX:NIFTY50","d":"Nifty 50"},{"s":"NIFTY_INDEX:BANKNIFTY","d":"Bank Nifty"},{"s":"NIFTY_INDEX:MIDCPNIFTY50","d":"Midcap"}]},{"title":"Commodities","symbols":[{"s":"OANDA:XAUUSD","d":"Gold"},{"s":"OANDA:XAGUSD","d":"Silver"},{"s":"NYMEX:CL1!","d":"Crude"},{"s":"FX_IDC:USDINR","d":"USD/INR"}]},{"title":"Stocks","symbols":[{"s":"NSE:RELIANCE","d":"Reliance"},{"s":"NSE:HDFCBANK","d":"HDFC Bank"},{"s":"NSE:TCS","d":"TCS"},{"s":"NSE:INFY","d":"Infosys"}]}]}
-        </script>
+  <div class="card" style="margin-bottom:10px;">
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <div style="font-size:28px;">🛡️</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Term Insurance — Why It's a Must</div>
+        <div style="font-size:12px;color:var(--gray);line-height:1.7;">₹1 Crore cover costs just <strong style="color:var(--green);">₹8,000-12,000/year</strong> for a 30-year-old!<br/><br/>If something happens to you, your family is protected. No investment returns this — pure protection.</div>
       </div>
     </div>
+  </div>
 
-    <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:6px;">📈 Sensex Chart</div>
-    <div style="border-radius:14px;overflow:hidden;height:200px;margin-bottom:12px;">
-      <div class="tradingview-widget-container" style="height:200px;">
-        <div class="tradingview-widget-container__widget" style="height:200px;"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-        {"symbol":"BSE:SENSEX","width":"100%","height":"200","locale":"en","dateRange":"1D","colorTheme":"dark","isTransparent":true}
-        </script>
+  <div class="card" style="margin-bottom:10px;">
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <div style="font-size:28px;">💸</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Save Tax Under 80C</div>
+        <div style="font-size:12px;color:var(--gray);line-height:1.7;">Invest up to ₹1.5 Lakh and save up to <strong style="color:var(--green);">₹46,800 in tax!</strong><br/><br/>
+        Best options: ELSS funds (3yr lock-in) • PPF • NPS • Life Insurance premium</div>
       </div>
     </div>
+  </div>
 
-    <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:6px;">🥇 Gold Chart</div>
-    <div style="border-radius:14px;overflow:hidden;height:200px;margin-bottom:12px;">
-      <div class="tradingview-widget-container" style="height:200px;">
-        <div class="tradingview-widget-container__widget" style="height:200px;"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-        {"symbol":"OANDA:XAUUSD","width":"100%","height":"200","locale":"en","dateRange":"1D","colorTheme":"dark","isTransparent":true}
-        </script>
+  <div class="card" style="margin-bottom:10px;">
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <div style="font-size:28px;">🥇</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Gold — Smart Ways to Invest</div>
+        <div style="font-size:12px;color:var(--gray);line-height:1.7;">
+        <strong style="color:var(--gold);">Sovereign Gold Bonds (SGB)</strong> — Best! Get gold price + 2.5% extra interest<br/>
+        <strong style="color:var(--light2);">Gold ETFs</strong> — Trade on exchange, no making charges<br/>
+        <strong style="color:var(--light2);">Digital Gold</strong> — Buy from ₹1, stored safely<br/>
+        <strong style="color:var(--light2);">Physical Gold</strong> — High making charges (10-20%)</div>
       </div>
     </div>
+  </div>
 
-    <div class="card" style="margin-bottom:0;">
-      <div class="sec-title">FII / DII Activity • June 4, 2026</div>
-      <div class="grid2">
-        <div class="adm-stat"><div class="adm-stat-val" style="color:var(--red);">-₹4,447Cr</div><div class="adm-stat-lbl">FII — Selling</div></div>
-        <div class="adm-stat"><div class="adm-stat-val" style="color:var(--green);">+₹4,360Cr</div><div class="adm-stat-lbl">DII — Buying</div></div>
+  <div class="card" style="margin-bottom:10px;">
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <div style="font-size:28px;">📊</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">MF Types Explained</div>
+        <div style="font-size:12px;color:var(--gray);line-height:1.7;">
+        <strong style="color:var(--green);">Large Cap</strong> — Top 100 companies. Stable, lower risk<br/>
+        <strong style="color:var(--gold);">Mid Cap</strong> — 101-250 companies. Higher growth, more risk<br/>
+        <strong style="color:var(--red);">Small Cap</strong> — Below 250. Highest growth potential + risk<br/>
+        <strong style="color:var(--blue3);">ELSS</strong> — Tax saving + equity returns<br/>
+        <strong style="color:var(--light2);">Index Fund</strong> — Tracks Nifty/Sensex, lowest cost</div>
       </div>
     </div>
+  </div>
 
+  <div class="card">
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <div style="font-size:28px;">🏠</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Buy House or Invest in MF?</div>
+        <div style="font-size:12px;color:var(--gray);line-height:1.7;">House: 6-8% returns, illiquid, high cost<br/>MF SIP: 12-15% historical returns, liquid, start from ₹500<br/><br/><strong style="color:var(--gold);">Verdict:</strong> SIP first, house later — build your down payment via SIP!</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- ══════════════ APPOINTMENT ══════════════ -->
+<!-- GOALS TAB -->
+<div class="hub-pane" id="hub-goals" style="display:none;">
+  <div class="sec-title">Financial Goal Planner</div>
+
+  <div class="card" style="margin-bottom:14px;">
+    <label>Select Your Goal</label>
+    <select id="goal-type" onchange="updateGoalPlanner()">
+      <option value="child">👶 Child Education</option>
+      <option value="house">🏠 Buy a House</option>
+      <option value="retire">🌅 Retirement</option>
+      <option value="wedding">💒 Child Wedding</option>
+      <option value="car">🚗 Buy a Car</option>
+      <option value="travel">✈️ Dream Vacation</option>
+      <option value="emergency">🆘 Emergency Fund</option>
+    </select>
+    <label>Target Amount (₹)</label>
+    <input type="number" id="goal-target" value="5000000" onchange="updateGoalPlanner()"/>
+    <label>Years to Achieve</label>
+    <input type="range" id="goal-years" min="1" max="30" value="10" oninput="updateGoalPlanner()"/>
+    <div class="range-row"><span>1 yr</span><span class="range-val" id="goal-years-v">10 yrs</span><span>30 yrs</span></div>
+    <label>Expected Returns (% p.a.)</label>
+    <input type="range" id="goal-returns" min="6" max="18" step="0.5" value="12" oninput="updateGoalPlanner()"/>
+    <div class="range-row"><span>6%</span><span class="range-val" id="goal-returns-v">12%</span><span>18%</span></div>
+  </div>
+
+  <div class="result-card" id="goal-result">
+    <div class="result-main" id="goal-sip">--</div>
+    <div class="result-sub">Monthly SIP Required</div>
+    <div class="result-breakdown">
+      <div class="rb-item"><div class="rb-val" id="goal-lump">--</div><div class="rb-lbl">Lumpsum Alternative</div></div>
+      <div class="rb-item"><div class="rb-val" id="goal-inv">--</div><div class="rb-lbl">Total Investment</div></div>
+      <div class="rb-item"><div class="rb-val" id="goal-gain">--</div><div class="rb-lbl">Market Returns</div></div>
+      <div class="rb-item"><div class="rb-val" id="goal-yr-v">--</div><div class="rb-lbl">Timeline</div></div>
+    </div>
+  </div>
+
+  <button class="btn btn-gold" style="margin-top:12px;" onclick="navTo('p-appt','nb-more')">📅 Book Free Goal Planning Session</button>
+</div>
+
+<!-- TOP FUNDS TAB -->
+<div class="hub-pane" id="hub-funds" style="display:none;">
+  <div class="sec-title">Top Performing Funds — June 2026</div>
+
+  <div style="background:rgba(26,86,219,0.1);border:1px solid rgba(26,86,219,0.2);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--gray);margin-bottom:12px;line-height:1.6;">
+    📌 Returns as of June 2026. Past performance does not guarantee future returns. Consult Stokado advisors before investing.
+  </div>
+
+  <div class="sec-title">🏆 Large Cap — Stable Growth</div>
+  <div id="top-largecap"></div>
+
+  <div class="sec-title" style="margin-top:4px;">🚀 Mid Cap — High Growth</div>
+  <div id="top-midcap"></div>
+
+  <div class="sec-title" style="margin-top:4px;">💸 ELSS — Tax Saving</div>
+  <div id="top-elss"></div>
+
+  <div class="sec-title" style="margin-top:4px;">📊 Index — Low Cost</div>
+  <div id="top-index"></div>
+
+  <button class="btn btn-primary" style="margin-top:8px;" onclick="navTo('p-mf','nb-mf')">View All 40 Funds →</button>
+</div>
+
+<!-- CALENDAR TAB -->
+<div class="hub-pane" id="hub-calendar" style="display:none;">
+  <div class="sec-title">Financial Calendar 2026</div>
+  <div id="fin-calendar"></div>
+</div>
+
+<!-- TIPS TAB -->
+<div class="hub-pane" id="hub-news" style="display:none;">
+  <div class="sec-title">💡 Weekly Financial Tips</div>
+  <div id="fin-tips"></div>
+</div>
+
+</div>
+</div>
 <div class="pg" id="p-appt">
   <div class="pg-hdr">
     <button class="pg-back" onclick="navTo('p-more','nb-more')">← Back</button>
@@ -2565,6 +2880,9 @@ document.addEventListener('click', function(e) {
   }
 
   // NAV refresh
+  if(t.classList.contains('hub-tab')) {
+    switchHub(t.getAttribute('data-hub'));
+  }
   if(t.classList.contains('nav-btn')) { navTo(t.getAttribute('data-pg'), t.getAttribute('data-nb')||'nb-more'); }
   if(t.classList.contains('calc-pdf-btn')) calcPDF(t.getAttribute('data-calc'));
   if(t.classList.contains('calc-share-btn')) calcShare(t.getAttribute('data-calc'));
