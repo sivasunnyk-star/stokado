@@ -1778,6 +1778,229 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 </div>
 
 <!-- ══════════════ MORE MENU ══════════════ -->
+<div class="pg" id="p-budget">
+<div class="pg-hdr">
+  <button class="pg-back" onclick="navTo('p-home','nb-home')">← Back</button>
+  <div class="pg-title">Budget <span>Planner</span></div>
+  <div class="pg-sub">Track income • expenses • EMIs • SIP • goals</div>
+</div>
+<div class="pg-content">
+
+<!-- MONTH SELECTOR -->
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+  <button id="bud-prev-btn" style="background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:8px 14px;color:var(--light2);font-size:18px;cursor:pointer;">‹</button>
+  <div style="text-align:center;">
+    <div id="bud-month-label" style="font-family:var(--serif);font-size:18px;font-weight:800;color:var(--white);">June 2026</div>
+    <div id="bud-health-badge" style="font-size:11px;font-weight:700;padding:3px 12px;border-radius:999px;display:inline-block;margin-top:4px;"></div>
+  </div>
+  <button id="bud-next-btn" style="background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:8px 14px;color:var(--light2);font-size:18px;cursor:pointer;">›</button>
+</div>
+
+<!-- SUMMARY CARDS -->
+<div class="grid3" style="margin-bottom:12px;">
+  <div class="card" style="text-align:center;padding:12px 8px;">
+    <div style="font-size:10px;color:var(--gray);margin-bottom:4px;">INCOME</div>
+    <div id="bud-total-inc" style="font-size:16px;font-weight:800;color:var(--green);font-family:var(--serif);">₹0</div>
+  </div>
+  <div class="card" style="text-align:center;padding:12px 8px;">
+    <div style="font-size:10px;color:var(--gray);margin-bottom:4px;">SPENT</div>
+    <div id="bud-total-exp" style="font-size:16px;font-weight:800;color:var(--red);font-family:var(--serif);">₹0</div>
+  </div>
+  <div class="card" style="text-align:center;padding:12px 8px;">
+    <div style="font-size:10px;color:var(--gray);margin-bottom:4px;">SAVED</div>
+    <div id="bud-total-sav" style="font-size:16px;font-weight:800;color:var(--blue3);font-family:var(--serif);">₹0</div>
+  </div>
+</div>
+
+<!-- SAVINGS PROGRESS BAR -->
+<div class="card" style="margin-bottom:12px;padding:12px 14px;">
+  <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;">
+    <span style="font-weight:600;color:var(--light2);">Savings Rate</span>
+    <span id="bud-sav-pct" style="font-weight:700;color:var(--gold);">0%</span>
+  </div>
+  <div style="height:8px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;">
+    <div id="bud-sav-bar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--blue3),var(--green));border-radius:999px;transition:width 0.6s;"></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gray);margin-top:4px;">
+    <span>Target: 20%</span><span id="bud-sav-status">—</span>
+  </div>
+</div>
+
+<!-- TABS -->
+<div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;">
+  <button class="bud-tab btn btn-primary btn-sm" data-tab="overview">📊 Overview</button>
+  <button class="bud-tab btn btn-outline btn-sm" data-tab="income">💰 Income</button>
+  <button class="bud-tab btn btn-outline btn-sm" data-tab="expenses">💸 Expenses</button>
+  <button class="bud-tab btn btn-outline btn-sm" data-tab="emis">🏦 EMIs</button>
+  <button class="bud-tab btn btn-outline btn-sm" data-tab="sip">📈 SIP</button>
+  <button class="bud-tab btn btn-outline btn-sm" data-tab="goals">🎯 Goals</button>
+</div>
+
+<!-- OVERVIEW TAB -->
+<div class="bud-pane" id="bud-overview">
+  <div class="grid2" style="margin-bottom:12px;">
+    <div>
+      <div class="sec-title">Spending Breakdown</div>
+      <canvas id="bud-pie" style="max-height:200px;"></canvas>
+    </div>
+    <div>
+      <div class="sec-title">Monthly Trend</div>
+      <canvas id="bud-bar" style="max-height:200px;"></canvas>
+    </div>
+  </div>
+  <div class="sec-title">Category Summary</div>
+  <div id="bud-cat-summary"></div>
+  <div class="sec-title" style="margin-top:10px;">💡 Stokado Advice</div>
+  <div id="bud-advice" class="card card-gold"></div>
+</div>
+
+<!-- INCOME TAB -->
+<div class="bud-pane" id="bud-income" style="display:none;">
+  <div class="card" style="margin-bottom:12px;">
+    <div class="sec-title">Add Income</div>
+    <label>Source</label>
+    <select id="inc-cat">
+      <option>Salary</option><option>Business</option><option>Freelance</option>
+      <option>Rental Income</option><option>Investments</option><option>Other</option>
+    </select>
+    <label>Amount (₹)</label>
+    <input type="number" id="inc-amt" placeholder="e.g. 80000"/>
+    <label>Description</label>
+    <input type="text" id="inc-desc" placeholder="e.g. Monthly salary"/>
+    <button class="btn btn-gold" id="inc-add-btn">+ Add Income</button>
+  </div>
+  <div class="sec-title">This Month</div>
+  <div id="inc-list"></div>
+</div>
+
+<!-- EXPENSES TAB -->
+<div class="bud-pane" id="bud-expenses" style="display:none;">
+  <div class="card" style="margin-bottom:12px;">
+    <div class="sec-title">Add Expense</div>
+    <label>Category</label>
+    <select id="exp-cat">
+      <option>🍔 Food & Dining</option>
+      <option>🚗 Transport</option>
+      <option>🏠 Rent & Housing</option>
+      <option>💊 Health & Medical</option>
+      <option>👕 Shopping</option>
+      <option>📱 Bills & Utilities</option>
+      <option>🎬 Entertainment</option>
+      <option>📚 Education</option>
+      <option>👨‍👩‍👧 Family</option>
+      <option>⚡ Electricity</option>
+      <option>🛒 Groceries</option>
+      <option>💈 Personal Care</option>
+      <option>🎁 Gifts</option>
+      <option>✈️ Travel</option>
+      <option>📦 Other</option>
+    </select>
+    <label>Amount (₹)</label>
+    <input type="number" id="exp-amt" placeholder="e.g. 5000"/>
+    <label>Description (optional)</label>
+    <input type="text" id="exp-desc" placeholder="e.g. Grocery shopping"/>
+    <label>Date</label>
+    <input type="date" id="exp-date"/>
+    <button class="btn btn-primary" id="exp-add-btn">+ Add Expense</button>
+  </div>
+  <div class="sec-title">This Month Expenses</div>
+  <div id="exp-list"></div>
+</div>
+
+<!-- EMIS TAB -->
+<div class="bud-pane" id="bud-emis" style="display:none;">
+  <div class="card" style="margin-bottom:12px;">
+    <div class="sec-title">Add EMI</div>
+    <label>Loan Type</label>
+    <select id="emi-type">
+      <option>🏠 Home Loan</option>
+      <option>🚗 Car Loan</option>
+      <option>📱 Personal Loan</option>
+      <option>📚 Education Loan</option>
+      <option>💳 Credit Card</option>
+      <option>🏢 Business Loan</option>
+      <option>📦 Other Loan</option>
+    </select>
+    <label>EMI Amount (₹/month)</label>
+    <input type="number" id="emi-amt" placeholder="e.g. 15000"/>
+    <label>Bank / Lender</label>
+    <input type="text" id="emi-bank" placeholder="e.g. HDFC Bank"/>
+    <label>Remaining Months</label>
+    <input type="number" id="emi-rem" placeholder="e.g. 48"/>
+    <button class="btn btn-primary" id="emi-add-btn">+ Add EMI</button>
+  </div>
+  <div class="sec-title">Active EMIs</div>
+  <div id="emi-list"></div>
+  <div id="emi-summary" class="card" style="margin-top:10px;display:none;">
+    <div class="sec-title">EMI Burden Analysis</div>
+    <div id="emi-analysis"></div>
+  </div>
+</div>
+
+<!-- SIP TAB -->
+<div class="bud-pane" id="bud-sip" style="display:none;">
+  <div class="card" style="margin-bottom:12px;">
+    <div class="sec-title">Add SIP / Investment</div>
+    <label>Type</label>
+    <select id="sip-type">
+      <option>📈 Mutual Fund SIP</option>
+      <option>🏛️ PPF</option>
+      <option>👴 NPS</option>
+      <option>🥇 SGB / Gold</option>
+      <option>🏦 FD / RD</option>
+      <option>📊 Stock Investment</option>
+      <option>🏠 Real Estate SIP</option>
+      <option>📦 Other Investment</option>
+    </select>
+    <label>Fund / Scheme Name</label>
+    <input type="text" id="sip-name" placeholder="e.g. Mirae Asset Large Cap"/>
+    <label>Monthly Amount (₹)</label>
+    <input type="number" id="sip-amt2" placeholder="e.g. 5000"/>
+    <label>Date (SIP date)</label>
+    <input type="number" id="sip-date2" min="1" max="31" placeholder="e.g. 7"/>
+    <button class="btn btn-gold" id="sip-add-btn">+ Add SIP</button>
+  </div>
+  <div class="sec-title">Active SIPs & Investments</div>
+  <div id="sip-list"></div>
+  <div id="sip-projection" class="card card-blue" style="margin-top:10px;display:none;text-align:center;">
+    <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:4px;">Total Monthly Investment</div>
+    <div id="sip-total" style="font-family:var(--serif);font-size:28px;font-weight:800;">₹0</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;">Projected 10yr corpus at 12%: <b id="sip-corpus"></b></div>
+  </div>
+</div>
+
+<!-- GOALS TAB -->
+<div class="bud-pane" id="bud-goals" style="display:none;">
+  <div class="card" style="margin-bottom:12px;">
+    <div class="sec-title">Add Financial Goal</div>
+    <label>Goal Type</label>
+    <select id="goal-type2">
+      <option>🏠 Buy House</option>
+      <option>🚗 Buy Car</option>
+      <option>👶 Child Education</option>
+      <option>💒 Wedding</option>
+      <option>✈️ Vacation</option>
+      <option>🌅 Retirement</option>
+      <option>🆘 Emergency Fund</option>
+      <option>📦 Other Goal</option>
+    </select>
+    <label>Goal Name</label>
+    <input type="text" id="goal-name2" placeholder="e.g. House Down Payment"/>
+    <label>Target Amount (₹)</label>
+    <input type="number" id="goal-target2" placeholder="e.g. 1000000"/>
+    <label>Saved So Far (₹)</label>
+    <input type="number" id="goal-saved" placeholder="e.g. 200000"/>
+    <label>Target Year</label>
+    <input type="number" id="goal-year" placeholder="e.g. 2028" min="2024" max="2050"/>
+    <button class="btn btn-gold" id="goal-add-btn">+ Add Goal</button>
+  </div>
+  <div class="sec-title">Your Goals</div>
+  <div id="goal-list"></div>
+</div>
+
+</div>
+</div>
+
 <div class="pg" id="p-more">
   <div class="pg-hdr">
     <button class="pg-back" onclick="navTo('p-home','nb-home')">← Back</button>
@@ -1786,6 +2009,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   </div>
   <div class="pg-content">
     <div class="qa-grid" id="more-grid">
+      <div class="qa-btn" onclick="navTo('p-budget','nb-more')"><div class="qa-icon">📋</div><div class="qa-label">Budget Planner</div></div>
       <div class="qa-btn" onclick="navTo('p-market','nb-more')"><div class="qa-icon">📡</div><div class="qa-label">Live Market</div></div>
       <div class="qa-btn" onclick="navTo('p-ipo','nb-more')"><div class="qa-icon">🚀</div><div class="qa-label">IPO Tracker</div></div>
       <div class="qa-btn" onclick="navTo('p-unlisted','nb-more')"><div class="qa-icon">📈</div><div class="qa-label">Unlisted Shares</div></div>
@@ -3391,7 +3615,75 @@ document.addEventListener('click', function(e) {
   }
 
   // NAV refresh
-  if(t.classList.contains('flyer-cat-btn')) {
+  // BUDGET HANDLERS
+  if(t.classList.contains('bud-tab')) { switchBudTab(t.getAttribute('data-tab')); }
+
+  if(t.id==='bud-prev-btn') {
+    _budMonth--; if(_budMonth<0){_budMonth=11;_budYear--;}
+    updateBudMonth(); switchBudTab(_budTab);
+  }
+  if(t.id==='bud-next-btn') {
+    _budMonth++; if(_budMonth>11){_budMonth=0;_budYear++;}
+    updateBudMonth(); switchBudTab(_budTab);
+  }
+  if(t.id==='inc-add-btn') {
+    var cat=$('inc-cat').value, amt=parseFloat($('inc-amt').value)||0, desc=$('inc-desc').value||cat;
+    if(!amt){showToast('Enter amount!');return;}
+    var items=budLoad('inc'); items.push({cat:cat,amt:amt,desc:desc}); budSave('inc',items);
+    $('inc-amt').value=''; $('inc-desc').value='';
+    buildIncList(); updateBudSummary(); showToast('Income added!');
+  }
+  if(t.id==='exp-add-btn') {
+    var cat=$('exp-cat').value, amt=parseFloat($('exp-amt').value)||0;
+    var desc=$('exp-desc').value||'', date=$('exp-date').value||new Date().toLocaleDateString('en-IN');
+    if(!amt){showToast('Enter amount!');return;}
+    var items=budLoad('exp'); items.push({cat:cat,amt:amt,desc:desc,date:date}); budSave('exp',items);
+    $('exp-amt').value=''; $('exp-desc').value='';
+    buildExpList(); updateBudSummary(); showToast('Expense added!');
+  }
+  if(t.id==='emi-add-btn') {
+    var type=$('emi-type').value, amt=parseFloat($('emi-amt').value)||0;
+    var bank=$('emi-bank').value||'Bank', rem=parseInt($('emi-rem').value)||12;
+    if(!amt){showToast('Enter EMI amount!');return;}
+    var items=budLoad('emi'); items.push({type:type,amt:amt,bank:bank,rem:rem}); budSave('emi',items);
+    $('emi-amt').value=''; $('emi-bank').value=''; $('emi-rem').value='';
+    buildEmiList(); updateBudSummary(); showToast('EMI added!');
+  }
+  if(t.id==='sip-add-btn') {
+    var type=$('sip-type').value, name=$('sip-name').value||'SIP';
+    var amt=parseFloat($('sip-amt2').value)||0, date=parseInt($('sip-date2').value)||7;
+    if(!amt){showToast('Enter SIP amount!');return;}
+    var items=budLoad('sip'); items.push({type:type,name:name,amt:amt,date:date}); budSave('sip',items);
+    $('sip-name').value=''; $('sip-amt2').value='';
+    buildSipList(); updateBudSummary(); showToast('SIP added!');
+  }
+  if(t.id==='goal-add-btn') {
+    var type=$('goal-type2').value, name=$('goal-name2').value||'Goal';
+    var target=parseFloat($('goal-target2').value)||0, saved2=parseFloat($('goal-saved').value)||0;
+    var year=parseInt($('goal-year').value)||2030;
+    if(!target){showToast('Enter target amount!');return;}
+    var items=JSON.parse(localStorage.getItem('stk_bud_goals')||'[]');
+    items.push({type:type,name:name,target:target,saved:saved2,year:year});
+    localStorage.setItem('stk_bud_goals',JSON.stringify(items));
+    $('goal-name2').value=''; $('goal-target2').value=''; $('goal-saved').value='';
+    buildGoalList(); showToast('Goal added!');
+  }
+  if(t.classList.contains('bud-del-btn')) {
+    var dtype=t.getAttribute('data-type'), didx=parseInt(t.getAttribute('data-idx'));
+    var items=budLoad(dtype); items.splice(didx,1); budSave(dtype,items);
+    if(dtype==='inc') buildIncList();
+    if(dtype==='exp') buildExpList();
+    if(dtype==='emi') buildEmiList();
+    if(dtype==='sip') buildSipList();
+    updateBudSummary(); showToast('Deleted!');
+  }
+  if(t.classList.contains('bud-del-goal')) {
+    var items=JSON.parse(localStorage.getItem('stk_bud_goals')||'[]');
+    items.splice(parseInt(t.getAttribute('data-idx')),1);
+    localStorage.setItem('stk_bud_goals',JSON.stringify(items));
+    buildGoalList(); showToast('Goal removed!');
+  }
+    if(t.classList.contains('flyer-cat-btn')) {
     _flyerCat = t.getAttribute('data-cat');
     document.querySelectorAll('.flyer-cat-btn').forEach(function(b){ b.className='flyer-cat-btn btn btn-sm btn-outline'; });
     t.className='flyer-cat-btn btn btn-sm btn-primary';
@@ -3434,7 +3726,331 @@ function filterFlyers(){var filtered=_flyerCat==='all'?flyerData:flyerData.filte
 function downloadFlyer(idx){var f=flyerData[idx];if(!f)return;var c=document.createElement('canvas');c.width=800;c.height=600;var ctx=c.getContext('2d');var cols=f.bg.match(/#[0-9a-fA-F]{6}/g)||['#0A1628','#1A56DB'];var g=ctx.createLinearGradient(0,0,800,600);g.addColorStop(0,cols[0]);g.addColorStop(1,cols[1]||cols[0]);ctx.fillStyle=g;ctx.beginPath();ctx.roundRect(0,0,800,600,20);ctx.fill();ctx.font='150px serif';ctx.globalAlpha=0.1;ctx.fillStyle='#FFF';ctx.fillText(f.icon,500,380);ctx.globalAlpha=1;ctx.fillStyle='#FFF';ctx.font='bold 38px Georgia,serif';ctx.fillText(f.title,50,88);ctx.fillStyle='rgba(255,255,255,0.75)';ctx.font='21px Arial,sans-serif';ctx.fillText(f.sub,50,126);ctx.fillStyle=f.accent;ctx.fillRect(50,146,160,4);f.points.forEach(function(p,i){ctx.fillStyle=f.accent;ctx.font='bold 18px Arial,sans-serif';ctx.fillText('✓',50,200+i*46);ctx.fillStyle='#FFF';ctx.font='18px Arial,sans-serif';ctx.fillText(p,75,200+i*46);});ctx.fillStyle=f.accent;ctx.beginPath();ctx.roundRect(50,452,295,50,10);ctx.fill();ctx.fillStyle='#0A1628';ctx.font='bold 18px Arial,sans-serif';ctx.fillText(f.cta,65,484);ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='14px Arial,sans-serif';ctx.fillText('Stokado Financial Solutions | Vijayawada | +91 6300716517',50,562);var a=document.createElement('a');a.download='stokado-'+f.cat+'-'+(idx+1)+'.png';a.href=c.toDataURL('image/png');a.click();showToast('Flyer downloaded! 📥');}
 function shareFlyer(idx){var f=flyerData[idx];if(!f)return;var txt=f.title+'\n\n'+f.points.join('\n')+'\n\nStokado Financial Solutions\n+91 6300716517 | Vijayawada';if(navigator.share){navigator.share({title:f.title,text:txt});}else{window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');}}
 
+// ═══════════════════════════════════════
+// BUDGET PLANNER
+// ═══════════════════════════════════════
+var _budMonth = new Date().getMonth();
+var _budYear  = new Date().getFullYear();
+var _budTab   = 'overview';
+var _budPie   = null;
+var _budBar   = null;
+
+var BUD_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+var EXP_ICONS = {
+  'Food & Dining':'🍔','Transport':'🚗','Rent & Housing':'🏠',
+  'Health & Medical':'💊','Shopping':'👕','Bills & Utilities':'📱',
+  'Entertainment':'🎬','Education':'📚','Family':'👨‍👩‍👧',
+  'Electricity':'⚡','Groceries':'🛒','Personal Care':'💈',
+  'Gifts':'🎁','Travel':'✈️','Other':'📦'
+};
+
+function budKey(type) {
+  return 'stk_bud_' + type + '_' + _budYear + '_' + (_budMonth+1);
+}
+
+function budLoad(type) {
+  return JSON.parse(localStorage.getItem(budKey(type)) || '[]');
+}
+
+function budSave(type, data) {
+  localStorage.setItem(budKey(type), JSON.stringify(data));
+}
+
+function budN(v) { return Math.round(v).toLocaleString('en-IN'); }
+
+function loadBudget() {
+  updateBudMonth();
+  switchBudTab(_budTab);
+}
+
+function updateBudMonth() {
+  var el = document.getElementById('bud-month-label');
+  if (el) el.textContent = BUD_MONTHS[_budMonth] + ' ' + _budYear;
+  updateBudSummary();
+}
+
+function updateBudSummary() {
+  var income   = budLoad('inc').reduce(function(s,i){return s+i.amt;},0);
+  var expenses = budLoad('exp').reduce(function(s,i){return s+i.amt;},0);
+  var emis     = budLoad('emi').reduce(function(s,i){return s+i.amt;},0);
+  var sips     = budLoad('sip').reduce(function(s,i){return s+i.amt;},0);
+  var totalOut = expenses + emis + sips;
+  var saved    = income - totalOut;
+  var savPct   = income > 0 ? Math.round(saved/income*100) : 0;
+
+  var si = document.getElementById('bud-total-inc');
+  var se = document.getElementById('bud-total-exp');
+  var ss = document.getElementById('bud-total-sav');
+  var sb = document.getElementById('bud-sav-bar');
+  var sp = document.getElementById('bud-sav-pct');
+  var st = document.getElementById('bud-sav-status');
+  var bh = document.getElementById('bud-health-badge');
+
+  if(si) si.textContent = '₹'+budN(income);
+  if(se) se.textContent = '₹'+budN(totalOut);
+  if(ss) { ss.textContent = '₹'+budN(Math.max(0,saved)); ss.style.color = saved>=0?'var(--blue3)':'var(--red)'; }
+  if(sb) sb.style.width = Math.min(100,Math.max(0,savPct))+'%';
+  if(sp) sp.textContent = savPct+'%';
+  if(st) st.textContent = savPct>=20?'Excellent! 🎉':savPct>=10?'Good 👍':savPct>=0?'Needs improvement':'Overspending ⚠️';
+
+  // Health badge
+  var grade = savPct>=20?'Healthy 💚':savPct>=10?'Fair 🟡':savPct>=0?'Low 🔴':'Deficit ⚠️';
+  var gColor = savPct>=20?'rgba(16,185,129,0.2)':savPct>=10?'rgba(245,197,24,0.2)':'rgba(239,68,68,0.2)';
+  if(bh) { bh.textContent = grade; bh.style.background=gColor; bh.style.border='1px solid '+gColor.replace('0.2','0.5)'); }
+}
+
+function switchBudTab(tab) {
+  _budTab = tab;
+  document.querySelectorAll('.bud-tab').forEach(function(b){
+    b.className='bud-tab btn btn-sm '+(b.getAttribute('data-tab')===tab?'btn-primary':'btn-outline');
+  });
+  document.querySelectorAll('.bud-pane').forEach(function(p){ p.style.display='none'; });
+  var pane = document.getElementById('bud-'+tab);
+  if(pane) pane.style.display='block';
+
+  if(tab==='overview') buildBudOverview();
+  if(tab==='income')   buildIncList();
+  if(tab==='expenses') buildExpList();
+  if(tab==='emis')     buildEmiList();
+  if(tab==='sip')      buildSipList();
+  if(tab==='goals')    buildGoalList();
+}
+
+// ── OVERVIEW
+function buildBudOverview() {
+  var expenses = budLoad('exp');
+  var emis     = budLoad('emi');
+  var sips     = budLoad('sip');
+  var income   = budLoad('inc').reduce(function(s,i){return s+i.amt;},0);
+
+  // Category totals
+  var catTotals = {};
+  expenses.forEach(function(e){
+    var cat = e.cat.replace(/^[^\s]+ /,''); // remove emoji
+    catTotals[cat] = (catTotals[cat]||0) + e.amt;
+  });
+  if(emis.length) catTotals['EMIs'] = emis.reduce(function(s,i){return s+i.amt;},0);
+  if(sips.length) catTotals['SIPs'] = sips.reduce(function(s,i){return s+i.amt;},0);
+
+  var cats = Object.keys(catTotals);
+  var vals = cats.map(function(c){return catTotals[c];});
+  var total = vals.reduce(function(a,b){return a+b;},0);
+
+  // PIE CHART
+  var pieEl = document.getElementById('bud-pie');
+  if(pieEl && window.Chart) {
+    if(_budPie) _budPie.destroy();
+    if(total > 0) {
+      var colors=['#1A56DB','#10B981','#F5C518','#EF4444','#8B5CF6','#F59E0B','#06B6D4','#EC4899','#14B8A6','#F97316'];
+      _budPie = new Chart(pieEl.getContext('2d'),{
+        type:'doughnut',
+        data:{labels:cats,datasets:[{data:vals,backgroundColor:colors.slice(0,cats.length),borderWidth:0}]},
+        options:{responsive:true,plugins:{legend:{position:'bottom',labels:{color:'#8896AB',font:{size:10},boxWidth:10}}}}
+      });
+    } else {
+      pieEl.parentElement.innerHTML='<div style="text-align:center;padding:30px;color:var(--gray);font-size:12px;">No expenses yet</div>';
+    }
+  }
+
+  // BAR CHART — last 6 months
+  var barEl = document.getElementById('bud-bar');
+  if(barEl && window.Chart) {
+    if(_budBar) _budBar.destroy();
+    var labels=[], incData=[], expData=[];
+    for(var i=5;i>=0;i--) {
+      var d=new Date(_budYear,_budMonth-i,1);
+      var m=d.getMonth(), y=d.getFullYear();
+      labels.push(BUD_MONTHS[m].slice(0,3));
+      var mk='stk_bud_inc_'+y+'_'+(m+1);
+      var ek='stk_bud_exp_'+y+'_'+(m+1);
+      var em='stk_bud_emi_'+y+'_'+(m+1);
+      var es='stk_bud_sip_'+y+'_'+(m+1);
+      var inc=JSON.parse(localStorage.getItem(mk)||'[]').reduce(function(s,x){return s+x.amt;},0);
+      var exp=JSON.parse(localStorage.getItem(ek)||'[]').reduce(function(s,x){return s+x.amt;},0)
+             +JSON.parse(localStorage.getItem(em)||'[]').reduce(function(s,x){return s+x.amt;},0)
+             +JSON.parse(localStorage.getItem(es)||'[]').reduce(function(s,x){return s+x.amt;},0);
+      incData.push(inc); expData.push(exp);
+    }
+    _budBar = new Chart(barEl.getContext('2d'),{
+      type:'bar',
+      data:{labels:labels,datasets:[
+        {label:'Income',data:incData,backgroundColor:'rgba(16,185,129,0.7)',borderRadius:4},
+        {label:'Spent',data:expData,backgroundColor:'rgba(239,68,68,0.7)',borderRadius:4}
+      ]},
+      options:{responsive:true,plugins:{legend:{labels:{color:'#8896AB',font:{size:10},boxWidth:10}}},
+        scales:{x:{ticks:{color:'#6B7A99'},grid:{color:'rgba(255,255,255,0.04)'}},
+                y:{ticks:{color:'#6B7A99'},grid:{color:'rgba(255,255,255,0.04)'}}}}
+    });
+  }
+
+  // Category summary
+  var sumEl = document.getElementById('bud-cat-summary');
+  if(sumEl) {
+    if(!cats.length) { sumEl.innerHTML='<div style="color:var(--gray);font-size:12px;padding:10px 0;">No data yet. Add expenses to see breakdown.</div>'; }
+    else {
+      sumEl.innerHTML = cats.map(function(c,i){
+        var pct = total>0?Math.round(catTotals[c]/total*100):0;
+        var colors=['#1A56DB','#10B981','#F5C518','#EF4444','#8B5CF6','#F59E0B','#06B6D4','#EC4899','#14B8A6','#F97316'];
+        var col = colors[i%colors.length];
+        return '<div style="margin-bottom:8px;">'
+          +'<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">'
+          +'<span style="font-weight:600;color:var(--light2);">'+c+'</span>'
+          +'<span style="font-weight:700;color:var(--white);">₹'+budN(catTotals[c])+' ('+pct+'%)</span></div>'
+          +'<div style="height:6px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden;">'
+          +'<div style="height:100%;width:'+pct+'%;background:'+col+';border-radius:999px;transition:width 0.6s;"></div></div></div>';
+      }).join('');
+    }
+  }
+
+  // Advice
+  var advEl = document.getElementById('bud-advice');
+  if(advEl) {
+    var savPct = income>0?Math.round((income-total)/income*100):0;
+    var advice = savPct>=20
+      ? '🎉 Excellent! You are saving '+savPct+'% of income. Keep it up and invest the surplus in SIP!'
+      : savPct>=10
+      ? '👍 Good saving rate of '+savPct+'%. Try to reach 20% by cutting discretionary spending.'
+      : savPct>=0
+      ? '⚠️ Low savings of '+savPct+'%. Review your top spending categories and reduce by 10%.'
+      : '🔴 You are spending more than you earn! Check EMIs and discretionary expenses immediately.';
+    advEl.innerHTML = '<div style="font-size:13px;line-height:1.7;color:var(--light2);">'+advice+'</div>'
+      +'<button class="btn btn-gold btn-sm" style="margin-top:10px;" onclick="navTo(\'p-appt\',\'nb-more\')">📅 Get Free Advice</button>';
+  }
+}
+
+// ── INCOME
+function buildIncList() {
+  var items = budLoad('inc');
+  var el = document.getElementById('inc-list');
+  if(!el) return;
+  if(!items.length) { el.innerHTML='<div style="color:var(--gray);text-align:center;padding:20px;font-size:12px;">No income added yet</div>'; return; }
+  el.innerHTML = items.map(function(item,i){
+    return '<div style="background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">'
+      +'<div><div style="font-size:13px;font-weight:600;color:var(--white);">'+item.cat+'</div>'
+      +'<div style="font-size:11px;color:var(--gray);">'+item.desc+'</div></div>'
+      +'<div style="text-align:right;display:flex;gap:10px;align-items:center;">'
+      +'<div style="font-size:15px;font-weight:700;color:var(--green);">+₹'+budN(item.amt)+'</div>'
+      +'<button class="bud-del-btn" data-type="inc" data-idx="'+i+'" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--red);cursor:pointer;">✕</button>'
+      +'</div></div>';
+  }).join('');
+}
+
+// ── EXPENSES
+function buildExpList() {
+  var items = budLoad('exp');
+  var el = document.getElementById('exp-list');
+  if(!el) return;
+  if(!items.length) { el.innerHTML='<div style="color:var(--gray);text-align:center;padding:20px;font-size:12px;">No expenses added yet</div>'; return; }
+  el.innerHTML = items.map(function(item,i){
+    var catName = item.cat.replace(/^[^\s]+ /,'');
+    return '<div style="background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;">'
+      +'<div><div style="font-size:13px;font-weight:600;color:var(--white);">'+item.cat+'</div>'
+      +'<div style="font-size:11px;color:var(--gray);">'+(item.desc||catName)+' • '+(item.date||'')+'</div></div>'
+      +'<div style="display:flex;gap:8px;align-items:center;">'
+      +'<div style="font-size:15px;font-weight:700;color:var(--red);">-₹'+budN(item.amt)+'</div>'
+      +'<button class="bud-del-btn" data-type="exp" data-idx="'+i+'" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--red);cursor:pointer;">✕</button>'
+      +'</div></div></div>';
+  }).join('');
+}
+
+// ── EMIs
+function buildEmiList() {
+  var items = budLoad('emi');
+  var el = document.getElementById('emi-list');
+  if(!el) return;
+  var total = items.reduce(function(s,i){return s+i.amt;},0);
+  var income = budLoad('inc').reduce(function(s,i){return s+i.amt;},0);
+  var emiPct = income>0?Math.round(total/income*100):0;
+
+  var sumEl = document.getElementById('emi-summary');
+  var anaEl = document.getElementById('emi-analysis');
+  if(items.length && sumEl && anaEl) {
+    sumEl.style.display='block';
+    var status = emiPct>50?'🔴 Danger — EMIs over 50% income!':emiPct>30?'🟡 High — Try to reduce below 30%':'🟢 Healthy — EMIs within safe limit';
+    anaEl.innerHTML='<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;">'
+      +'<span style="color:var(--gray);">Total EMI/month</span><span style="font-weight:700;color:var(--white);">₹'+budN(total)+'</span></div>'
+      +'<div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;">'
+      +'<span style="color:var(--gray);">% of Income</span><span style="font-weight:700;color:'+(emiPct>50?'var(--red)':emiPct>30?'var(--gold)':'var(--green)')+';">'+emiPct+'%</span></div>'
+      +'<div style="font-size:12px;margin-top:6px;">'+status+'</div>';
+  }
+
+  if(!items.length) { el.innerHTML='<div style="color:var(--gray);text-align:center;padding:20px;font-size:12px;">No EMIs added yet</div>'; return; }
+  el.innerHTML = items.map(function(item,i){
+    var totalPay = item.amt * item.rem;
+    return '<div style="background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;">'
+      +'<div><div style="font-size:13px;font-weight:600;color:var(--white);">'+item.type+'</div>'
+      +'<div style="font-size:11px;color:var(--gray);">'+item.bank+' • '+item.rem+' months left</div>'
+      +'<div style="font-size:11px;color:var(--gray);">Total remaining: ₹'+budN(totalPay)+'</div></div>'
+      +'<div style="display:flex;gap:8px;align-items:center;">'
+      +'<div style="font-size:15px;font-weight:700;color:var(--red);">₹'+budN(item.amt)+'/mo</div>'
+      +'<button class="bud-del-btn" data-type="emi" data-idx="'+i+'" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--red);cursor:pointer;">✕</button>'
+      +'</div></div></div>';
+  }).join('');
+}
+
+// ── SIPs
+function buildSipList() {
+  var items = budLoad('sip');
+  var el = document.getElementById('sip-list');
+  if(!el) return;
+  var total = items.reduce(function(s,i){return s+i.amt;},0);
+  var mn=120, r=0.12/12;
+  var corpus = total*((Math.pow(1+r,mn)-1)/r)*(1+r);
+  var projEl = document.getElementById('sip-projection');
+  var totEl = document.getElementById('sip-total');
+  var corEl = document.getElementById('sip-corpus');
+  if(items.length && projEl) {
+    projEl.style.display='block';
+    if(totEl) totEl.textContent='₹'+budN(total)+'/mo';
+    if(corEl) corEl.textContent='₹'+budN(corpus);
+  }
+  if(!items.length) { el.innerHTML='<div style="color:var(--gray);text-align:center;padding:20px;font-size:12px;">No SIPs added yet</div>'; return; }
+  el.innerHTML = items.map(function(item,i){
+    return '<div style="background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;">'
+      +'<div><div style="font-size:13px;font-weight:600;color:var(--white);">'+item.name+'</div>'
+      +'<div style="font-size:11px;color:var(--blue3);background:rgba(26,86,219,0.1);padding:2px 8px;border-radius:999px;display:inline-block;margin-top:2px;">'+item.type+'</div>'
+      +'<div style="font-size:11px;color:var(--gray);margin-top:2px;">SIP Date: '+item.date+'th</div></div>'
+      +'<div style="display:flex;gap:8px;align-items:center;">'
+      +'<div style="font-size:15px;font-weight:700;color:var(--gold);">₹'+budN(item.amt)+'/mo</div>'
+      +'<button class="bud-del-btn" data-type="sip" data-idx="'+i+'" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--red);cursor:pointer;">✕</button>'
+      +'</div></div></div>';
+  }).join('');
+}
+
+// ── GOALS
+function buildGoalList() {
+  var items = JSON.parse(localStorage.getItem('stk_bud_goals')||'[]');
+  var el = document.getElementById('goal-list');
+  if(!el) return;
+  if(!items.length) { el.innerHTML='<div style="color:var(--gray);text-align:center;padding:20px;font-size:12px;">No goals added yet</div>'; return; }
+  el.innerHTML = items.map(function(item,i){
+    var pct = item.target>0?Math.min(100,Math.round(item.saved/item.target*100)):0;
+    var rem = item.target - item.saved;
+    var yearsLeft = item.year - new Date().getFullYear();
+    var monthsLeft = Math.max(1, yearsLeft*12);
+    var monthlyNeeded = rem/monthsLeft;
+    return '<div style="background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">'
+      +'<div><div style="font-size:14px;font-weight:700;color:var(--white);">'+item.type+' '+item.name+'</div>'
+      +'<div style="font-size:11px;color:var(--gray);">Target: ₹'+budN(item.target)+' by '+item.year+'</div></div>'
+      +'<button class="bud-del-goal" data-idx="'+i+'" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:6px;padding:4px 8px;font-size:11px;color:var(--red);cursor:pointer;">✕</button>'
+      +'</div>'
+      +'<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;">'
+      +'<span style="color:var(--green);">Saved ₹'+budN(item.saved)+'</span>'
+      +'<span style="color:var(--gold);font-weight:700;">'+pct+'%</span></div>'
+      +'<div style="height:8px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden;margin-bottom:6px;">'
+      +'<div style="height:100%;width:'+pct+'%;background:linear-gradient(90deg,var(--blue3),var(--green));border-radius:999px;"></div></div>'
+      +'<div style="font-size:11px;color:var(--gray);">Need ₹'+budN(monthlyNeeded)+'/mo • '+yearsLeft+' years left</div>'
+      +'</div>';
+  }).join('');
+}
 window.addEventListener('load', function() {
+  var expDate = document.getElementById('exp-date');
+  if(expDate) expDate.value = new Date().toISOString().split('T')[0];
   // Hide splash after 2.2s
   setTimeout(function() {
     $('splash').style.opacity='0';
