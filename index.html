@@ -1045,43 +1045,59 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 <!-- ══════════════ HOME PAGE ══════════════ -->
 <div class="pg active" id="p-home">
 
-  <!-- HERO BANNER -->
+  <!-- HERO -->
   <div class="hero">
     <div class="hero-tag">Investment Intelligence</div>
     <div class="hero-title">Your Smart<br/><span>Financial Partner</span></div>
     <div class="hero-sub">SEBI Registered • Motilal Oswal Certified<br/>Vijayawada's Most Trusted Advisory</div>
     <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="hero-stat-val">₹150Cr</div>
-        <div class="hero-stat-lbl">AUM</div>
-      </div>
-      <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,0.1);padding-left:16px;">
-        <div class="hero-stat-val">4000+</div>
-        <div class="hero-stat-lbl">Clients</div>
-      </div>
-      <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,0.1);padding-left:16px;">
-        <div class="hero-stat-val">10+</div>
-        <div class="hero-stat-lbl">Certifications</div>
-      </div>
+      <div class="hero-stat"><div class="hero-stat-val">₹150Cr</div><div class="hero-stat-lbl">AUM</div></div>
+      <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,0.1);padding-left:16px;"><div class="hero-stat-val">4000+</div><div class="hero-stat-lbl">Clients</div></div>
+      <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,0.1);padding-left:16px;"><div class="hero-stat-val">10+</div><div class="hero-stat-lbl">Certs</div></div>
     </div>
     <div class="cert-row">
       <span class="cert-badge">NISM 5A</span>
       <span class="cert-badge">IRDAI IC38</span>
       <span class="cert-badge">Motilal Oswal</span>
       <span class="cert-badge">SEBI Reg</span>
-      <span class="cert-badge">NISM F&amp;O</span>
     </div>
-    <button class="btn btn-gold" style="margin-top:20px;" onclick="navTo('p-appt','nb-more')">📅 Book Free Consultation</button>
+    <button class="btn btn-gold" style="margin-top:18px;" onclick="navTo('p-appt','nb-more')">📅 Book Free Consultation</button>
   </div>
-
-
 
   <div class="pg-content">
 
-    
+    <!-- FEATURED FLYER — random, auto-rotates -->
+    <div id="featured-flyer" style="margin-bottom:6px;"></div>
 
-  <!-- MOTILAL<!-- MOTILAL BANNER -->
-    <div class="card card-blue" style="display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="window.open('https://mosl.co/PCgNPj07W1','_blank')">
+    <!-- FLYER CATEGORY FILTER -->
+    <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;scrollbar-width:none;">
+      <button class="flyer-cat-btn btn btn-primary btn-sm" data-cat="all">All</button>
+      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="sip">SIP</button>
+      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="mf">Mutual Fund</button>
+      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="insurance">Insurance</button>
+      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="tax">Tax</button>
+      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="gold">Gold</button>
+      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="budget">Budget</button>
+    </div>
+
+    <!-- FLYER GRID -->
+    <div id="flyer-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;"></div>
+
+    <!-- QUICK ACCESS -->
+    <div class="sec-title">Quick Access</div>
+    <div class="qa-grid" style="margin-bottom:12px;">
+      <div class="qa-btn" onclick="navTo('p-calc','nb-calc')"><div class="qa-icon">🧮</div><div class="qa-label">Calculators</div></div>
+      <div class="qa-btn" onclick="navTo('p-ins','nb-ins')"><div class="qa-icon">🛡️</div><div class="qa-label">Insurance</div></div>
+      <div class="qa-btn" onclick="navTo('p-mf','nb-mf')"><div class="qa-icon">📊</div><div class="qa-label">Mutual Funds</div></div>
+      <div class="qa-btn" onclick="navTo('p-budget','nb-more')"><div class="qa-icon">📋</div><div class="qa-label">Budget Planner</div></div>
+      <div class="qa-btn" onclick="navTo('p-appt','nb-more')"><div class="qa-icon">📅</div><div class="qa-label">Book Appt</div></div>
+      <div class="qa-btn" onclick="navTo('p-ipo','nb-more')"><div class="qa-icon">🚀</div><div class="qa-label">IPO</div></div>
+      <div class="qa-btn" onclick="navTo('p-portfolio','nb-more')"><div class="qa-icon">💼</div><div class="qa-label">Portfolio</div></div>
+      <div class="qa-btn" onclick="navTo('p-more','nb-more')"><div class="qa-icon">⋯</div><div class="qa-label">More</div></div>
+    </div>
+
+    <!-- MOTILAL BANNER -->
+    <div class="card card-blue" style="display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:12px;" onclick="window.open('https://mosl.co/PCgNPj07W1','_blank')">
       <div style="font-size:28px;">🏆</div>
       <div>
         <div style="font-size:13px;font-weight:700;color:white;">Open Demat Account</div>
@@ -1090,29 +1106,8 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
       <div style="margin-left:auto;font-size:18px;">→</div>
     </div>
 
-    <!-- MARKET INSIGHT -->
-    <div class="sec-title" style="margin-top:4px;">Market Insights</div>
-    <!-- FLYERS SECTION -->
-    <div class="sec-title" style="margin-top:16px;">📢 Financial Flyers</div>
-    <div style="font-size:12px;color:var(--gray);margin-bottom:10px;">Tap to download • Share with clients</div>
-
-    <!-- FEATURED FLYER (random) -->
-    <div id="featured-flyer" style="margin-bottom:12px;cursor:pointer;border-radius:18px;overflow:hidden;"></div>
-
-    <!-- FLYER CATEGORIES -->
-    <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px;scrollbar-width:none;">
-      <button class="flyer-cat-btn btn btn-primary btn-sm" data-cat="all">All</button>
-      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="sip">SIP</button>
-      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="mf">Mutual Fund</button>
-      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="insurance">Insurance</button>
-      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="tax">Tax Saving</button>
-      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="gold">Gold</button>
-      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="budget">Budget</button>
-    </div>
-
-    <!-- FLYER GRID -->
-    <div id="flyer-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;"></div>
-
+    <!-- TIPS -->
+    <div class="sec-title">Market Insights</div>
     <div id="home-tips"></div>
 
   </div>
