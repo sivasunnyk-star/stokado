@@ -1970,8 +1970,11 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     <div style="font-size:22px;margin-bottom:8px;">📱</div>
     <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:6px;">Auto Expense Tracking</div>
     <div style="font-size:12px;color:var(--gray);line-height:1.7;margin-bottom:12px;">
-      Paste your bank SMS messages below. Stokado AI will automatically detect and categorize all expenses, debits, and credits!<br/><br/>
-      <strong style="color:var(--light2);">Works with:</strong> SBI, HDFC, ICICI, Axis, Kotak, UPI, PhonePe, GPay, Paytm
+      Select ALL your SMS, copy, and paste below — even hundreds at once! Stokado reads everything like Axio:<br/><br/>
+      ✓ Bank debits &amp; credits ✓ UPI payments ✓ Card spends<br/>
+      ✓ IMPS/NEFT/RTGS transfers ✓ ATM withdrawals ✓ EMIs &amp; AutoPay<br/>
+      ✓ Salary &amp; refunds ✓ Credit card bills &amp; dues<br/><br/>
+      <strong style="color:var(--light2);">All banks:</strong> SBI, HDFC, ICICI, Axis, Kotak, PNB + PhonePe, GPay, Paytm, CRED
     </div>
     <textarea id="sms-input" placeholder="Paste your bank SMS here...&#10;&#10;Example:&#10;Rs.500 debited from a/c XXXX1234 on 08-Jun-26. UPI:Swiggy&#10;Rs.15000 credited to a/c XXXX1234 on 01-Jun-26. Salary&#10;Rs.2000 debited from a/c XXXX1234. Info: Electricity bill" style="height:140px;font-size:11px;line-height:1.6;resize:vertical;"></textarea>
     <button class="btn btn-primary" id="sms-parse-btn" style="margin-top:4px;">🔍 Scan & Import Expenses</button>
@@ -1985,9 +1988,10 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     <div class="sec-title">📋 How to get bank SMS</div>
     <div style="font-size:12px;color:var(--gray);line-height:1.8;">
       1. Open your SMS app<br/>
-      2. Search for your bank name (SBI, HDFC etc)<br/>
-      3. Copy transaction messages<br/>
-      4. Paste above and tap Scan<br/><br/>
+      2. Long-press a bank message → Select All (or select many)<br/>
+      3. Copy → come back here → Paste<br/>
+      4. Tap Scan — duplicates removed automatically!<br/>
+      5. Transactions go to the correct month automatically<br/><br/>
       <strong style="color:var(--light2);">Privacy:</strong> All processing happens on your phone only. Nothing is sent to any server.
     </div>
   </div>
@@ -4047,170 +4051,261 @@ function buildGoalList() {
   }).join('');
 }
 // ═══════════════════════════════════════
-// SMS EXPENSE PARSER
+// SMS TRANSACTION ENGINE v2 — Axio-style
+// Reads ALL bank/CC/UPI/transfer messages
 // ═══════════════════════════════════════
 var _smsDetected = [];
 
+var SMS_AMT = '(?:Rs\\.?|INR|₹)\\s*([\\d,]+(?:\\.\\d{1,2})?)';
+
 var SMS_PATTERNS = [
-  // Debit patterns
-  {re:/(?:Rs\.?|INR|₹)\s*([\d,]+(?:\.\d{1,2})?)\s*(?:debited|deducted|spent|paid|withdrawn)/i, type:'debit'},
-  {re:/(?:debited|deducted|spent|paid)\s+(?:Rs\.?|INR|₹)\s*([\d,]+(?:\.\d{1,2})?)/i, type:'debit'},
-  {re:/(?:Rs\.?|INR|₹)\s*([\d,]+(?:\.\d{1,2})?)\s+(?:has been\s+)?(?:debited|deducted)/i, type:'debit'},
-  {re:/(?:purchase|payment)\s+of\s+(?:Rs\.?|INR|₹)\s*([\d,]+(?:\.\d{1,2})?)/i, type:'debit'},
-  // Credit patterns
-  {re:/(?:Rs\.?|INR|₹)\s*([\d,]+(?:\.\d{1,2})?)\s*(?:credited|received|deposited)/i, type:'credit'},
-  {re:/(?:credited|received|deposited)\s+(?:Rs\.?|INR|₹)\s*([\d,]+(?:\.\d{1,2})?)/i, type:'credit'},
+  // ── DEBITS ──
+  {re:new RegExp(SMS_AMT+'\\s*(?:has been\\s+)?(?:debited|deducted|withdrawn)','i'), type:'debit', sub:'Bank Debit'},
+  {re:new RegExp('(?:debited|deducted)\\s+(?:by|with|for)?\\s*'+SMS_AMT,'i'), type:'debit', sub:'Bank Debit'},
+  {re:new RegExp(SMS_AMT+'\\s*(?:spent|paid)\\s+(?:on|using|via|at|from)','i'), type:'debit', sub:'Card Spend'},
+  {re:new RegExp('(?:spent|paid)\\s+'+SMS_AMT,'i'), type:'debit', sub:'Card Spend'},
+  {re:new RegExp('(?:purchase|payment|txn|transaction)\\s+of\\s+'+SMS_AMT,'i'), type:'debit', sub:'Purchase'},
+  {re:new RegExp(SMS_AMT+'\\s+(?:was\\s+)?(?:charged|billed)','i'), type:'debit', sub:'Charge'},
+  {re:new RegExp('withdrawn\\s+'+SMS_AMT+'|'+SMS_AMT+'.{0,20}ATM','i'), type:'debit', sub:'ATM Withdrawal'},
+  {re:new RegExp(SMS_AMT+'\\s+transferred\\s+(?:to|from your)','i'), type:'debit', sub:'Transfer Out'},
+  {re:new RegExp('(?:IMPS|NEFT|RTGS|UPI)\\b.{0,40}?'+SMS_AMT+'.{0,40}?(?:debited|sent|transferred|paid)','i'), type:'debit', sub:'Transfer Out'},
+  {re:new RegExp('(?:sent|paid)\\s+'+SMS_AMT+'\\s+(?:to|via UPI)','i'), type:'debit', sub:'UPI Payment'},
+  {re:new RegExp('(?:AutoPay|auto[- ]?debit|standing instruction|SI|NACH|ECS).{0,40}?'+SMS_AMT,'i'), type:'debit', sub:'AutoPay'},
+  {re:new RegExp('EMI\\s+of\\s+'+SMS_AMT+'|'+SMS_AMT+'\\s+(?:towards|for)\\s+(?:your\\s+)?EMI','i'), type:'debit', sub:'EMI'},
+
+  // ── CREDITS (specific first, generic last) ──
+  {re:new RegExp('refund\\s+of\\s+'+SMS_AMT+'|'+SMS_AMT+'.{0,20}refund(?:ed)?','i'), type:'credit', sub:'Refund'},
+  {re:new RegExp('cashback\\s+of\\s+'+SMS_AMT+'|'+SMS_AMT+'.{0,20}cashback','i'), type:'credit', sub:'Cashback'},
+  {re:new RegExp('(?:interest)\\s+(?:of\\s+)?'+SMS_AMT+'\\s+credited','i'), type:'credit', sub:'Interest'},
+  {re:new RegExp('(?:salary|sal)\\b.{0,40}?'+SMS_AMT,'i'), type:'credit', sub:'Salary'},
+  {re:new RegExp(SMS_AMT+'\\s*(?:has been\\s+)?(?:credited|received|deposited)','i'), type:'credit', sub:'Credit'},
+  {re:new RegExp('(?:credited|received|deposited)\\s+(?:with|by)?\\s*'+SMS_AMT,'i'), type:'credit', sub:'Credit'},
+
+  // ── INFO (CC BILLS / DUES) ──
+  {re:new RegExp('(?:total\\s+)?(?:bill|amount)\\s+(?:due|payable)(?:\\s+is)?\\s*:?\\s*'+SMS_AMT,'i'), type:'info', sub:'CC Bill Due'},
+  {re:new RegExp('min(?:imum)?\\s+(?:amount\\s+)?due\\s*:?\\s*'+SMS_AMT,'i'), type:'info', sub:'CC Min Due'},
+  {re:new RegExp('(?:statement|stmt).{0,30}generated.{0,40}?'+SMS_AMT,'i'), type:'info', sub:'CC Statement'}
 ];
 
+var SMS_BANKS = ['SBI','HDFC','ICICI','AXIS','KOTAK','PNB','BOB','CANARA','UNION','IDBI','YES BANK','INDUSIND','FEDERAL','IDFC','RBL','CITI','HSBC','SC ','AU BANK','BANDHAN','UCO','INDIAN BANK','CENTRAL BANK','PAYTM','PHONEPE','GPAY','GOOGLE PAY','AMAZON PAY','MOBIKWIK','FREECHARGE','CRED','SLICE','LAZYPAY','SIMPL'];
+
 var SMS_MERCHANT_CATS = {
-  'swiggy':'🍔 Food', 'zomato':'🍔 Food', 'dominos':'🍔 Food', 'mcdonalds':'🍔 Food',
-  'uber':'🚗 Transport', 'ola':'🚗 Transport', 'rapido':'🚗 Transport', 'petrol':'🚗 Transport', 'fuel':'🚗 Transport',
-  'amazon':'👕 Shopping', 'flipkart':'👕 Shopping', 'myntra':'👕 Shopping', 'meesho':'👕 Shopping',
-  'netflix':'🎬 Entertainment', 'hotstar':'🎬 Entertainment', 'spotify':'🎬 Entertainment', 'youtube':'🎬 Entertainment',
-  'apollo':'💊 Medical', 'medplus':'💊 Medical', 'hospital':'💊 Medical', 'clinic':'💊 Medical', 'pharmacy':'💊 Medical',
-  'electricity':'⚡ Electricity', 'bescom':'⚡ Electricity', 'apepdcl':'⚡ Electricity', 'tsgenco':'⚡ Electricity',
-  'jio':'📱 Bills', 'airtel':'📱 Bills', 'vi ':'📱 Bills', 'bsnl':'📱 Bills', 'broadband':'📱 Bills',
-  'salary':'💼 Salary', 'payroll':'💼 Salary',
-  'rent':'🏠 Rent', 'maintenance':'🏠 Rent',
-  'grocery':'🛒 Groceries', 'dmart':'🛒 Groceries', 'bigbasket':'🛒 Groceries', 'reliance fresh':'🛒 Groceries',
-  'school':'📚 Education', 'college':'📚 Education', 'fees':'📚 Education', 'tuition':'📚 Education',
-  'recharge':'📱 Bills', 'postpaid':'📱 Bills',
+  'swiggy':'🍔 Food','zomato':'🍔 Food','dominos':'🍔 Food','mcdonald':'🍔 Food','kfc':'🍔 Food','pizza':'🍔 Food','restaurant':'🍔 Food','cafe':'🍔 Food','hotel':'🍔 Food','eatfit':'🍔 Food','box8':'🍔 Food',
+  'uber':'🚗 Transport','ola':'🚗 Transport','rapido':'🚗 Transport','petrol':'🚗 Transport','fuel':'🚗 Transport','hpcl':'🚗 Transport','bpcl':'🚗 Transport','iocl':'🚗 Transport','redbus':'🚗 Transport','irctc':'🚗 Transport','metro':'🚗 Transport','fastag':'🚗 Transport','parking':'🚗 Transport',
+  'amazon':'👕 Shopping','flipkart':'👕 Shopping','myntra':'👕 Shopping','meesho':'👕 Shopping','ajio':'👕 Shopping','nykaa':'👕 Shopping','snapdeal':'👕 Shopping','tatacliq':'👕 Shopping',
+  'netflix':'🎬 Entertainment','hotstar':'🎬 Entertainment','spotify':'🎬 Entertainment','youtube':'🎬 Entertainment','prime':'🎬 Entertainment','sonyliv':'🎬 Entertainment','zee5':'🎬 Entertainment','bookmyshow':'🎬 Entertainment','pvr':'🎬 Entertainment','inox':'🎬 Entertainment',
+  'apollo':'💊 Medical','medplus':'💊 Medical','hospital':'💊 Medical','clinic':'💊 Medical','pharmacy':'💊 Medical','pharmeasy':'💊 Medical','1mg':'💊 Medical','netmeds':'💊 Medical','practo':'💊 Medical',
+  'electricity':'⚡ Electricity','bescom':'⚡ Electricity','apepdcl':'⚡ Electricity','apspdcl':'⚡ Electricity','tsspdcl':'⚡ Electricity','tneb':'⚡ Electricity','power bill':'⚡ Electricity',
+  'jio':'📱 Bills','airtel':'📱 Bills','vi ':'📱 Bills','vodafone':'📱 Bills','bsnl':'📱 Bills','broadband':'📱 Bills','dth':'📱 Bills','tatasky':'📱 Bills','recharge':'📱 Bills','postpaid':'📱 Bills','wifi':'📱 Bills','act fibernet':'📱 Bills',
+  'salary':'💼 Salary','payroll':'💼 Salary','sal credit':'💼 Salary',
+  'rent':'🏠 Rent','maintenance':'🏠 Rent','nobroker':'🏠 Rent','housing':'🏠 Rent',
+  'grocery':'🛒 Groceries','dmart':'🛒 Groceries','bigbasket':'🛒 Groceries','blinkit':'🛒 Groceries','zepto':'🛒 Groceries','instamart':'🛒 Groceries','jiomart':'🛒 Groceries','more retail':'🛒 Groceries','reliance fresh':'🛒 Groceries','grofers':'🛒 Groceries',
+  'school':'📚 Education','college':'📚 Education','fees':'📚 Education','tuition':'📚 Education','byjus':'📚 Education','unacademy':'📚 Education','udemy':'📚 Education','coursera':'📚 Education',
+  'lic':'🛡️ Insurance','insurance':'🛡️ Insurance','policy':'🛡️ Insurance','premium':'🛡️ Insurance','hdfc life':'🛡️ Insurance','max life':'🛡️ Insurance','star health':'🛡️ Insurance','acko':'🛡️ Insurance','digit':'🛡️ Insurance',
+  'sip':'📈 Investment','mutual fund':'📈 Investment','zerodha':'📈 Investment','groww':'📈 Investment','upstox':'📈 Investment','motilal':'📈 Investment','coin':'📈 Investment','kuvera':'📈 Investment','nps':'📈 Investment','ppf':'📈 Investment',
+  'emi':'🏦 EMI','loan':'🏦 EMI','bajaj fin':'🏦 EMI','home credit':'🏦 EMI',
+  'gold':'🥇 Gold','jewel':'🥇 Gold','tanishq':'🥇 Gold','kalyan':'🥇 Gold','sgb':'🥇 Gold',
+  'atm':'💵 Cash','cash withdrawal':'💵 Cash',
+  'salon':'💈 Personal Care','spa':'💈 Personal Care','urban company':'💈 Personal Care'
 };
 
-function detectCategory(text) {
+function detectCategory(text, sub) {
   var t = text.toLowerCase();
   for (var key in SMS_MERCHANT_CATS) {
     if (t.indexOf(key) >= 0) return SMS_MERCHANT_CATS[key];
   }
+  if (sub === 'ATM Withdrawal') return '💵 Cash';
+  if (sub === 'EMI' || sub === 'AutoPay') return '🏦 EMI';
+  if (sub === 'Transfer Out' || sub === 'UPI Payment') return '↔️ Transfer';
+  if (sub === 'Salary') return '💼 Salary';
+  if (sub === 'Refund' || sub === 'Cashback') return '🎁 Refund';
+  if (sub === 'Interest') return '🏦 Interest';
   return '📦 Other';
 }
 
+function detectBank(text) {
+  var T = text.toUpperCase();
+  for (var i=0;i<SMS_BANKS.length;i++) {
+    if (T.indexOf(SMS_BANKS[i]) >= 0) return SMS_BANKS[i].trim();
+  }
+  var ac = text.match(/(?:a\/c|acct|account|card)\s*(?:no\.?)?\s*[Xx*]+(\d{3,4})/i);
+  if (ac) return 'A/c …'+ac[1];
+  return '';
+}
+
 function extractMerchant(text) {
-  // Try to extract merchant from UPI: pattern
-  var upi = text.match(/UPI[:/]\s*([A-Za-z0-9\s&]+?)(?:\s+|$|\.|,)/i);
-  if (upi) return upi[1].trim();
-  // Try Info: pattern
-  var info = text.match(/Info[:/]\s*([A-Za-z0-9\s&]+?)(?:\s+|$|\.|,)/i);
-  if (info) return info[1].trim();
-  // Try to: pattern
-  var to = text.match(/(?:to|at)\s+([A-Za-z][A-Za-z0-9\s&]{2,20})(?:\s+|$|\.|,)/i);
-  if (to) return to[1].trim();
+  var m;
+  m = text.match(/(?:UPI[:/-]|VPA[:\s])\s*([a-z0-9.\-_]+@[a-z]+)/i);
+  if (m) return m[1];
+  m = text.match(/UPI[:/]\s*([A-Za-z0-9\s&._-]{3,25})/i);
+  if (m) return m[1].trim();
+  m = text.match(/Info[:.\s]+([A-Za-z0-9\s&._\-*\/]{3,30})/i);
+  if (m) return m[1].trim().replace(/[*\/-]+$/,'');
+  m = text.match(/(?:\bat\b|\bto\b|towards)\s+([A-Z][A-Za-z0-9\s&._-]{2,28}?)(?:\s+on\b|\s+via\b|\.|,|$)/);
+  if (m) return m[1].trim();
+  m = text.match(/(?:\bat\b|\bto\b)\s+([A-Za-z][A-Za-z0-9\s&._-]{2,25})/i);
+  if (m) return m[1].trim();
   return 'Transaction';
 }
 
 function extractDate(text) {
-  var d = text.match(/(\d{1,2}[-\/]\d{1,2}[-\/]\d{2,4})/);
-  if (d) return d[1];
-  d = text.match(/(\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s*\d{2,4})/i);
-  if (d) return d[1];
-  return new Date().toLocaleDateString('en-IN');
+  var m = text.match(/(\d{1,2})[-\/](\d{1,2})[-\/](\d{2,4})/);
+  if (m) {
+    var dd=parseInt(m[1]), mm=parseInt(m[2]), yy=parseInt(m[3]);
+    if (yy<100) yy+=2000;
+    if (mm>=1&&mm<=12&&dd>=1&&dd<=31) return {d:dd,m:mm,y:yy,str:dd+'/'+mm+'/'+yy};
+  }
+  var months={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+  m = text.match(/(\d{1,2})[-\s]?(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*[-\s,]*(\d{2,4})?/i);
+  if (m) {
+    var dd2=parseInt(m[1]), mm2=months[m[2].toLowerCase().slice(0,3)];
+    var yy2=m[3]?parseInt(m[3]):new Date().getFullYear();
+    if (yy2<100) yy2+=2000;
+    return {d:dd2,m:mm2,y:yy2,str:dd2+'/'+mm2+'/'+yy2};
+  }
+  var now=new Date();
+  return {d:now.getDate(),m:now.getMonth()+1,y:now.getFullYear(),str:now.toLocaleDateString('en-IN')};
+}
+
+function extractBalance(text) {
+  var m = text.match(/(?:Avl|Available|Avbl|Bal(?:ance)?)[:.\s]*(?:Bal(?:ance)?)?[:.\s]*(?:Rs\.?|INR|₹)\s*([\d,]+(?:\.\d{1,2})?)/i);
+  return m ? parseFloat(m[1].replace(/,/g,'')) : null;
+}
+
+function processMsg(msg) {
+  msg = msg.trim();
+  if (msg.length < 15) return;
+  // Skip OTP and promo messages
+  if (/\bOTP\b|one.time.password|verification code/i.test(msg)) return;
+  if (/offer|sale|discount|win |congratulations|click here|t&c/i.test(msg) && !/debited|credited|spent|paid|withdrawn/i.test(msg)) return;
+
+  for (var i = 0; i < SMS_PATTERNS.length; i++) {
+    var m = msg.match(SMS_PATTERNS[i].re);
+    if (m) {
+      var amtStr = m[1] || m[2];
+      if (!amtStr) continue;
+      var amt = parseFloat(amtStr.replace(/,/g,''));
+      if (!(amt > 0) || amt > 10000000) continue;
+      var p = SMS_PATTERNS[i];
+      var dt = extractDate(msg);
+      var txn = {
+        amt: amt,
+        type: p.type,
+        sub: p.sub,
+        merchant: extractMerchant(msg),
+        cat: p.type==='credit' ? detectCategory(msg, p.sub) : detectCategory(msg, p.sub),
+        bank: detectBank(msg),
+        balance: extractBalance(msg),
+        dateObj: dt,
+        date: dt.str,
+        raw: msg.slice(0, 100)
+      };
+      // Dedupe: same amount + date + type
+      var dup = _smsDetected.some(function(t){
+        return t.amt===txn.amt && t.date===txn.date && t.type===txn.type && t.merchant===txn.merchant;
+      });
+      if (!dup) _smsDetected.push(txn);
+      return;
+    }
+  }
 }
 
 function parseSMS() {
   var raw = (document.getElementById('sms-input')||{}).value || '';
-  if (!raw.trim()) { showToast('Paste some SMS messages first!'); return; }
-
-  // Split into individual messages (by newline groups or numbered)
-  var lines = raw.split(/\n+/);
+  if (!raw.trim()) { showToast('Paste your SMS messages first!'); return; }
   _smsDetected = [];
 
-  var currentMsg = '';
-  lines.forEach(function(line) {
-    line = line.trim();
-    if (!line) {
-      if (currentMsg) { processMsg(currentMsg); currentMsg = ''; }
-      return;
-    }
-    currentMsg += ' ' + line;
-  });
-  if (currentMsg) processMsg(currentMsg);
+  // Strategy: each line might be a full SMS (bulk copy), or SMS may span
+  // multiple lines (blank-line separated). Process BOTH ways with dedupe.
+  raw.split(/\n/).forEach(function(line){ processMsg(line); });
+  raw.split(/\n\s*\n/).forEach(function(block){ processMsg(block.replace(/\n/g,' ')); });
 
   var el = document.getElementById('sms-results');
   var listEl = document.getElementById('sms-list');
   var impBtn = document.getElementById('sms-import-btn');
 
-  if (!_smsDetected.length) {
-    showToast('No transactions found. Try pasting bank SMS messages.');
-    return;
-  }
+  if (!_smsDetected.length) { showToast('No transactions found. Paste bank/UPI/card SMS.'); return; }
+
+  // Sort newest first
+  _smsDetected.sort(function(a,b){
+    return (b.dateObj.y*10000+b.dateObj.m*100+b.dateObj.d) - (a.dateObj.y*10000+a.dateObj.m*100+a.dateObj.d);
+  });
+
+  var debits = _smsDetected.filter(function(t){return t.type==='debit';});
+  var credits = _smsDetected.filter(function(t){return t.type==='credit';});
+  var infos = _smsDetected.filter(function(t){return t.type==='info';});
+  var dSum = debits.reduce(function(s,t){return s+t.amt;},0);
+  var cSum = credits.reduce(function(s,t){return s+t.amt;},0);
 
   el.style.display = 'block';
-  var h = '';
+  var h = '<div class="grid3" style="margin-bottom:10px;">'
+    + '<div class="card" style="text-align:center;padding:10px 6px;"><div style="font-size:9px;color:var(--gray);">DEBITS ('+debits.length+')</div><div style="font-size:14px;font-weight:800;color:var(--red);font-family:var(--serif);">₹'+budN(dSum)+'</div></div>'
+    + '<div class="card" style="text-align:center;padding:10px 6px;"><div style="font-size:9px;color:var(--gray);">CREDITS ('+credits.length+')</div><div style="font-size:14px;font-weight:800;color:var(--green);font-family:var(--serif);">₹'+budN(cSum)+'</div></div>'
+    + '<div class="card" style="text-align:center;padding:10px 6px;"><div style="font-size:9px;color:var(--gray);">BILLS/INFO</div><div style="font-size:14px;font-weight:800;color:var(--gold);font-family:var(--serif);">'+infos.length+'</div></div>'
+    + '</div>';
+
   _smsDetected.forEach(function(txn, i) {
     var isDebit = txn.type === 'debit';
-    h += '<div style="background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;">'
-      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;">'
-      + '<div style="flex:1;">'
-      + '<div style="font-size:13px;font-weight:600;color:var(--white);">' + txn.cat + ' — ' + txn.merchant + '</div>'
-      + '<div style="font-size:10px;color:var(--gray);margin-top:2px;">' + txn.date + '</div>'
+    var isInfo = txn.type === 'info';
+    var col = isInfo ? 'var(--gold)' : isDebit ? 'var(--red)' : 'var(--green)';
+    var sign = isInfo ? '' : isDebit ? '-' : '+';
+    h += '<div style="background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:11px 13px;margin-bottom:7px;">'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">'
+      + '<div style="flex:1;min-width:0;">'
+      + '<div style="font-size:12px;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+txn.cat+' — '+txn.merchant+'</div>'
+      + '<div style="font-size:10px;color:var(--gray);margin-top:2px;">'+txn.sub+(txn.bank?' • '+txn.bank:'')+' • '+txn.date+(txn.balance?' • Bal ₹'+budN(txn.balance):'')+'</div>'
       + '</div>'
-      + '<div style="text-align:right;">'
-      + '<div style="font-size:15px;font-weight:700;color:' + (isDebit?'var(--red)':'var(--green)') + ';">'
-      + (isDebit?'-':'+')+' ₹' + txn.amt.toLocaleString('en-IN') + '</div>'
-      + '<div style="font-size:10px;color:var(--gray);">' + (isDebit?'Expense':'Income') + '</div>'
+      + '<div style="text-align:right;flex-shrink:0;">'
+      + '<div style="font-size:14px;font-weight:700;color:'+col+';">'+sign+'₹'+txn.amt.toLocaleString('en-IN')+'</div>'
+      + '<div style="font-size:9px;color:var(--gray);">'+(isInfo?'Bill Info':isDebit?'Expense':'Income')+'</div>'
       + '</div></div>'
-      + '<div style="margin-top:6px;">'
-      + '<select class="sms-cat-sel" data-idx="'+i+'" style="font-size:11px;padding:4px 8px;border-radius:6px;background:var(--navy3);border:1px solid var(--border);color:var(--light2);font-family:inherit;">'
-      + ['🍔 Food','🚗 Transport','🏠 Rent','💊 Medical','👕 Shopping','📱 Bills','🎬 Entertainment','📚 Education','🛒 Groceries','⚡ Electricity','💼 Salary','📦 Other'].map(function(c){
-          return '<option'+(c===txn.cat?' selected':'')+'>'+c+'</option>';
-        }).join('')
-      + '</select></div></div>';
+      + (isInfo ? '' :
+        '<div style="margin-top:6px;display:flex;gap:6px;align-items:center;">'
+        + '<select class="sms-cat-sel" data-idx="'+i+'" style="flex:1;font-size:11px;padding:4px 8px;border-radius:6px;background:var(--navy3);border:1px solid var(--border);color:var(--light2);font-family:inherit;margin-bottom:0;">'
+        + ['🍔 Food','🚗 Transport','🏠 Rent','💊 Medical','👕 Shopping','📱 Bills','🎬 Entertainment','📚 Education','🛒 Groceries','⚡ Electricity','💈 Personal Care','🎁 Refund','💵 Cash','↔️ Transfer','🏦 EMI','🛡️ Insurance','📈 Investment','🥇 Gold','💼 Salary','📦 Other'].map(function(c){
+            return '<option'+(c===txn.cat?' selected':'')+'>'+c+'</option>';
+          }).join('')
+        + '</select>'
+        + '<button class="sms-skip-btn" data-idx="'+i+'" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:6px;padding:5px 9px;font-size:10px;color:var(--red);cursor:pointer;font-family:inherit;flex-shrink:0;">Skip</button>'
+        + '</div>');
+    h += '</div>';
   });
   listEl.innerHTML = h;
   if (impBtn) impBtn.style.display = 'block';
-  showToast('Found ' + _smsDetected.length + ' transactions!');
-}
-
-function processMsg(msg) {
-  for (var i = 0; i < SMS_PATTERNS.length; i++) {
-    var m = msg.match(SMS_PATTERNS[i].re);
-    if (m) {
-      var amt = parseFloat(m[1].replace(/,/g,''));
-      if (amt > 0) {
-        _smsDetected.push({
-          amt: amt,
-          type: SMS_PATTERNS[i].type,
-          merchant: extractMerchant(msg),
-          cat: SMS_PATTERNS[i].type === 'credit' ? '💼 Salary' : detectCategory(msg),
-          date: extractDate(msg),
-          raw: msg.trim().slice(0, 80)
-        });
-        return;
-      }
-    }
-  }
+  showToast('Found '+_smsDetected.length+' transactions! ('+debits.length+' debits, '+credits.length+' credits)');
 }
 
 function importSMS() {
-  // Update categories from dropdowns
   document.querySelectorAll('.sms-cat-sel').forEach(function(sel) {
     var idx = parseInt(sel.getAttribute('data-idx'));
     if (_smsDetected[idx]) _smsDetected[idx].cat = sel.value;
   });
 
-  var debits = _smsDetected.filter(function(t){return t.type==='debit';});
-  var credits = _smsDetected.filter(function(t){return t.type==='credit';});
-
-  // Import expenses
-  var exps = budLoad('exp');
-  debits.forEach(function(t) {
-    exps.push({cat:t.cat, amt:t.amt, desc:t.merchant, date:t.date, fromSMS:true});
+  var imported = 0;
+  // Group by month/year so transactions land in the correct month bucket
+  _smsDetected.forEach(function(t) {
+    if (t.skip || t.type==='info') return;
+    var key = 'stk_bud_' + (t.type==='debit'?'exp':'inc') + '_' + t.dateObj.y + '_' + t.dateObj.m;
+    var arr = JSON.parse(localStorage.getItem(key)||'[]');
+    if (t.type==='debit') {
+      arr.push({cat:t.cat, amt:t.amt, desc:t.merchant+(t.bank?' ('+t.bank+')':''), date:t.date, fromSMS:true});
+    } else {
+      arr.push({cat:t.cat, amt:t.amt, desc:t.merchant+(t.bank?' ('+t.bank+')':''), fromSMS:true});
+    }
+    localStorage.setItem(key, JSON.stringify(arr));
+    imported++;
   });
-  budSave('exp', exps);
-
-  // Import income
-  var incs = budLoad('inc');
-  credits.forEach(function(t) {
-    incs.push({cat:t.cat, amt:t.amt, desc:t.merchant});
-  });
-  budSave('inc', incs);
 
   updateBudSummary();
-  showToast('✅ Imported ' + _smsDetected.length + ' transactions!');
-  document.getElementById('sms-results').style.display = 'none';
-  document.getElementById('sms-input').value = '';
+  switchBudTab('overview');
+  showToast('✅ Imported '+imported+' transactions across months!');
+  var el = document.getElementById('sms-results');
+  if (el) el.style.display = 'none';
+  var inp = document.getElementById('sms-input');
+  if (inp) inp.value = '';
   _smsDetected = [];
 }
+
 
 window.addEventListener('load', function() {
   var expDate = document.getElementById('exp-date');
