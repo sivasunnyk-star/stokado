@@ -1061,27 +1061,12 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
       <span class="cert-badge">Motilal Oswal</span>
       <span class="cert-badge">SEBI Reg</span>
     </div>
-    <button class="btn btn-gold" style="margin-top:18px;" onclick="navTo('p-appt','nb-more')">📅 Book Free Consultation</button>
   </div>
 
-  <div class="pg-content">
+  <div class="pg-content" style="padding-top:10px;">
 
-    <!-- FEATURED FLYER — random, auto-rotates -->
-    <div id="featured-flyer" style="margin-bottom:6px;"></div>
-
-    <!-- FLYER CATEGORY FILTER -->
-    <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;scrollbar-width:none;">
-      <button class="flyer-cat-btn btn btn-primary btn-sm" data-cat="all">All</button>
-      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="sip">SIP</button>
-      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="mf">Mutual Fund</button>
-      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="insurance">Insurance</button>
-      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="tax">Tax</button>
-      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="gold">Gold</button>
-      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="budget">Budget</button>
-    </div>
-
-    <!-- FLYER GRID -->
-    <div id="flyer-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;"></div>
+    <!-- FEATURED FLYER — full width, random, auto-rotates every 4s -->
+    <div id="featured-flyer" style="margin-bottom:14px;"></div>
 
     <!-- QUICK ACCESS -->
     <div class="sec-title">Quick Access</div>
@@ -1089,7 +1074,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
       <div class="qa-btn" onclick="navTo('p-calc','nb-calc')"><div class="qa-icon">🧮</div><div class="qa-label">Calculators</div></div>
       <div class="qa-btn" onclick="navTo('p-ins','nb-ins')"><div class="qa-icon">🛡️</div><div class="qa-label">Insurance</div></div>
       <div class="qa-btn" onclick="navTo('p-mf','nb-mf')"><div class="qa-icon">📊</div><div class="qa-label">Mutual Funds</div></div>
-      <div class="qa-btn" onclick="navTo('p-budget','nb-more')"><div class="qa-icon">📋</div><div class="qa-label">Budget Planner</div></div>
+      <div class="qa-btn" onclick="navTo('p-budget','nb-more')"><div class="qa-icon">📋</div><div class="qa-label">Budget</div></div>
       <div class="qa-btn" onclick="navTo('p-appt','nb-more')"><div class="qa-icon">📅</div><div class="qa-label">Book Appt</div></div>
       <div class="qa-btn" onclick="navTo('p-ipo','nb-more')"><div class="qa-icon">🚀</div><div class="qa-label">IPO</div></div>
       <div class="qa-btn" onclick="navTo('p-portfolio','nb-more')"><div class="qa-icon">💼</div><div class="qa-label">Portfolio</div></div>
@@ -1777,44 +1762,41 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 <div class="pg-hdr">
   <button class="pg-back" onclick="navTo('p-home','nb-home')">← Back</button>
   <div class="pg-title">Budget <span>Planner</span></div>
-  <div class="pg-sub">Track income • expenses • EMIs • SIP • goals</div>
+  <div class="pg-sub" id="bud-month-label">June 2026</div>
 </div>
 <div class="pg-content">
 
-<!-- MONTH SELECTOR -->
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-  <button id="bud-prev-btn" style="background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:8px 14px;color:var(--light2);font-size:18px;cursor:pointer;">‹</button>
-  <div style="text-align:center;">
-    <div id="bud-month-label" style="font-family:var(--serif);font-size:18px;font-weight:800;color:var(--white);">June 2026</div>
-    <div id="bud-health-badge" style="font-size:11px;font-weight:700;padding:3px 12px;border-radius:999px;display:inline-block;margin-top:4px;"></div>
-  </div>
-  <button id="bud-next-btn" style="background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:8px 14px;color:var(--light2);font-size:18px;cursor:pointer;">›</button>
+<!-- MONTH NAV -->
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+  <button id="bud-prev-btn" style="background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:8px 18px;color:var(--light2);font-size:20px;cursor:pointer;font-family:inherit;">‹</button>
+  <div id="bud-health-badge" style="font-size:12px;font-weight:700;padding:5px 16px;border-radius:999px;"></div>
+  <button id="bud-next-btn" style="background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:8px 18px;color:var(--light2);font-size:20px;cursor:pointer;font-family:inherit;">›</button>
 </div>
 
-<!-- SUMMARY CARDS -->
-<div class="grid3" style="margin-bottom:12px;">
-  <div class="card" style="text-align:center;padding:12px 8px;">
-    <div style="font-size:10px;color:var(--gray);margin-bottom:4px;">INCOME</div>
-    <div id="bud-total-inc" style="font-size:16px;font-weight:800;color:var(--green);font-family:var(--serif);">₹0</div>
+<!-- SUMMARY STRIP -->
+<div class="grid3" style="margin-bottom:10px;">
+  <div class="card" style="text-align:center;padding:10px 6px;">
+    <div style="font-size:9px;color:var(--gray);margin-bottom:3px;">INCOME</div>
+    <div id="bud-total-inc" style="font-size:15px;font-weight:800;color:var(--green);font-family:var(--serif);">₹0</div>
   </div>
-  <div class="card" style="text-align:center;padding:12px 8px;">
-    <div style="font-size:10px;color:var(--gray);margin-bottom:4px;">SPENT</div>
-    <div id="bud-total-exp" style="font-size:16px;font-weight:800;color:var(--red);font-family:var(--serif);">₹0</div>
+  <div class="card" style="text-align:center;padding:10px 6px;">
+    <div style="font-size:9px;color:var(--gray);margin-bottom:3px;">SPENT</div>
+    <div id="bud-total-exp" style="font-size:15px;font-weight:800;color:var(--red);font-family:var(--serif);">₹0</div>
   </div>
-  <div class="card" style="text-align:center;padding:12px 8px;">
-    <div style="font-size:10px;color:var(--gray);margin-bottom:4px;">SAVED</div>
-    <div id="bud-total-sav" style="font-size:16px;font-weight:800;color:var(--blue3);font-family:var(--serif);">₹0</div>
+  <div class="card" style="text-align:center;padding:10px 6px;">
+    <div style="font-size:9px;color:var(--gray);margin-bottom:3px;">SAVED</div>
+    <div id="bud-total-sav" style="font-size:15px;font-weight:800;color:var(--blue3);font-family:var(--serif);">₹0</div>
   </div>
 </div>
 
-<!-- SAVINGS PROGRESS BAR -->
-<div class="card" style="margin-bottom:12px;padding:12px 14px;">
+<!-- SAVINGS BAR -->
+<div style="background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:12px;">
   <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;">
     <span style="font-weight:600;color:var(--light2);">Savings Rate</span>
     <span id="bud-sav-pct" style="font-weight:700;color:var(--gold);">0%</span>
   </div>
-  <div style="height:8px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;">
-    <div id="bud-sav-bar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--blue3),var(--green));border-radius:999px;transition:width 0.6s;"></div>
+  <div style="height:8px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden;">
+    <div id="bud-sav-bar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--blue3),var(--green));border-radius:999px;transition:width 0.5s;"></div>
   </div>
   <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gray);margin-top:4px;">
     <span>Target: 20%</span><span id="bud-sav-status">—</span>
@@ -1822,175 +1804,193 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 </div>
 
 <!-- TABS -->
-<div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;">
+<div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;">
   <button class="bud-tab btn btn-primary btn-sm" data-tab="overview">📊 Overview</button>
   <button class="bud-tab btn btn-outline btn-sm" data-tab="income">💰 Income</button>
   <button class="bud-tab btn btn-outline btn-sm" data-tab="expenses">💸 Expenses</button>
   <button class="bud-tab btn btn-outline btn-sm" data-tab="emis">🏦 EMIs</button>
   <button class="bud-tab btn btn-outline btn-sm" data-tab="sip">📈 SIP</button>
   <button class="bud-tab btn btn-outline btn-sm" data-tab="goals">🎯 Goals</button>
+  <button class="bud-tab btn btn-outline btn-sm" data-tab="smstrack">📱 SMS Track</button>
 </div>
 
-<!-- OVERVIEW TAB -->
+<!-- OVERVIEW -->
 <div class="bud-pane" id="bud-overview">
   <div class="grid2" style="margin-bottom:12px;">
-    <div>
-      <div class="sec-title">Spending Breakdown</div>
-      <canvas id="bud-pie" style="max-height:200px;"></canvas>
+    <div class="card" style="padding:12px;">
+      <div class="sec-title" style="margin-bottom:8px;">Spending Breakdown</div>
+      <canvas id="bud-pie" height="180"></canvas>
     </div>
-    <div>
-      <div class="sec-title">Monthly Trend</div>
-      <canvas id="bud-bar" style="max-height:200px;"></canvas>
+    <div class="card" style="padding:12px;">
+      <div class="sec-title" style="margin-bottom:8px;">6-Month Trend</div>
+      <canvas id="bud-bar" height="180"></canvas>
     </div>
   </div>
-  <div class="sec-title">Category Summary</div>
+  <div class="sec-title">Category Breakdown</div>
   <div id="bud-cat-summary"></div>
-  <div class="sec-title" style="margin-top:10px;">💡 Stokado Advice</div>
-  <div id="bud-advice" class="card card-gold"></div>
+  <div class="sec-title" style="margin-top:12px;">💡 Stokado Advice</div>
+  <div id="bud-advice" class="card card-gold" style="padding:14px;"></div>
 </div>
 
-<!-- INCOME TAB -->
+<!-- INCOME -->
 <div class="bud-pane" id="bud-income" style="display:none;">
   <div class="card" style="margin-bottom:12px;">
-    <div class="sec-title">Add Income</div>
-    <label>Source</label>
+    <div class="sec-title">Add Income Source</div>
+    <label>Category</label>
     <select id="inc-cat">
-      <option>Salary</option><option>Business</option><option>Freelance</option>
-      <option>Rental Income</option><option>Investments</option><option>Other</option>
+      <option>💼 Salary</option><option>🏢 Business</option>
+      <option>💻 Freelance</option><option>🏠 Rental</option>
+      <option>📈 Investments</option><option>📦 Other</option>
     </select>
     <label>Amount (₹)</label>
-    <input type="number" id="inc-amt" placeholder="e.g. 80000"/>
-    <label>Description</label>
+    <input type="number" id="inc-amt" placeholder="80000"/>
+    <label>Note</label>
     <input type="text" id="inc-desc" placeholder="e.g. Monthly salary"/>
     <button class="btn btn-gold" id="inc-add-btn">+ Add Income</button>
   </div>
-  <div class="sec-title">This Month</div>
+  <div class="sec-title">This Month Income</div>
   <div id="inc-list"></div>
 </div>
 
-<!-- EXPENSES TAB -->
+<!-- EXPENSES -->
 <div class="bud-pane" id="bud-expenses" style="display:none;">
   <div class="card" style="margin-bottom:12px;">
     <div class="sec-title">Add Expense</div>
-    <label>Category</label>
-    <select id="exp-cat">
-      <option>🍔 Food & Dining</option>
-      <option>🚗 Transport</option>
-      <option>🏠 Rent & Housing</option>
-      <option>💊 Health & Medical</option>
-      <option>👕 Shopping</option>
-      <option>📱 Bills & Utilities</option>
-      <option>🎬 Entertainment</option>
-      <option>📚 Education</option>
-      <option>👨‍👩‍👧 Family</option>
-      <option>⚡ Electricity</option>
-      <option>🛒 Groceries</option>
-      <option>💈 Personal Care</option>
-      <option>🎁 Gifts</option>
-      <option>✈️ Travel</option>
-      <option>📦 Other</option>
-    </select>
-    <label>Amount (₹)</label>
-    <input type="number" id="exp-amt" placeholder="e.g. 5000"/>
-    <label>Description (optional)</label>
-    <input type="text" id="exp-desc" placeholder="e.g. Grocery shopping"/>
+    <div class="grid2">
+      <div>
+        <label>Category</label>
+        <select id="exp-cat">
+          <option>🍔 Food</option><option>🚗 Transport</option>
+          <option>🏠 Rent</option><option>💊 Medical</option>
+          <option>👕 Shopping</option><option>📱 Bills</option>
+          <option>🎬 Entertainment</option><option>📚 Education</option>
+          <option>🛒 Groceries</option><option>⚡ Electricity</option>
+          <option>💈 Personal Care</option><option>🎁 Gifts</option>
+          <option>✈️ Travel</option><option>📦 Other</option>
+        </select>
+      </div>
+      <div>
+        <label>Amount (₹)</label>
+        <input type="number" id="exp-amt" placeholder="500"/>
+      </div>
+    </div>
+    <label>Note (optional)</label>
+    <input type="text" id="exp-desc" placeholder="e.g. Swiggy order"/>
     <label>Date</label>
     <input type="date" id="exp-date"/>
     <button class="btn btn-primary" id="exp-add-btn">+ Add Expense</button>
   </div>
-  <div class="sec-title">This Month Expenses</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+    <div class="sec-title" style="margin:0;">This Month Expenses</div>
+    <div id="exp-count" style="font-size:11px;color:var(--gray);"></div>
+  </div>
   <div id="exp-list"></div>
 </div>
 
-<!-- EMIS TAB -->
+<!-- EMIs -->
 <div class="bud-pane" id="bud-emis" style="display:none;">
   <div class="card" style="margin-bottom:12px;">
-    <div class="sec-title">Add EMI</div>
+    <div class="sec-title">Add Loan / EMI</div>
     <label>Loan Type</label>
     <select id="emi-type">
-      <option>🏠 Home Loan</option>
-      <option>🚗 Car Loan</option>
-      <option>📱 Personal Loan</option>
-      <option>📚 Education Loan</option>
-      <option>💳 Credit Card</option>
-      <option>🏢 Business Loan</option>
-      <option>📦 Other Loan</option>
+      <option>🏠 Home Loan</option><option>🚗 Car Loan</option>
+      <option>📱 Personal Loan</option><option>📚 Education Loan</option>
+      <option>💳 Credit Card</option><option>🏢 Business Loan</option>
     </select>
-    <label>EMI Amount (₹/month)</label>
-    <input type="number" id="emi-amt" placeholder="e.g. 15000"/>
+    <div class="grid2">
+      <div><label>EMI Amount (₹/mo)</label><input type="number" id="emi-amt" placeholder="15000"/></div>
+      <div><label>Months Remaining</label><input type="number" id="emi-rem" placeholder="48"/></div>
+    </div>
     <label>Bank / Lender</label>
-    <input type="text" id="emi-bank" placeholder="e.g. HDFC Bank"/>
-    <label>Remaining Months</label>
-    <input type="number" id="emi-rem" placeholder="e.g. 48"/>
+    <input type="text" id="emi-bank" placeholder="HDFC Bank"/>
     <button class="btn btn-primary" id="emi-add-btn">+ Add EMI</button>
   </div>
   <div class="sec-title">Active EMIs</div>
   <div id="emi-list"></div>
-  <div id="emi-summary" class="card" style="margin-top:10px;display:none;">
-    <div class="sec-title">EMI Burden Analysis</div>
-    <div id="emi-analysis"></div>
-  </div>
+  <div id="emi-burden" style="display:none;" class="card" style="margin-top:10px;"></div>
 </div>
 
-<!-- SIP TAB -->
+<!-- SIP -->
 <div class="bud-pane" id="bud-sip" style="display:none;">
   <div class="card" style="margin-bottom:12px;">
     <div class="sec-title">Add SIP / Investment</div>
     <label>Type</label>
     <select id="sip-type">
-      <option>📈 Mutual Fund SIP</option>
-      <option>🏛️ PPF</option>
-      <option>👴 NPS</option>
-      <option>🥇 SGB / Gold</option>
-      <option>🏦 FD / RD</option>
-      <option>📊 Stock Investment</option>
-      <option>🏠 Real Estate SIP</option>
-      <option>📦 Other Investment</option>
+      <option>📈 Mutual Fund SIP</option><option>🏛️ PPF</option>
+      <option>👴 NPS</option><option>🥇 Gold SGB</option>
+      <option>🏦 FD / RD</option><option>📊 Stocks</option>
     </select>
-    <label>Fund / Scheme Name</label>
+    <label>Fund Name</label>
     <input type="text" id="sip-name" placeholder="e.g. Mirae Asset Large Cap"/>
-    <label>Monthly Amount (₹)</label>
-    <input type="number" id="sip-amt2" placeholder="e.g. 5000"/>
-    <label>Date (SIP date)</label>
-    <input type="number" id="sip-date2" min="1" max="31" placeholder="e.g. 7"/>
+    <div class="grid2">
+      <div><label>Monthly Amount (₹)</label><input type="number" id="sip-amt2" placeholder="5000"/></div>
+      <div><label>SIP Date</label><input type="number" id="sip-date2" min="1" max="31" placeholder="7"/></div>
+    </div>
     <button class="btn btn-gold" id="sip-add-btn">+ Add SIP</button>
   </div>
-  <div class="sec-title">Active SIPs & Investments</div>
+  <div class="sec-title">Active SIPs</div>
   <div id="sip-list"></div>
-  <div id="sip-projection" class="card card-blue" style="margin-top:10px;display:none;text-align:center;">
-    <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:4px;">Total Monthly Investment</div>
-    <div id="sip-total" style="font-family:var(--serif);font-size:28px;font-weight:800;">₹0</div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;">Projected 10yr corpus at 12%: <b id="sip-corpus"></b></div>
-  </div>
+  <div id="sip-projection" style="display:none;" class="card card-blue" style="margin-top:10px;text-align:center;padding:16px;"></div>
 </div>
 
-<!-- GOALS TAB -->
+<!-- GOALS -->
 <div class="bud-pane" id="bud-goals" style="display:none;">
   <div class="card" style="margin-bottom:12px;">
     <div class="sec-title">Add Financial Goal</div>
-    <label>Goal Type</label>
-    <select id="goal-type2">
-      <option>🏠 Buy House</option>
-      <option>🚗 Buy Car</option>
-      <option>👶 Child Education</option>
-      <option>💒 Wedding</option>
-      <option>✈️ Vacation</option>
-      <option>🌅 Retirement</option>
-      <option>🆘 Emergency Fund</option>
-      <option>📦 Other Goal</option>
-    </select>
+    <div class="grid2">
+      <div>
+        <label>Goal Type</label>
+        <select id="goal-type2">
+          <option>🏠 House</option><option>🚗 Car</option>
+          <option>👶 Child Education</option><option>💒 Wedding</option>
+          <option>✈️ Vacation</option><option>🌅 Retirement</option>
+          <option>🆘 Emergency Fund</option>
+        </select>
+      </div>
+      <div>
+        <label>Target Year</label>
+        <input type="number" id="goal-year" placeholder="2028" min="2024" max="2050"/>
+      </div>
+    </div>
     <label>Goal Name</label>
     <input type="text" id="goal-name2" placeholder="e.g. House Down Payment"/>
-    <label>Target Amount (₹)</label>
-    <input type="number" id="goal-target2" placeholder="e.g. 1000000"/>
-    <label>Saved So Far (₹)</label>
-    <input type="number" id="goal-saved" placeholder="e.g. 200000"/>
-    <label>Target Year</label>
-    <input type="number" id="goal-year" placeholder="e.g. 2028" min="2024" max="2050"/>
+    <div class="grid2">
+      <div><label>Target (₹)</label><input type="number" id="goal-target2" placeholder="1000000"/></div>
+      <div><label>Saved So Far (₹)</label><input type="number" id="goal-saved" placeholder="200000"/></div>
+    </div>
     <button class="btn btn-gold" id="goal-add-btn">+ Add Goal</button>
   </div>
   <div class="sec-title">Your Goals</div>
   <div id="goal-list"></div>
+</div>
+
+<!-- SMS TRACKER -->
+<div class="bud-pane" id="bud-smstrack" style="display:none;">
+  <div class="card card-gold" style="margin-bottom:12px;padding:14px;">
+    <div style="font-size:22px;margin-bottom:8px;">📱</div>
+    <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:6px;">Auto Expense Tracking</div>
+    <div style="font-size:12px;color:var(--gray);line-height:1.7;margin-bottom:12px;">
+      Paste your bank SMS messages below. Stokado AI will automatically detect and categorize all expenses, debits, and credits!<br/><br/>
+      <strong style="color:var(--light2);">Works with:</strong> SBI, HDFC, ICICI, Axis, Kotak, UPI, PhonePe, GPay, Paytm
+    </div>
+    <textarea id="sms-input" placeholder="Paste your bank SMS here...&#10;&#10;Example:&#10;Rs.500 debited from a/c XXXX1234 on 08-Jun-26. UPI:Swiggy&#10;Rs.15000 credited to a/c XXXX1234 on 01-Jun-26. Salary&#10;Rs.2000 debited from a/c XXXX1234. Info: Electricity bill" style="height:140px;font-size:11px;line-height:1.6;resize:vertical;"></textarea>
+    <button class="btn btn-primary" id="sms-parse-btn" style="margin-top:4px;">🔍 Scan & Import Expenses</button>
+  </div>
+  <div id="sms-results" style="display:none;">
+    <div class="sec-title">Detected Transactions</div>
+    <div id="sms-list"></div>
+    <button class="btn btn-gold" id="sms-import-btn" style="margin-top:8px;display:none;">✅ Import All to Budget</button>
+  </div>
+  <div class="card" style="margin-top:12px;">
+    <div class="sec-title">📋 How to get bank SMS</div>
+    <div style="font-size:12px;color:var(--gray);line-height:1.8;">
+      1. Open your SMS app<br/>
+      2. Search for your bank name (SBI, HDFC etc)<br/>
+      3. Copy transaction messages<br/>
+      4. Paste above and tap Scan<br/><br/>
+      <strong style="color:var(--light2);">Privacy:</strong> All processing happens on your phone only. Nothing is sent to any server.
+    </div>
+  </div>
 </div>
 
 </div>
@@ -3612,6 +3612,8 @@ document.addEventListener('click', function(e) {
   // NAV refresh
   // BUDGET HANDLERS
   if(t.classList.contains('bud-tab')) { switchBudTab(t.getAttribute('data-tab')); }
+  if(t.id==='sms-parse-btn') parseSMS();
+  if(t.id==='sms-import-btn') importSMS();
 
   if(t.id==='bud-prev-btn') {
     _budMonth--; if(_budMonth<0){_budMonth=11;_budYear--;}
@@ -3810,6 +3812,7 @@ function switchBudTab(tab) {
   if(tab==='emis')     buildEmiList();
   if(tab==='sip')      buildSipList();
   if(tab==='goals')    buildGoalList();
+  if(tab==='smstrack') { /* ready */ }
 }
 
 // ── OVERVIEW
@@ -4043,6 +4046,172 @@ function buildGoalList() {
       +'</div>';
   }).join('');
 }
+// ═══════════════════════════════════════
+// SMS EXPENSE PARSER
+// ═══════════════════════════════════════
+var _smsDetected = [];
+
+var SMS_PATTERNS = [
+  // Debit patterns
+  {re:/(?:Rs\.?|INR|₹)\s*([\d,]+(?:\.\d{1,2})?)\s*(?:debited|deducted|spent|paid|withdrawn)/i, type:'debit'},
+  {re:/(?:debited|deducted|spent|paid)\s+(?:Rs\.?|INR|₹)\s*([\d,]+(?:\.\d{1,2})?)/i, type:'debit'},
+  {re:/(?:Rs\.?|INR|₹)\s*([\d,]+(?:\.\d{1,2})?)\s+(?:has been\s+)?(?:debited|deducted)/i, type:'debit'},
+  {re:/(?:purchase|payment)\s+of\s+(?:Rs\.?|INR|₹)\s*([\d,]+(?:\.\d{1,2})?)/i, type:'debit'},
+  // Credit patterns
+  {re:/(?:Rs\.?|INR|₹)\s*([\d,]+(?:\.\d{1,2})?)\s*(?:credited|received|deposited)/i, type:'credit'},
+  {re:/(?:credited|received|deposited)\s+(?:Rs\.?|INR|₹)\s*([\d,]+(?:\.\d{1,2})?)/i, type:'credit'},
+];
+
+var SMS_MERCHANT_CATS = {
+  'swiggy':'🍔 Food', 'zomato':'🍔 Food', 'dominos':'🍔 Food', 'mcdonalds':'🍔 Food',
+  'uber':'🚗 Transport', 'ola':'🚗 Transport', 'rapido':'🚗 Transport', 'petrol':'🚗 Transport', 'fuel':'🚗 Transport',
+  'amazon':'👕 Shopping', 'flipkart':'👕 Shopping', 'myntra':'👕 Shopping', 'meesho':'👕 Shopping',
+  'netflix':'🎬 Entertainment', 'hotstar':'🎬 Entertainment', 'spotify':'🎬 Entertainment', 'youtube':'🎬 Entertainment',
+  'apollo':'💊 Medical', 'medplus':'💊 Medical', 'hospital':'💊 Medical', 'clinic':'💊 Medical', 'pharmacy':'💊 Medical',
+  'electricity':'⚡ Electricity', 'bescom':'⚡ Electricity', 'apepdcl':'⚡ Electricity', 'tsgenco':'⚡ Electricity',
+  'jio':'📱 Bills', 'airtel':'📱 Bills', 'vi ':'📱 Bills', 'bsnl':'📱 Bills', 'broadband':'📱 Bills',
+  'salary':'💼 Salary', 'payroll':'💼 Salary',
+  'rent':'🏠 Rent', 'maintenance':'🏠 Rent',
+  'grocery':'🛒 Groceries', 'dmart':'🛒 Groceries', 'bigbasket':'🛒 Groceries', 'reliance fresh':'🛒 Groceries',
+  'school':'📚 Education', 'college':'📚 Education', 'fees':'📚 Education', 'tuition':'📚 Education',
+  'recharge':'📱 Bills', 'postpaid':'📱 Bills',
+};
+
+function detectCategory(text) {
+  var t = text.toLowerCase();
+  for (var key in SMS_MERCHANT_CATS) {
+    if (t.indexOf(key) >= 0) return SMS_MERCHANT_CATS[key];
+  }
+  return '📦 Other';
+}
+
+function extractMerchant(text) {
+  // Try to extract merchant from UPI: pattern
+  var upi = text.match(/UPI[:/]\s*([A-Za-z0-9\s&]+?)(?:\s+|$|\.|,)/i);
+  if (upi) return upi[1].trim();
+  // Try Info: pattern
+  var info = text.match(/Info[:/]\s*([A-Za-z0-9\s&]+?)(?:\s+|$|\.|,)/i);
+  if (info) return info[1].trim();
+  // Try to: pattern
+  var to = text.match(/(?:to|at)\s+([A-Za-z][A-Za-z0-9\s&]{2,20})(?:\s+|$|\.|,)/i);
+  if (to) return to[1].trim();
+  return 'Transaction';
+}
+
+function extractDate(text) {
+  var d = text.match(/(\d{1,2}[-\/]\d{1,2}[-\/]\d{2,4})/);
+  if (d) return d[1];
+  d = text.match(/(\d{1,2}\s+(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s*\d{2,4})/i);
+  if (d) return d[1];
+  return new Date().toLocaleDateString('en-IN');
+}
+
+function parseSMS() {
+  var raw = (document.getElementById('sms-input')||{}).value || '';
+  if (!raw.trim()) { showToast('Paste some SMS messages first!'); return; }
+
+  // Split into individual messages (by newline groups or numbered)
+  var lines = raw.split(/\n+/);
+  _smsDetected = [];
+
+  var currentMsg = '';
+  lines.forEach(function(line) {
+    line = line.trim();
+    if (!line) {
+      if (currentMsg) { processMsg(currentMsg); currentMsg = ''; }
+      return;
+    }
+    currentMsg += ' ' + line;
+  });
+  if (currentMsg) processMsg(currentMsg);
+
+  var el = document.getElementById('sms-results');
+  var listEl = document.getElementById('sms-list');
+  var impBtn = document.getElementById('sms-import-btn');
+
+  if (!_smsDetected.length) {
+    showToast('No transactions found. Try pasting bank SMS messages.');
+    return;
+  }
+
+  el.style.display = 'block';
+  var h = '';
+  _smsDetected.forEach(function(txn, i) {
+    var isDebit = txn.type === 'debit';
+    h += '<div style="background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;">'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;">'
+      + '<div style="flex:1;">'
+      + '<div style="font-size:13px;font-weight:600;color:var(--white);">' + txn.cat + ' — ' + txn.merchant + '</div>'
+      + '<div style="font-size:10px;color:var(--gray);margin-top:2px;">' + txn.date + '</div>'
+      + '</div>'
+      + '<div style="text-align:right;">'
+      + '<div style="font-size:15px;font-weight:700;color:' + (isDebit?'var(--red)':'var(--green)') + ';">'
+      + (isDebit?'-':'+')+' ₹' + txn.amt.toLocaleString('en-IN') + '</div>'
+      + '<div style="font-size:10px;color:var(--gray);">' + (isDebit?'Expense':'Income') + '</div>'
+      + '</div></div>'
+      + '<div style="margin-top:6px;">'
+      + '<select class="sms-cat-sel" data-idx="'+i+'" style="font-size:11px;padding:4px 8px;border-radius:6px;background:var(--navy3);border:1px solid var(--border);color:var(--light2);font-family:inherit;">'
+      + ['🍔 Food','🚗 Transport','🏠 Rent','💊 Medical','👕 Shopping','📱 Bills','🎬 Entertainment','📚 Education','🛒 Groceries','⚡ Electricity','💼 Salary','📦 Other'].map(function(c){
+          return '<option'+(c===txn.cat?' selected':'')+'>'+c+'</option>';
+        }).join('')
+      + '</select></div></div>';
+  });
+  listEl.innerHTML = h;
+  if (impBtn) impBtn.style.display = 'block';
+  showToast('Found ' + _smsDetected.length + ' transactions!');
+}
+
+function processMsg(msg) {
+  for (var i = 0; i < SMS_PATTERNS.length; i++) {
+    var m = msg.match(SMS_PATTERNS[i].re);
+    if (m) {
+      var amt = parseFloat(m[1].replace(/,/g,''));
+      if (amt > 0) {
+        _smsDetected.push({
+          amt: amt,
+          type: SMS_PATTERNS[i].type,
+          merchant: extractMerchant(msg),
+          cat: SMS_PATTERNS[i].type === 'credit' ? '💼 Salary' : detectCategory(msg),
+          date: extractDate(msg),
+          raw: msg.trim().slice(0, 80)
+        });
+        return;
+      }
+    }
+  }
+}
+
+function importSMS() {
+  // Update categories from dropdowns
+  document.querySelectorAll('.sms-cat-sel').forEach(function(sel) {
+    var idx = parseInt(sel.getAttribute('data-idx'));
+    if (_smsDetected[idx]) _smsDetected[idx].cat = sel.value;
+  });
+
+  var debits = _smsDetected.filter(function(t){return t.type==='debit';});
+  var credits = _smsDetected.filter(function(t){return t.type==='credit';});
+
+  // Import expenses
+  var exps = budLoad('exp');
+  debits.forEach(function(t) {
+    exps.push({cat:t.cat, amt:t.amt, desc:t.merchant, date:t.date, fromSMS:true});
+  });
+  budSave('exp', exps);
+
+  // Import income
+  var incs = budLoad('inc');
+  credits.forEach(function(t) {
+    incs.push({cat:t.cat, amt:t.amt, desc:t.merchant});
+  });
+  budSave('inc', incs);
+
+  updateBudSummary();
+  showToast('✅ Imported ' + _smsDetected.length + ' transactions!');
+  document.getElementById('sms-results').style.display = 'none';
+  document.getElementById('sms-input').value = '';
+  _smsDetected = [];
+}
+
 window.addEventListener('load', function() {
   var expDate = document.getElementById('exp-date');
   if(expDate) expDate.value = new Date().toISOString().split('T')[0];
