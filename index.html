@@ -443,6 +443,193 @@ function shareFlyer(idx) {
   }
 }
 
+
+// ═══════════════════════════════════════
+// FINANCIAL FLYERS
+// ═══════════════════════════════════════
+var flyerData = [
+  {cat:'sip',title:'Start SIP with ₹500/Month',sub:'Build Wealth Systematically',
+   bg:'linear-gradient(135deg,#0A1628 0%,#1A56DB 100%)',accent:'#F5C518',icon:'📈',
+   points:['₹5,000/month at 12% = ₹49.9L in 20 yrs','Power of Compounding works best early','Start today, retire wealthy'],
+   cta:'Start Your SIP Today'},
+  {cat:'sip',title:'SIP vs Lumpsum',sub:'Which is Better for You?',
+   bg:'linear-gradient(135deg,#0D1F3C 0%,#1E429F 100%)',accent:'#10B981',icon:'⚖️',
+   points:['SIP averages out market volatility','Lumpsum works best at market lows','SIP builds discipline automatically'],
+   cta:'Try SIP Calculator'},
+  {cat:'sip',title:'Step-Up SIP Strategy',sub:'Increase SIP by 10% Every Year',
+   bg:'linear-gradient(135deg,#112347 0%,#2563EB 100%)',accent:'#F5C518',icon:'🚀',
+   points:['₹5,000 SIP increases to ₹5,500 next year','Over 15 years the difference is massive','Matches your salary growth perfectly'],
+   cta:'Calculate Step-Up SIP'},
+  {cat:'mf',title:'Why Mutual Funds?',sub:'Professional Management of Your Money',
+   bg:'linear-gradient(135deg,#0A2463 0%,#1A56DB 100%)',accent:'#F5C518',icon:'💼',
+   points:['Managed by SEBI-registered experts','Start from just ₹500 per month','Diversified across 50 to 100 stocks'],
+   cta:'Explore 40+ Funds'},
+  {cat:'mf',title:'ELSS — Save Tax + Grow Wealth',sub:'Best of Both Worlds',
+   bg:'linear-gradient(135deg,#1b5e20 0%,#2e7d32 100%)',accent:'#F5C518',icon:'💸',
+   points:['Save up to ₹46,800 in taxes every year','Only 3-year lock-in period','Historical returns: 15-18% per annum'],
+   cta:'Invest in ELSS Now'},
+  {cat:'mf',title:'Large Cap vs Mid Cap',sub:'Choose Right for Your Risk Profile',
+   bg:'linear-gradient(135deg,#0D1F3C 0%,#1565c0 100%)',accent:'#F5C518',icon:'📊',
+   points:['Large Cap: Stable, lower risk 12-15%','Mid Cap: Higher growth 15-20%','Mix both for balanced portfolio'],
+   cta:'Talk to Our Advisor'},
+  {cat:'insurance',title:'Rs 1 Crore Life Cover',sub:'At Just Rs 8,000 Per Year!',
+   bg:'linear-gradient(135deg,#1a237e 0%,#283593 100%)',accent:'#10B981',icon:'🛡️',
+   points:['Term insurance at age 30 costs Rs 8-12k/yr','Protects your family future completely','Premiums rise with age — start now'],
+   cta:'Get Free Quote Now'},
+  {cat:'insurance',title:'Health Insurance is Essential',sub:'Medical Bills Can Drain Savings',
+   bg:'linear-gradient(135deg,#004d40 0%,#00695c 100%)',accent:'#F5C518',icon:'🏥',
+   points:['Rs 10L health cover from Rs 7,000/yr','Cashless treatment at 7500+ hospitals','Covers entire family in one plan'],
+   cta:'Compare Health Plans'},
+  {cat:'tax',title:'Save Rs 46,800 in Taxes!',sub:'Section 80C Investment Guide',
+   bg:'linear-gradient(135deg,#880e4f 0%,#ad1457 100%)',accent:'#F5C518',icon:'💰',
+   points:['Invest Rs 1.5L and save Rs 46,800 tax','ELSS, PPF, NPS, Life Insurance qualify','Deadline: March 31 every year!'],
+   cta:'Plan Your Tax Savings'},
+  {cat:'tax',title:'NPS — Retire Rich Pay Less Tax',sub:'Additional Rs 50,000 Deduction Under 80CCD',
+   bg:'linear-gradient(135deg,#bf360c 0%,#d84315 100%)',accent:'#F5C518',icon:'👴',
+   points:['Extra Rs 15,000 tax saving over 80C','60% tax-free withdrawal at retirement','Government-backed pension scheme'],
+   cta:'Start NPS Today'},
+  {cat:'gold',title:'Sovereign Gold Bonds',sub:'Gold Plus 2.5% Extra Interest',
+   bg:'linear-gradient(135deg,#f57f17 0%,#f9a825 100%)',accent:'#0A1628',icon:'🥇',
+   points:['Get gold price appreciation fully','PLUS 2.5% annual interest guaranteed','Zero storage risk, Govt. guaranteed'],
+   cta:'Invest in SGB Now'},
+  {cat:'gold',title:'Gold as Safe Haven Asset',sub:'Protect Against Inflation',
+   bg:'linear-gradient(135deg,#e65100 0%,#f57c00 100%)',accent:'#FFFFFF',icon:'✨',
+   points:['Best hedge against market volatility','Gold up 15%+ in 2025-26','Ideal: 10-15% of portfolio in gold'],
+   cta:'Know More About Gold'},
+  {cat:'budget',title:'50-30-20 Budget Rule',sub:'Simple Formula for Financial Freedom',
+   bg:'linear-gradient(135deg,#1a237e 0%,#0277bd 100%)',accent:'#F5C518',icon:'📋',
+   points:['50% for Needs: rent, food, EMIs','30% for Wants: dining, entertainment','20% for Savings and Investments'],
+   cta:'Try Budget Planner'},
+  {cat:'budget',title:'Emergency Fund First!',sub:'Before Any Investment',
+   bg:'linear-gradient(135deg,#37474f 0%,#455a64 100%)',accent:'#F5C518',icon:'🆘',
+   points:['Keep 6 months expenses in FD/Liquid MF','Prevents panic selling investments','Use liquid MF for slightly better returns'],
+   cta:'Calculate Emergency Fund'},
+  {cat:'budget',title:'Rule of 72',sub:'How Fast Will Your Money Double?',
+   bg:'linear-gradient(135deg,#4a148c 0%,#6a1b9a 100%)',accent:'#F5C518',icon:'⚡',
+   points:['72 divided by 12% = 6 years to double','FD at 7% = 10.3 years to double','SIP at 15% = 4.8 years to double'],
+   cta:'See Power of Compounding'}
+];
+
+var _flyerCat = 'all';
+var _flyerTimer = null;
+var _flyerIdx = 0;
+
+function buildFlyers() {
+  showFeaturedFlyer();
+  if (_flyerTimer) clearInterval(_flyerTimer);
+  _flyerTimer = setInterval(function() {
+    _flyerIdx = (_flyerIdx + 1) % flyerData.length;
+    showFeaturedFlyer(_flyerIdx);
+  }, 4000);
+  filterFlyers();
+}
+
+function showFeaturedFlyer(idx) {
+  var i = (idx !== undefined) ? idx : Math.floor(Math.random() * flyerData.length);
+  _flyerIdx = i;
+  var f = flyerData[i];
+  var el = document.getElementById('featured-flyer');
+  if (!el) return;
+  el.innerHTML = buildFlyerCard(f, i, true);
+}
+
+function buildFlyerCard(f, idx, featured) {
+  var size = featured ? 'padding:24px;min-height:200px;' : 'padding:14px;min-height:150px;';
+  var titleSize = featured ? 'font-size:18px;' : 'font-size:13px;';
+  var subSize = featured ? 'font-size:12px;' : 'font-size:10px;';
+  return '<div style="background:'+f.bg+';border-radius:16px;'+size+'position:relative;overflow:hidden;" data-flyer-idx="'+idx+'">'
+    + '<div style="position:absolute;top:-20px;right:-20px;font-size:80px;opacity:0.12;">'+f.icon+'</div>'
+    + '<div style="position:relative;z-index:1;">'
+    + '<div style="font-size:'+(featured?'28px':'22px')+';">'+f.icon+'</div>'
+    + '<div style="font-family:var(--serif);'+titleSize+'font-weight:800;color:#FFF;margin:6px 0 2px;line-height:1.2;">'+f.title+'</div>'
+    + '<div style="'+subSize+'color:rgba(255,255,255,0.75);margin-bottom:'+(featured?'10px':'6px')+';">'+f.sub+'</div>'
+    + (featured ? '<div style="margin-bottom:12px;">'
+      + f.points.map(function(p) {
+          return '<div style="font-size:11px;color:rgba(255,255,255,0.9);margin-bottom:3px;display:flex;gap:5px;">'
+            +'<span style="color:'+f.accent+';">✓</span>'+p+'</div>';
+        }).join('')
+      + '</div>' : '')
+    + '<div style="display:flex;gap:6px;">'
+    + '<button class="flyer-download-btn" data-flyer-idx="'+idx+'" style="background:'+f.accent+';border:none;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:700;color:#0A1628;cursor:pointer;font-family:inherit;">↓ Download</button>'
+    + '<button class="flyer-share-btn" data-flyer-idx="'+idx+'" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;">↑ Share</button>'
+    + '</div>'
+    + '<div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:6px;">Stokado Financial • +91 6300716517</div>'
+    + '</div></div>';
+}
+
+function filterFlyers() {
+  var filtered = _flyerCat === 'all' ? flyerData : flyerData.filter(function(f) { return f.cat === _flyerCat; });
+  var el = document.getElementById('flyer-grid');
+  if (!el) return;
+  el.innerHTML = filtered.map(function(f) {
+    var realIdx = flyerData.indexOf(f);
+    return buildFlyerCard(f, realIdx, false);
+  }).join('');
+}
+
+function downloadFlyer(idx) {
+  var f = flyerData[idx];
+  if (!f) return;
+  var canvas = document.createElement('canvas');
+  canvas.width = 800; canvas.height = 600;
+  var ctx = canvas.getContext('2d');
+  var colors = f.bg.match(/#[0-9a-fA-F]{6}/g) || ['#0A1628','#1A56DB'];
+  var grad = ctx.createLinearGradient(0, 0, 800, 600);
+  grad.addColorStop(0, colors[0]);
+  grad.addColorStop(1, colors[1] || colors[0]);
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(0, 0, 800, 600, 20);
+  ctx.fill();
+  ctx.font = '160px serif';
+  ctx.globalAlpha = 0.1;
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillText(f.icon, 520, 400);
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = 'bold 42px Georgia,serif';
+  ctx.fillText(f.title, 50, 95);
+  ctx.fillStyle = 'rgba(255,255,255,0.75)';
+  ctx.font = '22px Arial,sans-serif';
+  ctx.fillText(f.sub, 50, 135);
+  ctx.fillStyle = f.accent;
+  ctx.fillRect(50, 155, 180, 4);
+  f.points.forEach(function(p, i) {
+    ctx.fillStyle = f.accent;
+    ctx.font = 'bold 20px Arial,sans-serif';
+    ctx.fillText('✓', 50, 210 + i * 48);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.font = '20px Arial,sans-serif';
+    ctx.fillText(p, 80, 210 + i * 48);
+  });
+  ctx.fillStyle = f.accent;
+  ctx.beginPath();
+  ctx.roundRect(50, 460, 320, 56, 10);
+  ctx.fill();
+  ctx.fillStyle = '#0A1628';
+  ctx.font = 'bold 20px Arial,sans-serif';
+  ctx.fillText(f.cta, 70, 494);
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.font = '16px Arial,sans-serif';
+  ctx.fillText('Stokado Financial Solutions | Vijayawada | +91 6300716517', 50, 568);
+  var link = document.createElement('a');
+  link.download = 'stokado-flyer-' + f.cat + '-' + (idx+1) + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('Flyer downloaded!');
+}
+
+function shareFlyer(idx) {
+  var f = flyerData[idx];
+  if (!f) return;
+  var text = f.title + '\n\n' + f.points.join('\n') + '\n\n Stokado Financial Solutions\n+91 6300716517 | Vijayawada';
+  if (navigator.share) {
+    navigator.share({ title: f.title, text: text });
+  } else {
+    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  }
+}
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -3150,7 +3337,7 @@ window.addEventListener('load', function() {
 
   // Init home
   buildHomeTips();
-  buildFlyers();
+  setTimeout(function(){ if(typeof buildFlyers!=="undefined") buildFlyers(); }, 100);
 
   // Check if logged in user
   var user=JSON.parse(localStorage.getItem('stk_user')||'null');
