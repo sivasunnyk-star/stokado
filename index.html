@@ -204,6 +204,245 @@ function buildFinTips() {
   });
   el.innerHTML = h;
 }
+
+// ═══════════════════════════════════════
+// FINANCIAL FLYERS
+// ═══════════════════════════════════════
+var flyerData = [
+  // SIP FLYERS
+  {cat:'sip',title:'Start SIP with ₹500/Month',sub:'Build Wealth Systematically',
+   bg:'linear-gradient(135deg,#0A1628 0%,#1A56DB 100%)',
+   accent:'#F5C518',icon:'📈',
+   points:['₹5,000/month at 12% = ₹49.9L in 20 yrs','Power of Compounding works best early','Start today, retire wealthy'],
+   cta:'Start Your SIP Today'},
+
+  {cat:'sip',title:'SIP vs Lumpsum',sub:'Which is Better for You?',
+   bg:'linear-gradient(135deg,#0D1F3C 0%,#1E429F 100%)',
+   accent:'#10B981',icon:'⚖️',
+   points:['SIP averages out market volatility','Lumpsum works best at market lows','SIP builds discipline automatically'],
+   cta:'Try SIP Calculator'},
+
+  {cat:'sip',title:'Step-Up SIP Strategy',sub:'Increase SIP by 10% Every Year',
+   bg:'linear-gradient(135deg,#112347 0%,#2563EB 100%)',
+   accent:'#F5C518',icon:'🚀',
+   points:['₹5,000 SIP → ₹5,500 next year','Over 15 years — massive difference','Matches your salary growth'],
+   cta:'Calculate Step-Up SIP'},
+
+  // MUTUAL FUND FLYERS
+  {cat:'mf',title:'Why Mutual Funds?',sub:'Professional Management of Your Money',
+   bg:'linear-gradient(135deg,#0A2463 0%,#1A56DB 100%)',
+   accent:'#F5C518',icon:'💼',
+   points:['Managed by SEBI-registered experts','Start from just ₹500/month','Diversified across 50-100 stocks'],
+   cta:'Explore 40+ Funds'},
+
+  {cat:'mf',title:'ELSS — Save Tax + Grow Wealth',sub:'Best of Both Worlds',
+   bg:'linear-gradient(135deg,#1b5e20 0%,#2e7d32 100%)',
+   accent:'#F5C518',icon:'💸',
+   points:['Save up to ₹46,800 in taxes','Only 3-year lock-in period','Historical returns: 15-18% p.a.'],
+   cta:'Invest in ELSS Now'},
+
+  {cat:'mf',title:'Large Cap vs Mid Cap',sub:'Choose Right for Your Risk Profile',
+   bg:'linear-gradient(135deg,#0D1F3C 0%,#1565c0 100%)',
+   accent:'#F5C518',icon:'📊',
+   points:['Large Cap: Stable, lower risk (12-15%)','Mid Cap: Higher growth (15-20%)','Mix both for balanced portfolio'],
+   cta:'Talk to Our Advisor'},
+
+  // INSURANCE FLYERS
+  {cat:'insurance',title:'₹1 Crore Life Cover',sub:'At Just ₹8,000 Per Year!',
+   bg:'linear-gradient(135deg,#1a237e 0%,#283593 100%)',
+   accent:'#10B981',icon:'🛡️',
+   points:['Term insurance at age 30 = ₹8-12k/yr','Protects your family\'s future','Don\'t delay — premium rises with age'],
+   cta:'Get Free Quote Now'},
+
+  {cat:'insurance',title:'Health Insurance is Essential',sub:'Medical Bills Can Drain Savings',
+   bg:'linear-gradient(135deg,#004d40 0%,#00695c 100%)',
+   accent:'#F5C518',icon:'🏥',
+   points:['₹10L health cover from ₹7,000/yr','Cashless treatment at 7500+ hospitals','Covers family in one plan'],
+   cta:'Compare Health Plans'},
+
+  // TAX SAVING FLYERS
+  {cat:'tax',title:'Save ₹46,800 in Taxes!',sub:'Section 80C Investment Guide',
+   bg:'linear-gradient(135deg,#880e4f 0%,#ad1457 100%)',
+   accent:'#F5C518',icon:'💰',
+   points:['Invest ₹1.5L → Save ₹46,800 tax','ELSS, PPF, NPS, Life Insurance','Deadline: March 31 every year!'],
+   cta:'Plan Your Tax Savings'},
+
+  {cat:'tax',title:'NPS — Retire Rich, Pay Less Tax',sub:'Additional ₹50,000 Deduction Under 80CCD',
+   bg:'linear-gradient(135deg,#bf360c 0%,#d84315 100%)',
+   accent:'#F5C518',icon:'👴',
+   points:['Extra ₹15,000 tax saving (over 80C)','60% tax-free at retirement','Government-backed pension scheme'],
+   cta:'Start NPS Today'},
+
+  // GOLD FLYERS
+  {cat:'gold',title:'Sovereign Gold Bonds',sub:'Gold + 2.5% Extra Interest',
+   bg:'linear-gradient(135deg,#f57f17 0%,#f9a825 100%)',
+   accent:'#0A1628',icon:'🥇',
+   points:['Get gold price appreciation','PLUS 2.5% annual interest','Zero storage risk, Govt. guaranteed'],
+   cta:'Invest in SGB Now'},
+
+  {cat:'gold',title:'Gold — Safe Haven Asset',sub:'Protect Against Inflation',
+   bg:'linear-gradient(135deg,#e65100 0%,#f57c00 100%)',
+   accent:'#FFFFFF',icon:'✨',
+   points:['Hedge against market volatility','Gold up 15%+ in 2025-26','Ideal: 10-15% of portfolio in gold'],
+   cta:'Know More About Gold'},
+
+  // BUDGET FLYERS
+  {cat:'budget',title:'50-30-20 Budget Rule',sub:'Simple Formula for Financial Freedom',
+   bg:'linear-gradient(135deg,#1a237e 0%,#0277bd 100%)',
+   accent:'#F5C518',icon:'📋',
+   points:['50% Needs (rent, food, EMIs)','30% Wants (dining, entertainment)','20% Savings & Investments'],
+   cta:'Try Budget Planner'},
+
+  {cat:'budget',title:'Emergency Fund First!',sub:'Before Any Investment',
+   bg:'linear-gradient(135deg,#37474f 0%,#455a64 100%)',
+   accent:'#F5C518',icon:'🆘',
+   points:['Keep 6 months expenses in FD','Prevents panic selling investments','Use liquid MF for better returns'],
+   cta:'Calculate Emergency Fund'},
+
+  {cat:'budget',title:'Rule of 72',sub:'How Fast Will Your Money Double?',
+   bg:'linear-gradient(135deg,#4a148c 0%,#6a1b9a 100%)',
+   accent:'#F5C518',icon:'⚡',
+   points:['72 ÷ 12% = 6 years to double','FD at 7% = 10.3 years to double','SIP at 15% = 4.8 years to double'],
+   cta:'See Power of Compounding'}
+];
+
+var _flyerCat = 'all';
+var _flyerTimer = null;
+var _flyerIdx = 0;
+
+function buildFlyers() {
+  // Show random featured flyer
+  showFeaturedFlyer();
+  // Start rotation every 4 seconds
+  if (_flyerTimer) clearInterval(_flyerTimer);
+  _flyerTimer = setInterval(function() {
+    _flyerIdx = (_flyerIdx + 1) % flyerData.length;
+    showFeaturedFlyer(_flyerIdx);
+  }, 4000);
+  // Build grid
+  filterFlyers();
+}
+
+function showFeaturedFlyer(idx) {
+  var i = (idx !== undefined) ? idx : Math.floor(Math.random() * flyerData.length);
+  _flyerIdx = i;
+  var f = flyerData[i];
+  var el = document.getElementById('featured-flyer');
+  if (!el) return;
+  el.innerHTML = buildFlyerCard(f, i, true);
+}
+
+function buildFlyerCard(f, idx, featured) {
+  var size = featured ? 'padding:24px;min-height:220px;' : 'padding:16px;min-height:160px;';
+  var titleSize = featured ? 'font-size:20px;' : 'font-size:14px;';
+  var subSize = featured ? 'font-size:13px;' : 'font-size:11px;';
+  var ptSize = featured ? 'font-size:12px;' : 'font-size:10px;';
+  return '<div style="background:'+f.bg+';border-radius:16px;'+size+'position:relative;overflow:hidden;" data-flyer-idx="'+idx+'">'
+    + '<div style="position:absolute;top:-20px;right:-20px;font-size:80px;opacity:0.15;">'+f.icon+'</div>'
+    + '<div style="position:relative;z-index:1;">'
+    + '<div style="font-size:'+(featured?'32px':'24px')+';">'+f.icon+'</div>'
+    + '<div style="font-family:\'Playfair Display\',serif;'+titleSize+'font-weight:800;color:#FFFFFF;margin:6px 0 2px;line-height:1.2;">'+f.title+'</div>'
+    + '<div style="'+subSize+'color:rgba(255,255,255,0.75);margin-bottom:'+(featured?'12px':'8px')+';">'+f.sub+'</div>'
+    + (featured ? '<div style="margin-bottom:14px;">'
+      + f.points.map(function(p){ return '<div style="'+ptSize+'color:rgba(255,255,255,0.9);margin-bottom:4px;display:flex;gap:6px;"><span style="color:'+f.accent+';">✓</span>'+p+'</div>'; }).join('')
+      + '</div>' : '')
+    + '<div style="display:flex;gap:8px;align-items:center;">'
+    + '<button class="flyer-download-btn" data-flyer-idx="'+idx+'" style="background:'+f.accent+';border:none;border-radius:8px;padding:8px 14px;font-size:11px;font-weight:700;color:'+(f.accent==='#FFFFFF'?'#0A1628':'#0A1628')+';cursor:pointer;font-family:inherit;">↓ Download</button>'
+    + '<button class="flyer-share-btn" data-flyer-idx="'+idx+'" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:8px 14px;font-size:11px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;">↑ Share</button>'
+    + '</div>'
+    + '<div style="font-size:9px;color:rgba(255,255,255,0.5);margin-top:8px;">Stokado Financial Solutions • Vijayawada • +91 6300716517</div>'
+    + '</div></div>';
+}
+
+function filterFlyers() {
+  var filtered = _flyerCat === 'all' ? flyerData : flyerData.filter(function(f){ return f.cat === _flyerCat; });
+  var el = document.getElementById('flyer-grid');
+  if (!el) return;
+  el.innerHTML = filtered.map(function(f, i) {
+    var realIdx = flyerData.indexOf(f);
+    return buildFlyerCard(f, realIdx, false);
+  }).join('');
+}
+
+function downloadFlyer(idx) {
+  var f = flyerData[idx];
+  if (!f) return;
+  // Create downloadable canvas
+  var canvas = document.createElement('canvas');
+  canvas.width = 800; canvas.height = 600;
+  var ctx = canvas.getContext('2d');
+
+  // Background gradient
+  var colors = f.bg.match(/#[0-9a-fA-F]{6}/g) || ['#0A1628','#1A56DB'];
+  var grad = ctx.createLinearGradient(0, 0, 800, 600);
+  grad.addColorStop(0, colors[0]);
+  grad.addColorStop(1, colors[1] || colors[0]);
+  ctx.fillStyle = grad;
+  ctx.roundRect(0, 0, 800, 600, 20);
+  ctx.fill();
+
+  // Big icon (watermark)
+  ctx.font = '200px serif';
+  ctx.globalAlpha = 0.1;
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillText(f.icon, 500, 420);
+  ctx.globalAlpha = 1;
+
+  // Title
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = 'bold 44px serif';
+  ctx.fillText(f.title, 50, 100);
+
+  // Subtitle
+  ctx.fillStyle = 'rgba(255,255,255,0.8)';
+  ctx.font = '24px sans-serif';
+  ctx.fillText(f.sub, 50, 145);
+
+  // Accent line
+  ctx.fillStyle = f.accent;
+  ctx.fillRect(50, 165, 200, 4);
+
+  // Points
+  ctx.font = '22px sans-serif';
+  f.points.forEach(function(p, i) {
+    ctx.fillStyle = f.accent;
+    ctx.fillText('✓', 50, 220 + i * 45);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText(p, 80, 220 + i * 45);
+  });
+
+  // CTA Button
+  ctx.fillStyle = f.accent;
+  ctx.roundRect(50, 460, 300, 60, 12);
+  ctx.fill();
+  ctx.fillStyle = '#0A1628';
+  ctx.font = 'bold 22px sans-serif';
+  ctx.fillText(f.cta, 70, 497);
+
+  // Brand footer
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.font = '18px sans-serif';
+  ctx.fillText('Stokado Financial Solutions • Vijayawada • +91 6300716517', 50, 565);
+
+  // Download
+  var link = document.createElement('a');
+  link.download = 'stokado-' + f.cat + '-' + idx + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('Flyer downloaded! 📥');
+}
+
+function shareFlyer(idx) {
+  var f = flyerData[idx];
+  if (!f) return;
+  var text = f.title + '\n\n' + f.points.join('\n') + '\n\n📞 Stokado Financial Solutions\n+91 6300716517 | Vijayawada\nhttps://enchanting-cheesecake-7fd672.netlify.app';
+  if (navigator.share) {
+    navigator.share({ title: f.title, text: text });
+  } else {
+    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  }
+}
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -565,6 +804,27 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 
     <!-- MARKET INSIGHT -->
     <div class="sec-title" style="margin-top:4px;">Market Insights</div>
+    <!-- FLYERS SECTION -->
+    <div class="sec-title" style="margin-top:16px;">📢 Financial Flyers</div>
+    <div style="font-size:12px;color:var(--gray);margin-bottom:10px;">Tap to download • Share with clients</div>
+
+    <!-- FEATURED FLYER (random) -->
+    <div id="featured-flyer" style="margin-bottom:12px;cursor:pointer;border-radius:18px;overflow:hidden;"></div>
+
+    <!-- FLYER CATEGORIES -->
+    <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px;scrollbar-width:none;">
+      <button class="flyer-cat-btn btn btn-primary btn-sm" data-cat="all">All</button>
+      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="sip">SIP</button>
+      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="mf">Mutual Fund</button>
+      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="insurance">Insurance</button>
+      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="tax">Tax Saving</button>
+      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="gold">Gold</button>
+      <button class="flyer-cat-btn btn btn-outline btn-sm" data-cat="budget">Budget</button>
+    </div>
+
+    <!-- FLYER GRID -->
+    <div id="flyer-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;"></div>
+
     <div id="home-tips"></div>
 
   </div>
@@ -2843,6 +3103,14 @@ document.addEventListener('click', function(e) {
   }
 
   // NAV refresh
+  if(t.classList.contains('flyer-cat-btn')) {
+    _flyerCat = t.getAttribute('data-cat');
+    document.querySelectorAll('.flyer-cat-btn').forEach(function(b){ b.className='flyer-cat-btn btn btn-sm btn-outline'; });
+    t.className='flyer-cat-btn btn btn-sm btn-primary';
+    filterFlyers();
+  }
+  if(t.classList.contains('flyer-download-btn')) downloadFlyer(parseInt(t.getAttribute('data-flyer-idx')));
+  if(t.classList.contains('flyer-share-btn')) shareFlyer(parseInt(t.getAttribute('data-flyer-idx')));
   if(t.classList.contains('hub-tab')) {
     switchHub(t.getAttribute('data-hub'));
   }
@@ -2882,6 +3150,7 @@ window.addEventListener('load', function() {
 
   // Init home
   buildHomeTips();
+  buildFlyers();
 
   // Check if logged in user
   var user=JSON.parse(localStorage.getItem('stk_user')||'null');
