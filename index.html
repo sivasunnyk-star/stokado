@@ -208,6 +208,9 @@ function buildFinTips() {
 // ═══════════════════════════════════════
 // FINANCIAL FLYERS
 // ═══════════════════════════════════════
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
 var flyerData = [
   // SIP FLYERS
   {cat:'sip',title:'Start SIP with ₹500/Month',sub:'Build Wealth Systematically',
@@ -3322,9 +3325,7 @@ document.addEventListener('keypress', function(e) {
   if(e.key==='Enter' && $('chat-input')===document.activeElement) sendChat();
 });
 
-// ═══════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════
+
 window.addEventListener('load', function() {
   // Hide splash after 2.2s
   setTimeout(function() {
