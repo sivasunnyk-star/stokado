@@ -2642,6 +2642,12 @@ var calcDefs = {
     inputs:[{id:'sgb-qty',lbl:'Units (grams)',type:'range',min:1,max:500,step:1,val:10},
             {id:'sgb-yr',lbl:'Hold Duration (Years)',type:'range',min:5,max:8,step:1,val:8}],
     fn:'calcSGB'},
+  hraexempt:{ico:'🏠+',name:'HRA Exemption',sub:'How much HRA is tax-free?',
+    inputs:[{id:'hra-recv',lbl:'HRA Received (₹/yr)',type:'number',val:240000},
+            {id:'hra-rent',lbl:'Rent Paid (₹/yr)',type:'number',val:180000},
+            {id:'hra-sal',lbl:'Basic Salary (₹/yr)',type:'number',val:600000},
+            {id:'hra-metro',lbl:'Metro City?',type:'range',min:0,max:1,step:1,val:1}],
+    fn:'calcHRA'},
   combo:  {ico:'🔄',name:'SIP vs Lumpsum',sub:'Which is better?',
     inputs:[{id:'co-amt',lbl:'Total Amount (₹)',type:'number',val:1200000},
             {id:'co-yr',lbl:'Duration (Years)',type:'range',min:1,max:30,step:1,val:10},
@@ -2651,21 +2657,25 @@ var calcDefs = {
 
 var _calcActive = 'sip';
 function buildCalcTabs() {
-  if ($('calc-tab-row').innerHTML) return;
+  var tabRow = $('calc-tab-row'), paneBox = $('calc-panes');
+  if (!tabRow || !paneBox) return;
+  // Always rebuild cleanly to prevent duplicates
   var tabH = '', paneH = '';
   var keys = Object.keys(calcDefs);
   keys.forEach(function(k) {
     var d = calcDefs[k];
-    tabH += '<button class="calc-tab'+( k===_calcActive?' active':'')+'" data-calc="'+k+'">'+d.ico+' '+d.name.split(' ')[0]+'</button>';
+    var label = d.name.replace(/Calculator|Planner|Returns|Planning|Comparison|Impact|Calculator/gi,'').trim().split(' ')[0];
+    tabH += '<button class="calc-tab'+(k===_calcActive?' active':'')+'" data-calc="'+k+'">'+d.ico+' '+label+'</button>';
     paneH += '<div class="calc-pane'+(k===_calcActive?' active':'')+'" id="calc-pane-'+k+'"></div>';
   });
-  $('calc-tab-row').innerHTML = tabH;
-  $('calc-panes').innerHTML = paneH;
+  tabRow.innerHTML = tabH;
+  paneBox.innerHTML = paneH;
   buildCalcPane(_calcActive);
 }
 function buildCalcPane(k) {
   var d = calcDefs[k]; if (!d) return;
-  var el = $('calc-pane-'+k); if (!el || el.innerHTML) return;
+  var el = $('calc-pane-'+k); if (!el) return;
+  el.innerHTML = ''; // always rebuild fresh
   var h = '';
   d.inputs.forEach(function(inp) {
     h += '<label>'+inp.lbl+'</label>';
@@ -2896,6 +2906,26 @@ function calcSGB() {
   showResult('sgb','₹'+n(mature),'SGB Maturity Value',[
     {val:'₹'+n(invest),lbl:'Invested'},{val:'₹'+n(interest),lbl:'Interest (2.5%)'},
     {val:qty+'g',lbl:'Gold Qty'},{val:yr+' yrs',lbl:'Hold Period'}
+  ]);
+}
+function calcHRA() {
+  var recv=v('hra-recv'), rent=v('hra-rent'), sal=v('hra-sal'), metro=v('hra-metro');
+  sv('hra-metro-v', metro===1?'Yes (50%)':'No (40%)');
+  // HRA Exemption = MIN of:
+  // 1. Actual HRA received
+  // 2. Rent paid - 10% of Basic Salary
+  // 3. 50% Basic (metro) or 40% Basic (non-metro)
+  var rule1 = recv;
+  var rule2 = Math.max(0, rent - sal*0.10);
+  var rule3 = sal * (metro===1 ? 0.50 : 0.40);
+  var exempt = Math.min(rule1, rule2, rule3);
+  var taxable = recv - exempt;
+  var saved = Math.round(exempt * 0.30); // assuming 30% tax bracket
+  showResult('hraexempt', 'Rs.'+n(exempt), 'HRA Exempt from Tax', [
+    {val:'Rs.'+n(exempt), lbl:'Tax-Free HRA'},
+    {val:'Rs.'+n(taxable), lbl:'Taxable HRA'},
+    {val:'Rs.'+n(saved), lbl:'Tax Saved (30%)'},
+    {val:metro===1?'Metro 50%':'Non-Metro 40%', lbl:'City Type'}
   ]);
 }
 function calcCombo() {
