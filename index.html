@@ -2203,6 +2203,153 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
       <div class="qa-btn" onclick="navTo('p-reviews','nb-more')"><div class="qa-icon">⭐</div><div class="qa-label">Reviews</div></div>
       <div class="qa-btn" onclick="navTo('p-about','nb-more')"><div class="qa-icon">ℹ️</div><div class="qa-label">About Us</div></div>
       <div class="qa-btn" onclick="navTo('p-noti
+      <div class="qa-btn" onclick="navTo('p-notif','nb-more')"><div class="qa-icon">🔔</div><div class="qa-label">Notifications</div></div>
+      <div class="qa-btn" onclick="navTo('p-admin','nb-more')"><div class="qa-icon">🔐</div><div class="qa-label">Admin</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- BUDGET PAGE -->
+<div class="pg" id="p-budget">
+<div class="pg-hdr">
+  <button class="pg-back" onclick="navTo('p-home','nb-home')">← Back</button>
+  <div class="pg-title">Budget <span>Planner</span></div>
+  <div class="pg-sub" id="bud-month-label">June 2026</div>
+</div>
+<div class="pg-content">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <button id="bud-prev-btn" style="background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:8px 18px;color:var(--light2);font-size:20px;cursor:pointer;font-family:inherit;">‹</button>
+    <div id="bud-health-badge" style="font-size:12px;font-weight:700;padding:5px 16px;border-radius:999px;"></div>
+    <button id="bud-next-btn" style="background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:8px 18px;color:var(--light2);font-size:20px;cursor:pointer;font-family:inherit;">›</button>
+  </div>
+  <div class="grid3" style="margin-bottom:10px;">
+    <div class="card" style="text-align:center;padding:10px 6px;"><div style="font-size:9px;color:var(--gray);margin-bottom:3px;">INCOME</div><div id="bud-total-inc" style="font-size:15px;font-weight:800;color:var(--green);font-family:var(--serif);">₹0</div></div>
+    <div class="card" style="text-align:center;padding:10px 6px;"><div style="font-size:9px;color:var(--gray);margin-bottom:3px;">SPENT</div><div id="bud-total-exp" style="font-size:15px;font-weight:800;color:var(--red);font-family:var(--serif);">₹0</div></div>
+    <div class="card" style="text-align:center;padding:10px 6px;"><div style="font-size:9px;color:var(--gray);margin-bottom:3px;">SAVED</div><div id="bud-total-sav" style="font-size:15px;font-weight:800;color:var(--blue3);font-family:var(--serif);">₹0</div></div>
+  </div>
+  <div style="background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:12px;">
+    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;"><span style="font-weight:600;color:var(--light2);">Savings Rate</span><span id="bud-sav-pct" style="font-weight:700;color:var(--gold);">0%</span></div>
+    <div style="height:8px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden;"><div id="bud-sav-bar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--blue3),var(--green));border-radius:999px;transition:width 0.5s;"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gray);margin-top:4px;"><span>Target: 20%</span><span id="bud-sav-status">—</span></div>
+  </div>
+  <div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;">
+    <button class="bud-tab btn btn-primary btn-sm" data-tab="overview">📊 Overview</button>
+    <button class="bud-tab btn btn-outline btn-sm" data-tab="income">💰 Income</button>
+    <button class="bud-tab btn btn-outline btn-sm" data-tab="expenses">💸 Expenses</button>
+    <button class="bud-tab btn btn-outline btn-sm" data-tab="emis">🏦 EMIs</button>
+    <button class="bud-tab btn btn-outline btn-sm" data-tab="sip">📈 SIP</button>
+    <button class="bud-tab btn btn-outline btn-sm" data-tab="goals">🎯 Goals</button>
+    <button class="bud-tab btn btn-outline btn-sm" data-tab="smstrack">📱 SMS Track</button>
+  </div>
+  <div class="bud-pane" id="bud-overview">
+    <div class="grid2" style="margin-bottom:12px;">
+      <div class="card" style="padding:12px;"><div class="sec-title" style="margin-bottom:8px;">Spending Breakdown</div><canvas id="bud-pie" height="180"></canvas></div>
+      <div class="card" style="padding:12px;"><div class="sec-title" style="margin-bottom:8px;">6-Month Trend</div><canvas id="bud-bar" height="180"></canvas></div>
+    </div>
+    <div class="sec-title">Category Breakdown</div>
+    <div id="bud-cat-summary"></div>
+    <div class="sec-title" style="margin-top:12px;">💡 Stokado Advice</div>
+    <div id="bud-advice" class="card card-gold" style="padding:14px;"></div>
+  </div>
+  <div class="bud-pane" id="bud-income" style="display:none;">
+    <div class="card" style="margin-bottom:12px;">
+      <div class="sec-title">Add Income</div>
+      <label>Category</label>
+      <select id="inc-cat"><option>💼 Salary</option><option>🏢 Business</option><option>💻 Freelance</option><option>🏠 Rental</option><option>📈 Investments</option><option>📦 Other</option></select>
+      <label>Amount (₹)</label><input type="number" id="inc-amt" placeholder="80000"/>
+      <label>Note</label><input type="text" id="inc-desc" placeholder="e.g. Monthly salary"/>
+      <button class="btn btn-gold" id="inc-add-btn">+ Add Income</button>
+    </div>
+    <div class="sec-title">This Month Income</div>
+    <div id="inc-list"></div>
+  </div>
+  <div class="bud-pane" id="bud-expenses" style="display:none;">
+    <div class="card" style="margin-bottom:12px;">
+      <div class="sec-title">Add Expense</div>
+      <div class="grid2">
+        <div><label>Category</label>
+        <select id="exp-cat"><option>🍔 Food</option><option>🚗 Transport</option><option>🏠 Rent</option><option>💊 Medical</option><option>👕 Shopping</option><option>📱 Bills</option><option>🎬 Entertainment</option><option>📚 Education</option><option>🛒 Groceries</option><option>⚡ Electricity</option><option>💈 Personal Care</option><option>🎁 Gifts</option><option>✈️ Travel</option><option>📦 Other</option></select></div>
+        <div><label>Amount (₹)</label><input type="number" id="exp-amt" placeholder="500"/></div>
+      </div>
+      <label>Note (optional)</label><input type="text" id="exp-desc" placeholder="e.g. Swiggy"/>
+      <label>Date</label><input type="date" id="exp-date"/>
+      <button class="btn btn-primary" id="exp-add-btn">+ Add Expense</button>
+    </div>
+    <div class="sec-title">This Month Expenses</div>
+    <div id="exp-list"></div>
+  </div>
+  <div class="bud-pane" id="bud-emis" style="display:none;">
+    <div class="card" style="margin-bottom:12px;">
+      <div class="sec-title">Add EMI</div>
+      <label>Loan Type</label>
+      <select id="emi-type"><option>🏠 Home Loan</option><option>🚗 Car Loan</option><option>📱 Personal Loan</option><option>📚 Education Loan</option><option>💳 Credit Card</option><option>🏢 Business Loan</option></select>
+      <div class="grid2"><div><label>EMI (₹/mo)</label><input type="number" id="emi-amt" placeholder="15000"/></div><div><label>Months Left</label><input type="number" id="emi-rem" placeholder="48"/></div></div>
+      <label>Bank</label><input type="text" id="emi-bank" placeholder="HDFC Bank"/>
+      <button class="btn btn-primary" id="emi-add-btn">+ Add EMI</button>
+    </div>
+    <div class="sec-title">Active EMIs</div>
+    <div id="emi-list"></div>
+    <div id="emi-burden" style="display:none;" class="card"></div>
+  </div>
+  <div class="bud-pane" id="bud-sip" style="display:none;">
+    <div class="card" style="margin-bottom:12px;">
+      <div class="sec-title">Add SIP / Investment</div>
+      <label>Type</label>
+      <select id="sip-type"><option>📈 Mutual Fund SIP</option><option>🏛️ PPF</option><option>👴 NPS</option><option>🥇 Gold SGB</option><option>🏦 FD / RD</option><option>📊 Stocks</option></select>
+      <label>Fund Name</label><input type="text" id="sip-name" placeholder="e.g. Mirae Asset Large Cap"/>
+      <div class="grid2"><div><label>Monthly (₹)</label><input type="number" id="sip-amt2" placeholder="5000"/></div><div><label>SIP Date</label><input type="number" id="sip-date2" min="1" max="31" placeholder="7"/></div></div>
+      <button class="btn btn-gold" id="sip-add-btn">+ Add SIP</button>
+    </div>
+    <div class="sec-title">Active SIPs</div>
+    <div id="sip-list"></div>
+    <div id="sip-projection" style="display:none;" class="card card-blue" style="text-align:center;padding:16px;"></div>
+  </div>
+  <div class="bud-pane" id="bud-goals" style="display:none;">
+    <div class="card" style="margin-bottom:12px;">
+      <div class="sec-title">Add Goal</div>
+      <div class="grid2"><div><label>Type</label><select id="goal-type2"><option>🏠 House</option><option>🚗 Car</option><option>👶 Child Education</option><option>💒 Wedding</option><option>✈️ Vacation</option><option>🌅 Retirement</option><option>🆘 Emergency Fund</option></select></div><div><label>Target Year</label><input type="number" id="goal-year" placeholder="2028" min="2024" max="2050"/></div></div>
+      <label>Goal Name</label><input type="text" id="goal-name2" placeholder="e.g. House Down Payment"/>
+      <div class="grid2"><div><label>Target (₹)</label><input type="number" id="goal-target2" placeholder="1000000"/></div><div><label>Saved (₹)</label><input type="number" id="goal-saved" placeholder="200000"/></div></div>
+      <button class="btn btn-gold" id="goal-add-btn">+ Add Goal</button>
+    </div>
+    <div class="sec-title">Your Goals</div>
+    <div id="goal-list"></div>
+  </div>
+  <div class="bud-pane" id="bud-smstrack" style="display:none;">
+    <div class="card card-gold" style="margin-bottom:12px;padding:14px;">
+      <div style="font-size:22px;margin-bottom:8px;">📱</div>
+      <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:6px;">Auto Expense Tracking</div>
+      <div style="font-size:12px;color:var(--gray);line-height:1.7;margin-bottom:12px;">Select ALL your SMS, copy and paste below. Stokado reads everything — bank debits, UPI, CC, EMIs, salary, refunds!</div>
+      <textarea id="sms-input" placeholder="Paste bank SMS here..." style="height:140px;font-size:11px;line-height:1.6;resize:vertical;"></textarea>
+      <button class="btn btn-primary" id="sms-parse-btn" style="margin-top:4px;">🔍 Scan & Import</button>
+    </div>
+    <div id="sms-results" style="display:none;">
+      <div class="sec-title">Detected Transactions</div>
+      <div id="sms-list"></div>
+      <button class="btn btn-gold" id="sms-import-btn" style="margin-top:8px;display:none;">✅ Import All to Budget</button>
+    </div>
+    <div class="card" style="margin-top:12px;">
+      <div class="sec-title">How to use</div>
+      <div style="font-size:12px;color:var(--gray);line-height:1.8;">1. Open SMS app on your phone<br/>2. Long-press a bank message → Select All<br/>3. Copy → Paste above → Tap Scan<br/>4. All transactions auto-detected!<br/><br/><strong style="color:var(--light2);">Privacy:</strong> Everything processed on your phone only.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div><!-- /pages -->
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="bnav-btn active" id="nb-home" onclick="navTo('p-home','nb-home')"><span class="bnav-icon">🏠</span><span class="bnav-label">Home</span></button>
+  <button class="bnav-btn" id="nb-calc" onclick="navTo('p-calc','nb-calc')"><span class="bnav-icon">🧮</span><span class="bnav-label">Calc</span></button>
+  <button class="bnav-btn" id="nb-ins" onclick="navTo('p-ins','nb-ins')"><span class="bnav-icon">🛡️</span><span class="bnav-label">Insure</span></button>
+  <button class="bnav-btn" id="nb-mf" onclick="navTo('p-mf','nb-mf')"><span class="bnav-icon">📊</span><span class="bnav-label">MF</span></button>
+  <button class="bnav-btn" id="nb-more" onclick="navTo('p-more','nb-more')"><span class="bnav-icon">⋯</span><span class="bnav-label">More</span></button>
+</nav>
+
+</div><!-- /app -->
+<div id="toast"></div>
+
 <script>
 
 // ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
@@ -5045,4 +5192,7 @@ function updateNavDisplay(code,nav) { updateNav(code,nav); }
 function addMFNavHeader() {}
 function buildTopMovers() {}
 
+
 </script>
+</body>
+</html>
