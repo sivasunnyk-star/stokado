@@ -1012,6 +1012,18 @@ label { font-size: 12px; font-weight: 600; color: var(--light2); margin-bottom: 
 .mkt-chg { font-size: 11px; font-weight: 600; }
 
 /* CALC TABS */
+/* ── CALCULATOR TABS — category grouped ── */
+.calc-cats { display:flex; gap:6px; margin-bottom:8px; overflow-x:auto; scrollbar-width:none; }
+.calc-cats::-webkit-scrollbar { display:none; }
+.calc-cat-btn { flex-shrink:0; padding:6px 14px; border-radius:999px; font-size:11px; font-weight:700; cursor:pointer; border:1.5px solid var(--border); background:transparent; color:var(--gray); font-family:var(--font); text-transform:uppercase; letter-spacing:0.5px; }
+.calc-cat-btn.active { background:var(--navy3); border-color:var(--blue3); color:var(--gold); }
+.calc-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+.calc-card { background:var(--navy2); border:1px solid var(--border); border-radius:14px; padding:14px 12px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:10px; }
+.calc-card:active { transform:scale(0.96); }
+.calc-card.active { border-color:var(--blue3); background:rgba(26,86,219,0.12); }
+.calc-card-icon { font-size:22px; flex-shrink:0; }
+.calc-card-name { font-size:12px; font-weight:700; color:var(--white); line-height:1.3; }
+.calc-card-sub { font-size:10px; color:var(--gray); margin-top:1px; }
 .calc-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 14px; scrollbar-width: none; }
 .calc-tabs::-webkit-scrollbar { display: none; }
 .calc-tab { flex-shrink: 0; padding: 7px 14px; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: transparent; color: var(--gray); font-family: var(--font); }
@@ -1270,7 +1282,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   <div class="pg-hdr">
     <button class="pg-back" onclick="navTo('p-home','nb-home')">← Back</button>
     <div class="pg-title">Financial <span>Calculators</span></div>
-    <div class="pg-sub">18 tools — Get PDF report</div>
+    <div class="pg-sub">23 tools — PDF download</div>
   </div>
   <div class="pg-content">
     <div class="calc-tabs" id="calc-tab-row"></div>
@@ -2190,38 +2202,9 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
       <div class="qa-btn" onclick="navTo('p-svc','nb-more')"><div class="qa-icon">🏢</div><div class="qa-label">Services</div></div>
       <div class="qa-btn" onclick="navTo('p-reviews','nb-more')"><div class="qa-icon">⭐</div><div class="qa-label">Reviews</div></div>
       <div class="qa-btn" onclick="navTo('p-about','nb-more')"><div class="qa-icon">ℹ️</div><div class="qa-label">About Us</div></div>
-      <div class="qa-btn" onclick="navTo('p-notif','nb-more')"><div class="qa-icon">🔔</div><div class="qa-label">Alerts</div></div>
-      <div class="qa-btn" onclick="navTo('p-admin','nb-more')"><div class="qa-icon">🔐</div><div class="qa-label">Admin</div></div>
-    </div>
-  </div>
-</div>
-
-</div><!-- /pages -->
-
-<!-- BOTTOM NAV -->
-<nav class="bnav">
-  <button class="bnav-btn active" id="nb-home" onclick="navTo('p-home','nb-home')">
-    <span class="bnav-icon">🏠</span><span class="bnav-label">Home</span>
-  </button>
-  <button class="bnav-btn" id="nb-calc" onclick="navTo('p-calc','nb-calc')">
-    <span class="bnav-icon">🧮</span><span class="bnav-label">Calc</span>
-  </button>
-  <button class="bnav-btn" id="nb-ins" onclick="navTo('p-ins','nb-ins')">
-    <span class="bnav-icon">🛡️</span><span class="bnav-label">Insure</span>
-  </button>
-  <button class="bnav-btn" id="nb-mf" onclick="navTo('p-mf','nb-mf')">
-    <span class="bnav-icon">📊</span><span class="bnav-label">MF</span>
-  </button>
-  <button class="bnav-btn" id="nb-more" onclick="navTo('p-more','nb-more')">
-    <span class="bnav-icon">⋯</span><span class="bnav-label">More</span>
-  </button>
-</nav>
-
-</div><!-- /app -->
-<div id="toast"></div>
-
-
+      <div class="qa-btn" onclick="navTo('p-noti
 <script>
+
 // ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
 // Build: June 2026
 
@@ -2562,7 +2545,7 @@ function buildHomeTips() {
 // ═══════════════════════════════════════
 var calcDefs = {
   sip:    {ico:'📈',name:'SIP Calculator',sub:'Systematic Investment Plan',
-    inputs:[{id:'sip-amt',lbl:'Monthly Amount (₹)',type:'range',min:500,max:100000,step:500,val:5000},
+    inputs:[{id:'sip-amt',lbl:'Monthly SIP Amount (Rs.)',type:'number',val:5000},
             {id:'sip-yr',lbl:'Duration (Years)',type:'range',min:1,max:40,step:1,val:10},
             {id:'sip-ret',lbl:'Expected Returns (% p.a.)',type:'range',min:6,max:24,step:0.5,val:12}],
     fn:'calcSIP'},
@@ -2648,7 +2631,28 @@ var calcDefs = {
             {id:'hra-sal',lbl:'Basic Salary (₹/yr)',type:'number',val:600000},
             {id:'hra-metro',lbl:'Metro City?',type:'range',min:0,max:1,step:1,val:1}],
     fn:'calcHRA'},
-  combo:  {ico:'🔄',name:'SIP vs Lumpsum',sub:'Which is better?',
+  rental:{ico:'🏠',name:'Rental Yield',sub:'Is your property worth buying?',
+    inputs:[{id:'ren-price',lbl:'Property Price (Rs.)',type:'number',val:5000000},
+            {id:'ren-rent',lbl:'Monthly Rent (Rs.)',type:'number',val:20000},
+            {id:'ren-maint',lbl:'Annual Maintenance (Rs.)',type:'number',val:30000}],
+    fn:'calcRental'},
+  edufund:{ico:'🎓',name:'Education Fund',sub:'Future cost of child education',
+    inputs:[{id:'edu-cost',lbl:'Current Course Fee (Rs.)',type:'number',val:1500000},
+            {id:'edu-yr',lbl:'Years Until Admission',type:'range',min:1,max:20,step:1,val:10},
+            {id:'edu-inf',lbl:'Education Inflation (% p.a.)',type:'range',min:6,max:15,step:0.5,val:10}],
+    fn:'calcEduFund'},
+  mfcompare:{ico:'⚖️',name:'MF Comparison',sub:'Compare two mutual funds',
+    inputs:[{id:'mfc-amt',lbl:'Investment Amount (Rs.)',type:'number',val:100000},
+            {id:'mfc-r1',lbl:'Fund A Returns (% p.a.)',type:'range',min:6,max:30,step:0.5,val:14},
+            {id:'mfc-r2',lbl:'Fund B Returns (% p.a.)',type:'range',min:6,max:30,step:0.5,val:11},
+            {id:'mfc-yr',lbl:'Duration (Years)',type:'range',min:1,max:30,step:1,val:10}],
+    fn:'calcMFCompare'},
+  emivssip:{ico:'💡',name:'EMI vs SIP',sub:'Loan EMI vs equivalent SIP wealth',
+    inputs:[{id:'evs-emi',lbl:'Your Monthly EMI (Rs.)',type:'number',val:15000},
+            {id:'evs-rate',lbl:'Loan Interest Rate (% p.a.)',type:'range',min:6,max:20,step:0.5,val:9},
+            {id:'evs-yr',lbl:'Loan Tenure (Years)',type:'range',min:1,max:30,step:1,val:10}],
+    fn:'calcEMIvsSIP'},
+    combo:  {ico:'🔄',name:'SIP vs Lumpsum',sub:'Which is better?',
     inputs:[{id:'co-amt',lbl:'Total Amount (₹)',type:'number',val:1200000},
             {id:'co-yr',lbl:'Duration (Years)',type:'range',min:1,max:30,step:1,val:10},
             {id:'co-ret',lbl:'Expected Returns (% p.a.)',type:'range',min:6,max:20,step:0.5,val:12}],
@@ -2939,6 +2943,72 @@ function calcCombo() {
   showResult('combo','SIP wins!','For ₹'+n(amt)+' over '+yr+' years',[
     {val:'₹'+n(sipCorpus),lbl:'SIP Corpus'},{val:'₹'+n(lsCorpus),lbl:'Lumpsum Corpus'},
     {val:'₹'+n(monthly)+'/mo',lbl:'Monthly SIP'},{val:better+' is better!',lbl:'Verdict'}
+  ]);
+}
+
+function calcRental() {
+  var price=v('ren-price'), rent=v('ren-rent'), maint=v('ren-maint');
+  var annualRent = rent*12;
+  var netRent = annualRent - maint;
+  var grossYield = price>0?(annualRent/price*100):0;
+  var netYield = price>0?(netRent/price*100):0;
+  var payback = netRent>0?Math.round(price/netRent):0;
+  var verdict = netYield>=4?'Good Investment':'Below Average (consider MF instead)';
+  showResult('rental', netYield.toFixed(2)+'%', 'Net Rental Yield per Year', [
+    {val:grossYield.toFixed(2)+'%', lbl:'Gross Yield'},
+    {val:'Rs.'+n(netRent), lbl:'Net Annual Income'},
+    {val:payback+' yrs', lbl:'Payback Period'},
+    {val:verdict, lbl:'Verdict'}
+  ]);
+}
+
+function calcEduFund() {
+  var cost=v('edu-cost'), yr=v('edu-yr'), inf=v('edu-inf');
+  sv('edu-yr-v', yr+' yrs'); sv('edu-inf-v', inf+'%');
+  var futureCost = cost * Math.pow(1+inf/100, yr);
+  var r = 0.12/12, mn = yr*12;
+  var sipNeeded = futureCost * r / (Math.pow(1+r,mn)-1);
+  var lumpNeeded = futureCost / Math.pow(1.12, yr);
+  showResult('edufund', 'Rs.'+n(Math.round(futureCost)), 'Future Education Cost', [
+    {val:'Rs.'+n(Math.round(cost)), lbl:'Current Cost'},
+    {val:'Rs.'+n(Math.round(sipNeeded))+'/mo', lbl:'SIP Required @12%'},
+    {val:'Rs.'+n(Math.round(lumpNeeded)), lbl:'Lumpsum Today'},
+    {val:yr+' yrs @'+inf+'%', lbl:'Inflation Applied'}
+  ]);
+}
+
+function calcMFCompare() {
+  var amt=v('mfc-amt'), r1=v('mfc-r1'), r2=v('mfc-r2'), yr=v('mfc-yr');
+  sv('mfc-r1-v', r1+'%'); sv('mfc-r2-v', r2+'%'); sv('mfc-yr-v', yr+' yrs');
+  var val1 = amt * Math.pow(1+r1/100, yr);
+  var val2 = amt * Math.pow(1+r2/100, yr);
+  var diff = val1 - val2;
+  var better = r1>r2 ? 'Fund A wins by Rs.'+n(Math.round(Math.abs(diff))) : r2>r1 ? 'Fund B wins by Rs.'+n(Math.round(Math.abs(diff))) : 'Equal performance';
+  showResult('mfcompare', 'Rs.'+n(Math.round(val1-val2)), 'Difference (A vs B)', [
+    {val:'Rs.'+n(Math.round(val1)), lbl:'Fund A @'+r1+'%'},
+    {val:'Rs.'+n(Math.round(val2)), lbl:'Fund B @'+r2+'%'},
+    {val:'Rs.'+n(amt), lbl:'Invested'},
+    {val:better, lbl:'Verdict'}
+  ]);
+}
+
+function calcEMIvsSIP() {
+  var emi=v('evs-emi'), rate=v('evs-rate'), yr=v('evs-yr');
+  sv('evs-rate-v', rate+'%'); sv('evs-yr-v', yr+' yrs');
+  // Total interest paid on loan
+  var r = rate/12/100, mn = yr*12;
+  var loanAmt = emi*(1-Math.pow(1+r,-mn))/r;
+  var totalPaid = emi*mn;
+  var totalInterest = totalPaid - loanAmt;
+  // If same EMI was invested as SIP at 12%
+  var sipR = 0.12/12;
+  var sipCorpus = emi*((Math.pow(1+sipR,mn)-1)/sipR)*(1+sipR);
+  var opportunity = sipCorpus - totalPaid;
+  showResult('emivssip', 'Rs.'+n(Math.round(sipCorpus)), 'Wealth if SIP instead of EMI', [
+    {val:'Rs.'+n(Math.round(loanAmt)), lbl:'Loan Amount'},
+    {val:'Rs.'+n(Math.round(totalInterest)), lbl:'Interest You Pay'},
+    {val:'Rs.'+n(Math.round(sipCorpus)), lbl:'SIP Corpus @12%'},
+    {val:'Rs.'+n(Math.round(opportunity)), lbl:'Opportunity Cost'}
   ]);
 }
 function calcPDF(k) {
@@ -4884,6 +4954,50 @@ window.addEventListener('load', function() {
   setTimeout(function() {
     $('splash').style.opacity='0';
     $('splash').style.transition='opacity 0.4s';
+    setTimeout(function() {
+      $('splash').style.display='none';
+    }, 400);
+  }, 2200);
+
+  // Init home
+  buildHomeTips();
+  setTimeout(function(){ if(typeof buildFlyers!=="undefined") buildFlyers(); }, 100);
+
+  // Check if logged in user
+  var user=JSON.parse(localStorage.getItem('stk_user')||'null');
+  if(user) {
+    var btn=$('profile-btn');
+    if(btn) btn.textContent=user.name.charAt(0).toUpperCase();
+  }
+
+  // Market auto-refresh page title
+  startMarketAutoRefresh();
+});
+
+function startMarketAutoRefresh() {
+  setInterval(function(){
+    var pg=$('p-market');
+    if(pg&&pg.classList.contains('active')) {
+      // market widgets auto-refresh themselves
+    }
+  }, 60000);
+}
+
+// Stub functions for compatibility
+function loadMarket() {}
+function fetchLiveMarketData() {}
+function mktRenderStatic() {}
+function mktSet() {}
+function mktNum(n) { return Math.round(n).toLocaleString('en-IN'); }
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}
+
+ransition='opacity 0.4s';
     setTimeout(function() {
       $('splash').style.display='none';
     }, 400);
