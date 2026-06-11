@@ -2778,13 +2778,23 @@ function calcRetire() {
   ]);
 }
 function calcSWP() {
-  var corp=v('swp-corp'),with_=v('swp-with'),ret=v('swp-ret');
-  var r=ret/12/100;
-  var months=r>0?Math.log(with_/(with_-corp*r))/Math.log(1+r):corp/with_;
-  var yrs=Math.floor(months/12);
-  showResult('swp','₹'+n(with_)+'/mo','Sustainable Withdrawal',[
-    {val:'₹'+n(corp),lbl:'Corpus'},{val:yrs+' yrs',lbl:'Duration'},
-    {val:ret+'%',lbl:'Returns'},{val:'₹'+n(with_*months),lbl:'Total Withdrawal'}
+  var corp=v('swp-corp'), with_=v('swp-with'), ret=v('swp-ret');
+  var r = ret/12/100;
+  var months = 0;
+  if (r > 0 && with_ > corp*r) {
+    months = Math.log(with_/(with_ - corp*r)) / Math.log(1+r);
+  } else if (r === 0) {
+    months = corp / with_;
+  } else {
+    months = 9999; // corpus outlasts withdrawals
+  }
+  var yrs = months >= 9999 ? 'Perpetual' : (Math.floor(months/12) + ' yrs ' + (Math.floor(months%12)) + ' mo');
+  var totalWithdrawal = months >= 9999 ? 'Corpus grows' : ('Rs.' + n(Math.round(with_ * months)));
+  showResult('swp', 'Rs.'+n(with_)+'/mo', 'Monthly Withdrawal', [
+    {val:'Rs.'+n(corp), lbl:'Corpus'},
+    {val:yrs, lbl:'Duration'},
+    {val:ret+'%', lbl:'Returns p.a.'},
+    {val:totalWithdrawal, lbl:'Total Withdrawal'}
   ]);
 }
 function calcGoal() {
@@ -2905,146 +2915,233 @@ function calcPDF(k) {
   if (!window.jspdf) { showToast('PDF loading, try again...'); return; }
   var def = calcDefs[k]; if (!def) return;
   var resEl = document.getElementById('calc-result-'+k);
-  var lines = resEl ? resEl.innerText.replace(/\n+/g,' | ').trim() : '';
+
+  // ── collect inputs ──
+  var inputs = [];
+  def.inputs.forEach(function(inp) {
+    var el = document.getElementById(inp.id);
+    if (!el) return;
+    var val = String(el.value || '');
+    // Clean label: remove emoji and special chars for PDF safety
+    var lbl = inp.lbl.replace(/[^\x20-\x7E\u20B9]/g,'').trim();
+    // Format value: prepend Rs. for amounts, append % for rates/returns
+    if (lbl.indexOf('Amount') >= 0 || lbl.indexOf('Corpus') >= 0 ||
+        lbl.indexOf('Income') >= 0 || lbl.indexOf('Deposit') >= 0 ||
+        lbl.indexOf('Value') >= 0 || lbl.indexOf('Investment') >= 0 ||
+        lbl.indexOf('Withdrawal') >= 0) {
+      val = 'Rs. ' + parseFloat(val).toLocaleString('en-IN');
+    } else if (lbl.indexOf('Rate') >= 0 || lbl.indexOf('Returns') >= 0 ||
+               lbl.indexOf('Step') >= 0 || lbl.indexOf('Inflation') >= 0) {
+      val = val + '%';
+    } else if (lbl.indexOf('Year') >= 0 || lbl.indexOf('Duration') >= 0 ||
+               lbl.indexOf('Tenure') >= 0 || lbl.indexOf('Hold') >= 0) {
+      val = val + ' years';
+    } else if (lbl.indexOf('Age') >= 0) {
+      val = val + ' yrs';
+    }
+    inputs.push({ lbl: lbl, val: val });
+  });
+
+  // ── collect result breakdown ──
+  var mainVal = '', mainSub = '', breakdown = [];
+  if (resEl) {
+    var mv = resEl.querySelector('.result-main');
+    var ms = resEl.querySelector('.result-sub');
+    if (mv) mainVal = mv.textContent.replace(/[^\x20-\x7EkLCr%+\-Rs.\/,₹]/g,'').trim();
+    if (ms) mainSub = ms.textContent.replace(/[^\x20-\x7E]/g,'').trim();
+    var bds = resEl.querySelectorAll('.rb-item');
+    bds.forEach(function(b) {
+      var bv = b.querySelector('.rb-val');
+      var bl = b.querySelector('.rb-lbl');
+      if (bv && bl) {
+        // Clean ₹ → Rs. and remove non-ASCII
+        var v = bv.textContent.replace(/₹/g,'Rs.').replace(/[^\x20-\x7E]/g,'').trim();
+        var l = bl.textContent.replace(/[^\x20-\x7E]/g,'').trim();
+        if (v && v !== 'NaN' && v !== 'NaN yrs' && v !== 'Rs.NaN') {
+          breakdown.push({ val: v, lbl: l });
+        }
+      }
+    });
+  }
+
+  // Fix mainVal encoding
+  mainVal = mainVal.replace(/₹/g,'Rs.').replace(/[^\x20-\x7E]/g,'').trim();
 
   var doc = new window.jspdf.jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
   var W = 210, H = 297;
+  var dateStr = new Date().toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'});
+  var calcName = def.name.replace(/[^\x20-\x7E]/g,'').trim(); // remove emoji
 
-  // ── HEADER BAND ──
+  // ════════════════════════════════════════════════
+  // HEADER
+  // ════════════════════════════════════════════════
+  // Dark navy background
   doc.setFillColor(10, 22, 40);
-  doc.rect(0, 0, W, 38, 'F');
+  doc.rect(0, 0, W, 42, 'F');
 
-  // Logo circle
+  // Gold accent bar on left
   doc.setFillColor(245, 197, 24);
-  doc.circle(20, 19, 8, 'F');
+  doc.rect(0, 0, 5, 42, 'F');
+
+  // Gold circle logo
+  doc.setFillColor(245, 197, 24);
+  doc.circle(22, 21, 10, 'F');
+  doc.setFontSize(14); doc.setFont('helvetica','bold');
   doc.setTextColor(10, 22, 40);
-  doc.setFontSize(12); doc.setFont('helvetica','bold');
-  doc.text('S', 20, 22, { align:'center' });
+  doc.text('S', 22, 25, {align:'center'});
 
   // Company name
   doc.setTextColor(255, 255, 255);
-  doc.setFontSize(16); doc.setFont('helvetica','bold');
-  doc.text('Stokado Financial Solutions', 34, 16);
-  doc.setFontSize(8); doc.setFont('helvetica','normal');
-  doc.setTextColor(180, 190, 210);
-  doc.text('SEBI Registered | NISM Certified | Vijayawada, AP', 34, 22);
-  doc.text('+91 6300716517 | stokado999@gmail.com', 34, 27);
+  doc.setFontSize(17); doc.setFont('helvetica','bold');
+  doc.text('Stokado Financial Solutions', 38, 17);
+  doc.setFontSize(8.5); doc.setFont('helvetica','normal');
+  doc.setTextColor(160, 175, 210);
+  doc.text('SEBI Registered  |  NISM Certified Advisors  |  Vijayawada, Andhra Pradesh', 38, 24);
+  doc.text('Phone: +91 6300716517  |  +91 9030061988  |  Email: stokado999@gmail.com', 38, 30);
+  doc.text('Office: 27-14-35, Balaji Jewels World, Rajagopalachari Street, Vijayawada 520002', 38, 36);
 
-  // Date
+  // Date top right
   doc.setTextColor(245, 197, 24);
-  doc.setFontSize(8);
-  doc.text(new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}), W-14, 19, {align:'right'});
+  doc.setFontSize(9); doc.setFont('helvetica','bold');
+  doc.text(dateStr, W-8, 12, {align:'right'});
 
-  // ── TITLE BAR ──
+  // ════════════════════════════════════════════════
+  // TITLE BAR
+  // ════════════════════════════════════════════════
   doc.setFillColor(26, 86, 219);
-  doc.rect(0, 38, W, 14, 'F');
+  doc.rect(0, 42, W, 14, 'F');
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(13); doc.setFont('helvetica','bold');
-  doc.text(def.ico + ' ' + def.name + ' Report', 14, 48);
+  doc.text(calcName + ' — Report', W/2, 52, {align:'center'});
 
-  // ── INPUTS TABLE ──
-  var y = 64;
-  doc.setTextColor(10, 22, 40);
+  // ════════════════════════════════════════════════
+  // YOUR INPUTS
+  // ════════════════════════════════════════════════
+  var y = 68;
   doc.setFontSize(11); doc.setFont('helvetica','bold');
+  doc.setTextColor(10, 22, 40);
   doc.text('Your Inputs', 14, y);
-  y += 6;
+  doc.setFillColor(245, 197, 24);
+  doc.rect(14, y+1.5, 28, 1, 'F'); // underline
+  y += 8;
 
-  doc.setFillColor(240, 244, 255);
-  doc.rect(12, y, W-24, 7*(def.inputs.length)+4, 'F');
-  doc.setDrawColor(26, 86, 219);
-  doc.setLineWidth(0.4);
-  doc.rect(12, y, W-24, 7*(def.inputs.length)+4, 'S');
+  // Table header
+  doc.setFillColor(10, 22, 40);
+  doc.roundedRect(12, y-4, W-24, 7, 1, 1, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(8); doc.setFont('helvetica','bold');
+  doc.text('Parameter', 18, y);
+  doc.text('Value', 130, y);
+  y += 5;
 
-  y += 6;
-  def.inputs.forEach(function(inp) {
-    var el = document.getElementById(inp.id);
-    var val = el ? el.value : '';
+  inputs.forEach(function(inp, i) {
+    doc.setFillColor(i%2===0 ? 240 : 248, i%2===0 ? 245 : 250, 255);
+    doc.rect(12, y-3.5, W-24, 8, 'F');
     doc.setFontSize(9); doc.setFont('helvetica','normal');
-    doc.setTextColor(70, 90, 120);
-    doc.text(inp.lbl + ':', 18, y);
+    doc.setTextColor(60, 80, 110);
+    doc.text(inp.lbl, 18, y+1);
     doc.setFont('helvetica','bold');
     doc.setTextColor(10, 22, 40);
-    doc.text(String(val), 110, y);
-    y += 7;
+    doc.text(inp.val, 130, y+1);
+    y += 8;
   });
-
-  // ── RESULT BOX ──
   y += 6;
+
+  // ════════════════════════════════════════════════
+  // RESULT BOX
+  // ════════════════════════════════════════════════
   doc.setFontSize(11); doc.setFont('helvetica','bold');
   doc.setTextColor(10, 22, 40);
   doc.text('Calculation Result', 14, y);
-  y += 6;
+  doc.setFillColor(245, 197, 24);
+  doc.rect(14, y+1.5, 40, 1, 'F');
+  y += 8;
 
   doc.setFillColor(10, 22, 40);
-  doc.rect(12, y, W-24, 36, 'F');
+  doc.roundedRect(12, y, W-24, 34, 3, 3, 'F');
   doc.setFillColor(245, 197, 24);
-  doc.rect(12, y, 4, 36, 'F');
+  doc.roundedRect(12, y, 5, 34, 2, 2, 'F');
 
-  // Main result value
-  var mainEl = resEl ? resEl.querySelector('.result-main') : null;
-  var mainVal = mainEl ? mainEl.textContent : '';
-  var mainSub = resEl ? (resEl.querySelector('.result-sub') ? resEl.querySelector('.result-sub').textContent : '') : '';
-
+  // Main result
   doc.setTextColor(245, 197, 24);
-  doc.setFontSize(22); doc.setFont('helvetica','bold');
+  doc.setFontSize(24); doc.setFont('helvetica','bold');
   doc.text(mainVal || 'See breakdown below', W/2, y+16, {align:'center'});
-  doc.setFontSize(9); doc.setFont('helvetica','normal');
-  doc.setTextColor(180, 190, 210);
-  doc.text(mainSub, W/2, y+24, {align:'center'});
-  y += 44;
+  doc.setFontSize(9.5); doc.setFont('helvetica','normal');
+  doc.setTextColor(160, 180, 220);
+  doc.text(mainSub, W/2, y+26, {align:'center'});
+  y += 42;
 
-  // Breakdown items
-  var bdItems = resEl ? resEl.querySelectorAll('.rb-item') : [];
-  if (bdItems.length > 0) {
-    doc.setFontSize(10); doc.setFont('helvetica','bold');
-    doc.setTextColor(10,22,40);
+  // ════════════════════════════════════════════════
+  // BREAKDOWN GRID
+  // ════════════════════════════════════════════════
+  if (breakdown.length > 0) {
+    doc.setFontSize(11); doc.setFont('helvetica','bold');
+    doc.setTextColor(10, 22, 40);
     doc.text('Breakdown', 14, y);
-    y += 6;
-    var colW = (W-28)/2;
-    var row = 0;
-    bdItems.forEach(function(item, i) {
-      var val2 = item.querySelector('.rb-val') ? item.querySelector('.rb-val').textContent : '';
-      var lbl2 = item.querySelector('.rb-lbl') ? item.querySelector('.rb-lbl').textContent : '';
-      var cx = 14 + (i%2)*colW;
-      var cy = y + Math.floor(i/2)*18;
-      doc.setFillColor(i%2===0?240:248, i%2===0?244:250, 255);
-      doc.roundedRect(cx, cy-4, colW-4, 16, 2, 2, 'F');
-      doc.setFontSize(11); doc.setFont('helvetica','bold');
-      doc.setTextColor(26,86,219);
-      doc.text(val2, cx+4, cy+5);
+    doc.setFillColor(245, 197, 24);
+    doc.rect(14, y+1.5, 27, 1, 'F');
+    y += 8;
+
+    var colW = (W - 28) / 2;
+    var rowH = 20;
+    breakdown.forEach(function(bd, i) {
+      var cx = 12 + (i % 2) * (colW + 4);
+      var cy = y + Math.floor(i / 2) * (rowH + 4);
+      // Card bg
+      doc.setFillColor(i%2===0 ? 237 : 245, i%2===0 ? 242 : 248, 255);
+      doc.roundedRect(cx, cy, colW, rowH, 2, 2, 'F');
+      doc.setDrawColor(200, 215, 240);
+      doc.setLineWidth(0.3);
+      doc.roundedRect(cx, cy, colW, rowH, 2, 2, 'S');
+      // Value
+      doc.setFontSize(12); doc.setFont('helvetica','bold');
+      doc.setTextColor(26, 86, 219);
+      doc.text(bd.val, cx + colW/2, cy + 8, {align:'center'});
+      // Label
       doc.setFontSize(8); doc.setFont('helvetica','normal');
-      doc.setTextColor(100,120,150);
-      doc.text(lbl2, cx+4, cy+12);
-      if (i===bdItems.length-1) row=Math.floor(i/2);
+      doc.setTextColor(90, 110, 140);
+      doc.text(bd.lbl, cx + colW/2, cy + 15, {align:'center'});
     });
-    y += (Math.floor((bdItems.length-1)/2)+1)*18 + 8;
+    var rows = Math.ceil(breakdown.length / 2);
+    y += rows * (rowH + 4) + 8;
   }
 
-  // ── DISCLAIMER ──
-  y = Math.max(y+10, H-42);
-  doc.setFillColor(245,247,255);
-  doc.rect(0, y, W, H-y-20, 'F');
-  doc.setFontSize(7.5); doc.setFont('helvetica','italic');
-  doc.setTextColor(120,140,170);
-  var disc = 'Disclaimer: These projections are for illustration only. Mutual Fund investments are subject to market risks.';
-  var disc2 = 'Past performance does not guarantee future returns. Consult Stokado advisors before investing.';
-  doc.text(disc, W/2, y+7, {align:'center'});
-  doc.text(disc2, W/2, y+13, {align:'center'});
+  // ════════════════════════════════════════════════
+  // DISCLAIMER
+  // ════════════════════════════════════════════════
+  y = Math.max(y + 6, H - 46);
+  doc.setFillColor(245, 247, 253);
+  doc.rect(0, y, W, H - y - 22, 'F');
+  doc.setDrawColor(200, 210, 230);
+  doc.setLineWidth(0.4);
+  doc.line(14, y, W-14, y);
+  doc.setFontSize(8); doc.setFont('helvetica','bold');
+  doc.setTextColor(100, 120, 160);
+  doc.text('IMPORTANT DISCLAIMER', W/2, y+7, {align:'center'});
+  doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+  doc.text('These projections are for illustration purposes only. Mutual Fund investments are subject to market risks.', W/2, y+13, {align:'center'});
+  doc.text('Past performance does not guarantee future returns. Please consult Stokado financial advisors before investing.', W/2, y+19, {align:'center'});
 
-  // ── FOOTER ──
-  doc.setFillColor(10,22,40);
-  doc.rect(0, H-20, W, 20, 'F');
-  doc.setTextColor(180,190,210);
+  // ════════════════════════════════════════════════
+  // FOOTER
+  // ════════════════════════════════════════════════
+  doc.setFillColor(10, 22, 40);
+  doc.rect(0, H-22, W, 22, 'F');
+  doc.setFillColor(245, 197, 24);
+  doc.rect(0, H-22, W, 2, 'F'); // gold top border
+  doc.setTextColor(180, 195, 220);
   doc.setFontSize(8); doc.setFont('helvetica','normal');
-  doc.text('Stokado Financial Solutions | 27-14-35, Balaji Jewels World, Rajagopalachari St, Vijayawada 520002', W/2, H-13, {align:'center'});
-  doc.setTextColor(245,197,24);
-  doc.text('+91 6300716517  |  stokado999@gmail.com  |  enchanting-cheesecake-7fd672.netlify.app', W/2, H-7, {align:'center'});
+  doc.text('Stokado Financial Solutions  |  27-14-35, Balaji Jewels World, Vijayawada 520002', W/2, H-14, {align:'center'});
+  doc.setTextColor(245, 197, 24);
+  doc.setFontSize(8);
+  doc.text('+91 6300716517  |  +91 9030061988  |  stokado999@gmail.com', W/2, H-8, {align:'center'});
 
-  doc.save('Stokado-' + def.name.replace(/\s+/g,'-') + '.pdf');
-  var stats = JSON.parse(localStorage.getItem('stk_stats')||'{}');
-  stats.pdfs = (stats.pdfs||0)+1;
+  // Save
+  doc.save('Stokado-' + calcName.replace(/\s+/g, '-') + '.pdf');
+  var stats = JSON.parse(localStorage.getItem('stk_stats') || '{}');
+  stats.pdfs = (stats.pdfs || 0) + 1;
   localStorage.setItem('stk_stats', JSON.stringify(stats));
-  showToast('PDF Downloaded! 📄');
+  showToast('PDF Downloaded!');
 }
 function calcShare(k) {
   var el=$('calc-result-'+k);
