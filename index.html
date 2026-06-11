@@ -2179,163 +2179,6 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 </div>
 </div>
 
-<div class="pg" id="p-more">
-  <div class="pg-hdr">
-    <button class="pg-back" onclick="navTo('p-home','nb-home')">← Back</button>
-    <div class="pg-title">More <span>Options</span></div>
-    <div class="pg-sub">All features</div>
-  </div>
-  <div class="pg-content">
-    <div class="qa-grid" id="more-grid">
-      <div class="qa-btn" onclick="navTo('p-budget','nb-more')"><div class="qa-icon">📋</div><div class="qa-label">Budget Planner</div></div>
-      <div class="qa-btn" onclick="navTo('p-market','nb-more')"><div class="qa-icon">📡</div><div class="qa-label">Live Market</div></div>
-      <div class="qa-btn" onclick="navTo('p-ipo','nb-more')"><div class="qa-icon">🚀</div><div class="qa-label">IPO Tracker</div></div>
-      <div class="qa-btn" onclick="navTo('p-unlisted','nb-more')"><div class="qa-icon">📈</div><div class="qa-label">Unlisted Shares</div></div>
-      <div class="qa-btn" onclick="navTo('p-health','nb-more')"><div class="qa-icon">💚</div><div class="qa-label">Health Score</div></div>
-      <div class="qa-btn" onclick="navTo('p-portfolio','nb-more')"><div class="qa-icon">💼</div><div class="qa-label">Portfolio</div></div>
-      <div class="qa-btn" onclick="navTo('p-remind','nb-more')"><div class="qa-icon">⏰</div><div class="qa-label">SIP Remind</div></div>
-      <div class="qa-btn" onclick="navTo('p-posters','nb-more')"><div class="qa-icon">🎨</div><div class="qa-label">Posters</div></div>
-      <div class="qa-btn" onclick="navTo('p-appt','nb-more')"><div class="qa-icon">📅</div><div class="qa-label">Appointment</div></div>
-      <div class="qa-btn" onclick="navTo('p-chat','nb-more')"><div class="qa-icon">🤖</div><div class="qa-label">AI Chat</div></div>
-      <div class="qa-btn" onclick="navTo('p-faq','nb-more')"><div class="qa-icon">❓</div><div class="qa-label">FAQ</div></div>
-      <div class="qa-btn" onclick="navTo('p-refer','nb-more')"><div class="qa-icon">🎁</div><div class="qa-label">Refer & Earn</div></div>
-      <div class="qa-btn" onclick="navTo('p-svc','nb-more')"><div class="qa-icon">🏢</div><div class="qa-label">Services</div></div>
-      <div class="qa-btn" onclick="navTo('p-reviews','nb-more')"><div class="qa-icon">⭐</div><div class="qa-label">Reviews</div></div>
-      <div class="qa-btn" onclick="navTo('p-about','nb-more')"><div class="qa-icon">ℹ️</div><div class="qa-label">About Us</div></div>
-      <div class="qa-btn" onclick="navTo('p-noti
-      <div class="qa-btn" onclick="navTo('p-notif','nb-more')"><div class="qa-icon">🔔</div><div class="qa-label">Notifications</div></div>
-      <div class="qa-btn" onclick="navTo('p-admin','nb-more')"><div class="qa-icon">🔐</div><div class="qa-label">Admin</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- BUDGET PAGE -->
-<div class="pg" id="p-budget">
-<div class="pg-hdr">
-  <button class="pg-back" onclick="navTo('p-home','nb-home')">← Back</button>
-  <div class="pg-title">Budget <span>Planner</span></div>
-  <div class="pg-sub" id="bud-month-label">June 2026</div>
-</div>
-<div class="pg-content">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-    <button id="bud-prev-btn" style="background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:8px 18px;color:var(--light2);font-size:20px;cursor:pointer;font-family:inherit;">‹</button>
-    <div id="bud-health-badge" style="font-size:12px;font-weight:700;padding:5px 16px;border-radius:999px;"></div>
-    <button id="bud-next-btn" style="background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:8px 18px;color:var(--light2);font-size:20px;cursor:pointer;font-family:inherit;">›</button>
-  </div>
-  <div class="grid3" style="margin-bottom:10px;">
-    <div class="card" style="text-align:center;padding:10px 6px;"><div style="font-size:9px;color:var(--gray);margin-bottom:3px;">INCOME</div><div id="bud-total-inc" style="font-size:15px;font-weight:800;color:var(--green);font-family:var(--serif);">₹0</div></div>
-    <div class="card" style="text-align:center;padding:10px 6px;"><div style="font-size:9px;color:var(--gray);margin-bottom:3px;">SPENT</div><div id="bud-total-exp" style="font-size:15px;font-weight:800;color:var(--red);font-family:var(--serif);">₹0</div></div>
-    <div class="card" style="text-align:center;padding:10px 6px;"><div style="font-size:9px;color:var(--gray);margin-bottom:3px;">SAVED</div><div id="bud-total-sav" style="font-size:15px;font-weight:800;color:var(--blue3);font-family:var(--serif);">₹0</div></div>
-  </div>
-  <div style="background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:12px;">
-    <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;"><span style="font-weight:600;color:var(--light2);">Savings Rate</span><span id="bud-sav-pct" style="font-weight:700;color:var(--gold);">0%</span></div>
-    <div style="height:8px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden;"><div id="bud-sav-bar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--blue3),var(--green));border-radius:999px;transition:width 0.5s;"></div></div>
-    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gray);margin-top:4px;"><span>Target: 20%</span><span id="bud-sav-status">—</span></div>
-  </div>
-  <div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;">
-    <button class="bud-tab btn btn-primary btn-sm" data-tab="overview">📊 Overview</button>
-    <button class="bud-tab btn btn-outline btn-sm" data-tab="income">💰 Income</button>
-    <button class="bud-tab btn btn-outline btn-sm" data-tab="expenses">💸 Expenses</button>
-    <button class="bud-tab btn btn-outline btn-sm" data-tab="emis">🏦 EMIs</button>
-    <button class="bud-tab btn btn-outline btn-sm" data-tab="sip">📈 SIP</button>
-    <button class="bud-tab btn btn-outline btn-sm" data-tab="goals">🎯 Goals</button>
-    <button class="bud-tab btn btn-outline btn-sm" data-tab="smstrack">📱 SMS Track</button>
-  </div>
-  <div class="bud-pane" id="bud-overview">
-    <div class="grid2" style="margin-bottom:12px;">
-      <div class="card" style="padding:12px;"><div class="sec-title" style="margin-bottom:8px;">Spending Breakdown</div><canvas id="bud-pie" height="180"></canvas></div>
-      <div class="card" style="padding:12px;"><div class="sec-title" style="margin-bottom:8px;">6-Month Trend</div><canvas id="bud-bar" height="180"></canvas></div>
-    </div>
-    <div class="sec-title">Category Breakdown</div>
-    <div id="bud-cat-summary"></div>
-    <div class="sec-title" style="margin-top:12px;">💡 Stokado Advice</div>
-    <div id="bud-advice" class="card card-gold" style="padding:14px;"></div>
-  </div>
-  <div class="bud-pane" id="bud-income" style="display:none;">
-    <div class="card" style="margin-bottom:12px;">
-      <div class="sec-title">Add Income</div>
-      <label>Category</label>
-      <select id="inc-cat"><option>💼 Salary</option><option>🏢 Business</option><option>💻 Freelance</option><option>🏠 Rental</option><option>📈 Investments</option><option>📦 Other</option></select>
-      <label>Amount (₹)</label><input type="number" id="inc-amt" placeholder="80000"/>
-      <label>Note</label><input type="text" id="inc-desc" placeholder="e.g. Monthly salary"/>
-      <button class="btn btn-gold" id="inc-add-btn">+ Add Income</button>
-    </div>
-    <div class="sec-title">This Month Income</div>
-    <div id="inc-list"></div>
-  </div>
-  <div class="bud-pane" id="bud-expenses" style="display:none;">
-    <div class="card" style="margin-bottom:12px;">
-      <div class="sec-title">Add Expense</div>
-      <div class="grid2">
-        <div><label>Category</label>
-        <select id="exp-cat"><option>🍔 Food</option><option>🚗 Transport</option><option>🏠 Rent</option><option>💊 Medical</option><option>👕 Shopping</option><option>📱 Bills</option><option>🎬 Entertainment</option><option>📚 Education</option><option>🛒 Groceries</option><option>⚡ Electricity</option><option>💈 Personal Care</option><option>🎁 Gifts</option><option>✈️ Travel</option><option>📦 Other</option></select></div>
-        <div><label>Amount (₹)</label><input type="number" id="exp-amt" placeholder="500"/></div>
-      </div>
-      <label>Note (optional)</label><input type="text" id="exp-desc" placeholder="e.g. Swiggy"/>
-      <label>Date</label><input type="date" id="exp-date"/>
-      <button class="btn btn-primary" id="exp-add-btn">+ Add Expense</button>
-    </div>
-    <div class="sec-title">This Month Expenses</div>
-    <div id="exp-list"></div>
-  </div>
-  <div class="bud-pane" id="bud-emis" style="display:none;">
-    <div class="card" style="margin-bottom:12px;">
-      <div class="sec-title">Add EMI</div>
-      <label>Loan Type</label>
-      <select id="emi-type"><option>🏠 Home Loan</option><option>🚗 Car Loan</option><option>📱 Personal Loan</option><option>📚 Education Loan</option><option>💳 Credit Card</option><option>🏢 Business Loan</option></select>
-      <div class="grid2"><div><label>EMI (₹/mo)</label><input type="number" id="emi-amt" placeholder="15000"/></div><div><label>Months Left</label><input type="number" id="emi-rem" placeholder="48"/></div></div>
-      <label>Bank</label><input type="text" id="emi-bank" placeholder="HDFC Bank"/>
-      <button class="btn btn-primary" id="emi-add-btn">+ Add EMI</button>
-    </div>
-    <div class="sec-title">Active EMIs</div>
-    <div id="emi-list"></div>
-    <div id="emi-burden" style="display:none;" class="card"></div>
-  </div>
-  <div class="bud-pane" id="bud-sip" style="display:none;">
-    <div class="card" style="margin-bottom:12px;">
-      <div class="sec-title">Add SIP / Investment</div>
-      <label>Type</label>
-      <select id="sip-type"><option>📈 Mutual Fund SIP</option><option>🏛️ PPF</option><option>👴 NPS</option><option>🥇 Gold SGB</option><option>🏦 FD / RD</option><option>📊 Stocks</option></select>
-      <label>Fund Name</label><input type="text" id="sip-name" placeholder="e.g. Mirae Asset Large Cap"/>
-      <div class="grid2"><div><label>Monthly (₹)</label><input type="number" id="sip-amt2" placeholder="5000"/></div><div><label>SIP Date</label><input type="number" id="sip-date2" min="1" max="31" placeholder="7"/></div></div>
-      <button class="btn btn-gold" id="sip-add-btn">+ Add SIP</button>
-    </div>
-    <div class="sec-title">Active SIPs</div>
-    <div id="sip-list"></div>
-    <div id="sip-projection" style="display:none;" class="card card-blue" style="text-align:center;padding:16px;"></div>
-  </div>
-  <div class="bud-pane" id="bud-goals" style="display:none;">
-    <div class="card" style="margin-bottom:12px;">
-      <div class="sec-title">Add Goal</div>
-      <div class="grid2"><div><label>Type</label><select id="goal-type2"><option>🏠 House</option><option>🚗 Car</option><option>👶 Child Education</option><option>💒 Wedding</option><option>✈️ Vacation</option><option>🌅 Retirement</option><option>🆘 Emergency Fund</option></select></div><div><label>Target Year</label><input type="number" id="goal-year" placeholder="2028" min="2024" max="2050"/></div></div>
-      <label>Goal Name</label><input type="text" id="goal-name2" placeholder="e.g. House Down Payment"/>
-      <div class="grid2"><div><label>Target (₹)</label><input type="number" id="goal-target2" placeholder="1000000"/></div><div><label>Saved (₹)</label><input type="number" id="goal-saved" placeholder="200000"/></div></div>
-      <button class="btn btn-gold" id="goal-add-btn">+ Add Goal</button>
-    </div>
-    <div class="sec-title">Your Goals</div>
-    <div id="goal-list"></div>
-  </div>
-  <div class="bud-pane" id="bud-smstrack" style="display:none;">
-    <div class="card card-gold" style="margin-bottom:12px;padding:14px;">
-      <div style="font-size:22px;margin-bottom:8px;">📱</div>
-      <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:6px;">Auto Expense Tracking</div>
-      <div style="font-size:12px;color:var(--gray);line-height:1.7;margin-bottom:12px;">Select ALL your SMS, copy and paste below. Stokado reads everything — bank debits, UPI, CC, EMIs, salary, refunds!</div>
-      <textarea id="sms-input" placeholder="Paste bank SMS here..." style="height:140px;font-size:11px;line-height:1.6;resize:vertical;"></textarea>
-      <button class="btn btn-primary" id="sms-parse-btn" style="margin-top:4px;">🔍 Scan & Import</button>
-    </div>
-    <div id="sms-results" style="display:none;">
-      <div class="sec-title">Detected Transactions</div>
-      <div id="sms-list"></div>
-      <button class="btn btn-gold" id="sms-import-btn" style="margin-top:8px;display:none;">✅ Import All to Budget</button>
-    </div>
-    <div class="card" style="margin-top:12px;">
-      <div class="sec-title">How to use</div>
-      <div style="font-size:12px;color:var(--gray);line-height:1.8;">1. Open SMS app on your phone<br/>2. Long-press a bank message → Select All<br/>3. Copy → Paste above → Tap Scan<br/>4. All transactions auto-detected!<br/><br/><strong style="color:var(--light2);">Privacy:</strong> Everything processed on your phone only.</div>
-    </div>
-  </div>
-</div>
-</div>
-
 </div><!-- /pages -->
 
 <!-- BOTTOM NAV -->
@@ -2352,6 +2195,149 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 
 <script>
 
+// ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
+// Build: June 2026
+
+// ═══════════════════════════════════════
+// SUPABASE
+// ═══════════════════════════════════════
+var SUPA_URL = 'https://kegknokhurfctdonjqvi.supabase.co';
+var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtlZ2tub2todXJmY3Rkb25qcXZpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MTA1MjAsImV4cCI6MjA5NjQ4NjUyMH0.4vr-Z7kKUSSwU_syd1AeckUd0f5HmS7inEgEhgFJzGk';
+var supabase = null;
+try { supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY); } catch(e) {}
+
+async function saveClientToCloud(c) {
+  if (!supabase) return;
+  try { await supabase.from('clients').upsert({name:c.name,phone:c.phone,email:c.email||'',city:c.city||'Vijayawada',dob:c.dob||''},{onConflict:'phone'}); } catch(e) {}
+}
+async function saveApptToCloud(a) {
+  if (!supabase) return;
+  try { await supabase.from('appointments').insert({client_name:a.name,client_phone:a.phone,date:a.date,time:a.time,topic:a.topic||'General'}); } catch(e) {}
+}
+async function loadCloudStats() {
+  if (!supabase) return;
+  try {
+    var r = await supabase.from('clients').select('*',{count:'exact',head:true});
+    if (!r.error && r.count !== null) { var e=document.getElementById('adm-c'); if(e) e.textContent=r.count; }
+  } catch(e) {}
+}
+
+// ═══════════════════════════════════════
+// DATA ARRAYS
+// ═══════════════════════════════════════
+var mfData = [
+  // LARGE CAP
+  {n:'Mirae Asset Large Cap Fund',          c:'equity', s:5, r1:'18.4%', r3:'21.2%', r5:'19.8%', aum:'₹32,450 Cr', risk:'Moderate', code:119551},
+  {n:'Axis Bluechip Fund',                  c:'equity', s:4, r1:'15.2%', r3:'18.4%', r5:'17.6%', aum:'₹28,900 Cr', risk:'Moderate', code:120503},
+  {n:'ICICI Pru Bluechip Fund',             c:'equity', s:5, r1:'19.6%', r3:'22.1%', r5:'20.3%', aum:'₹42,100 Cr', risk:'Moderate', code:120586},
+  {n:'SBI Bluechip Fund',                   c:'equity', s:4, r1:'14.8%', r3:'17.6%', r5:'16.4%', aum:'₹38,200 Cr', risk:'Moderate', code:119223},
+  {n:'Nippon India Large Cap Fund',         c:'equity', s:5, r1:'22.3%', r3:'23.8%', r5:'21.4%', aum:'₹24,600 Cr', risk:'Moderate', code:118825},
+  // MID CAP
+  {n:'HDFC Mid-Cap Opportunities',          c:'equity', s:5, r1:'28.6%', r3:'24.8%', r5:'22.1%', aum:'₹52,380 Cr', risk:'High', code:120505},
+  {n:'Kotak Emerging Equity Fund',          c:'equity', s:5, r1:'26.4%', r3:'23.2%', r5:'21.8%', aum:'₹28,400 Cr', risk:'High', code:120837},
+  {n:'Axis Midcap Fund',                    c:'equity', s:4, r1:'22.8%', r3:'21.4%', r5:'20.2%', aum:'₹22,800 Cr', risk:'High', code:120503},
+  // FLEXI/MULTI CAP
+  {n:'Parag Parikh Flexi Cap Fund',         c:'equity', s:5, r1:'24.6%', r3:'22.4%', r5:'21.8%', aum:'₹58,400 Cr', risk:'Moderate', code:122639},
+  {n:'Motilal Oswal Flexi Cap Fund',        c:'equity', s:5, r1:'27.2%', r3:'23.6%', r5:'22.4%', aum:'₹18,200 Cr', risk:'High', code:135798},
+  {n:'Canara Robeco Flexi Cap Fund',        c:'equity', s:4, r1:'18.4%', r3:'19.8%', r5:'18.6%', aum:'₹11,400 Cr', risk:'Moderate', code:101277},
+  // SMALL CAP
+  {n:'SBI Small Cap Fund',                  c:'equity', s:5, r1:'32.4%', r3:'28.6%', r5:'26.2%', aum:'₹24,800 Cr', risk:'High', code:119223},
+  {n:'Nippon India Small Cap Fund',         c:'equity', s:5, r1:'34.8%', r3:'30.2%', r5:'27.4%', aum:'₹48,600 Cr', risk:'High', code:118825},
+  // DEBT
+  {n:'SBI Magnum Gilt Fund',                c:'debt',   s:4, r1:'7.8%',  r3:'7.2%',  r5:'7.5%',  aum:'₹4,200 Cr',  risk:'Low',      code:101277},
+  {n:'Kotak Corporate Bond Fund',           c:'debt',   s:4, r1:'8.2%',  r3:'7.8%',  r5:'8.0%',  aum:'₹12,400 Cr', risk:'Low',      code:120837},
+  {n:'ICICI Pru Short Term Fund',           c:'debt',   s:4, r1:'7.4%',  r3:'7.0%',  r5:'7.3%',  aum:'₹18,200 Cr', risk:'Low',      code:120586},
+  {n:'HDFC Short Term Debt Fund',           c:'debt',   s:4, r1:'7.6%',  r3:'7.2%',  r5:'7.4%',  aum:'₹14,600 Cr', risk:'Low',      code:120505},
+  // HYBRID
+  {n:'ICICI Pru Balanced Advantage',        c:'hybrid', s:5, r1:'16.4%', r3:'15.8%', r5:'14.2%', aum:'₹45,600 Cr', risk:'Moderate', code:120586},
+  {n:'HDFC Balanced Advantage Fund',        c:'hybrid', s:5, r1:'18.2%', r3:'16.4%', r5:'15.6%', aum:'₹68,400 Cr', risk:'Moderate', code:120505},
+  {n:'SBI Equity Hybrid Fund',              c:'hybrid', s:4, r1:'14.6%', r3:'14.2%', r5:'13.8%', aum:'₹58,200 Cr', risk:'Moderate', code:119223},
+  // ELSS
+  {n:'Motilal Oswal ELSS Tax Saver',        c:'elss',   s:5, r1:'22.4%', r3:'20.8%', r5:'19.4%', aum:'₹6,800 Cr',  risk:'High',     code:135798},
+  {n:'Axis ELSS Tax Saver Fund',            c:'elss',   s:4, r1:'16.8%', r3:'17.2%', r5:'16.0%', aum:'₹34,200 Cr', risk:'High',     code:120503},
+  {n:'Mirae Asset ELSS Tax Saver',          c:'elss',   s:5, r1:'20.4%', r3:'19.6%', r5:'18.8%', aum:'₹22,400 Cr', risk:'High',     code:119551},
+  {n:'SBI Long Term Equity Fund',           c:'elss',   s:4, r1:'18.6%', r3:'18.2%', r5:'17.4%', aum:'₹16,800 Cr', risk:'High',     code:119223},
+  // INDEX
+  {n:'Nippon India Index Nifty 50',         c:'index',  s:4, r1:'14.8%', r3:'17.2%', r5:'16.4%', aum:'₹7,400 Cr',  risk:'Moderate', code:118825},
+  {n:'UTI Nifty 50 Index Fund',             c:'index',  s:4, r1:'14.6%', r3:'17.0%', r5:'16.2%', aum:'₹15,800 Cr', risk:'Moderate', code:120716},
+  {n:'HDFC Index Fund Nifty 50',            c:'index',  s:5, r1:'15.0%', r3:'17.4%', r5:'16.6%', aum:'₹12,400 Cr', risk:'Moderate', code:120505},
+  {n:'Mirae Asset Nifty Midcap 150 ETF',   c:'index',  s:4, r1:'26.4%', r3:'22.8%', r5:'21.2%', aum:'₹4,200 Cr',  risk:'Moderate', code:119551},
+  {n:'Motilal Oswal Nifty 500 Index Fund',  c:'index',  s:4, r1:'19.2%', r3:'20.4%', r5:'18.8%', aum:'₹3,800 Cr',  risk:'Moderate', code:135798},
+  {n:'ICICI Pru Nifty Next 50 Index Fund',  c:'index',  s:4, r1:'21.6%', r3:'19.8%', r5:'18.4%', aum:'₹5,600 Cr',  risk:'Moderate', code:120586}
+,
+  {n:'DSP Midcap Fund',c:'equity',s:4,r1:'24.8%',r3:'20.6%',r5:'18.2%',aum:'₹18,400 Cr',risk:'High',code:120594},
+  {n:'Franklin India Flexi Cap',c:'equity',s:4,r1:'20.2%',r3:'18.4%',r5:'17.0%',aum:'₹12,600 Cr',risk:'Moderate',code:118989},
+  {n:'Kotak Flexicap Fund',c:'equity',s:4,r1:'17.8%',r3:'16.2%',r5:'15.4%',aum:'₹42,800 Cr',risk:'Moderate',code:120255},
+  {n:'Tata Digital India Fund',c:'equity',s:5,r1:'18.4%',r3:'24.6%',r5:'22.8%',aum:'₹8,200 Cr',risk:'High',code:120505},
+  {n:'Quant Small Cap Fund',c:'equity',s:5,r1:'42.6%',r3:'36.4%',r5:'32.2%',aum:'₹21,400 Cr',risk:'High',code:120828},
+  {n:'HDFC Nifty 50 Index Fund',c:'index',s:4,r1:'14.9%',r3:'17.3%',r5:'16.5%',aum:'₹16,800 Cr',risk:'Moderate',code:120693},
+  {n:'Edelweiss Balanced Advantage',c:'hybrid',s:4,r1:'14.2%',r3:'13.8%',r5:'13.2%',aum:'₹10,400 Cr',risk:'Moderate',code:147622},
+  {n:'Nippon India Liquid Fund',c:'debt',s:4,r1:'7.2%',r3:'6.8%',r5:'6.6%',aum:'₹24,600 Cr',risk:'Low',code:118701},
+  {n:'PGIM India ELSS Tax Saver',c:'elss',s:4,r1:'17.4%',r3:'16.8%',r5:'15.6%',aum:'₹5,200 Cr',risk:'High',code:122639},
+  {n:'Bandhan Infrastructure Fund',c:'equity',s:4,r1:'38.4%',r3:'28.2%',r5:'24.6%',aum:'₹6,800 Cr',risk:'High',code:119215}];
+var insData = {
+  term:[
+    {n:'HDFC Life Click 2 Protect',    b:7200,  f:'Return of premium option',      cover:'1Cr', csr:'99.4%'},
+    {n:'Max Life Smart Secure Plus',   b:6800,  f:'Accident cover + waiver',        cover:'1Cr', csr:'99.3%'},
+    {n:'ICICI Pru iProtect Smart',     b:7500,  f:'Critical illness cover',         cover:'1Cr', csr:'97.8%'},
+    {n:'Tata AIA Sampoorna Raksha',    b:6600,  f:'Increasing cover option',        cover:'1Cr', csr:'99.0%'},
+    {n:'Kotak e-Term Plan',            b:6200,  f:'Lowest premium online',          cover:'1Cr', csr:'98.5%'},
+    {n:'Aditya Birla DigiShield',      b:7100,  f:'Joint life option available',    cover:'1Cr', csr:'98.1%'},
+    {n:'Bajaj Allianz eTouch',         b:6900,  f:'Monthly income benefit',         cover:'1Cr', csr:'97.2%'}
+  ],
+  health:[
+    {n:'Star Health Comprehensive',    b:10800, f:'Zero sub-limits · OPD covered',  cover:'5L',  csr:'99.1%'},
+    {n:'Care Health Advantage',        b:9600,  f:'No room rent limit',             cover:'5L',  csr:'95.2%'},
+    {n:'ICICI Lombard Complete',       b:11200, f:'6500+ cashless hospitals',       cover:'5L',  csr:'97.4%'},
+    {n:'ManipalCigna ProHealth',       b:9200,  f:'Global cover available',         cover:'5L',  csr:'94.8%'},
+    {n:'Niva Bupa Reassure 2.0',       b:10400, f:'Lock the clock benefit',         cover:'5L',  csr:'98.4%'},
+    {n:'HDFC ERGO Optima Secure',      b:11600, f:'Restore benefit · 2x cover',     cover:'5L',  csr:'96.6%'}
+  ],
+  car:[
+    {n:'HDFC ERGO Comprehensive',      b:4200,  f:'24x7 roadside assistance',       cover:'IDV', csr:'98.8%'},
+    {n:'ICICI Lombard Motor',          b:3900,  f:'Instant claim settlement',       cover:'IDV', csr:'97.1%'},
+    {n:'Bajaj Allianz Car',            b:4100,  f:'Cashless at 4000+ garages',      cover:'IDV', csr:'96.4%'}
+  ],
+  home2:[
+    {n:'HDFC ERGO Home Protect',       b:3500,  f:'Structure + contents both',      cover:'5L',  csr:'98.2%'},
+    {n:'ICICI Lombard Home',           b:3200,  f:'Natural disaster coverage',      cover:'5L',  csr:'96.8%'},
+    {n:'Bajaj Allianz Home',           b:3800,  f:'Burglary + theft covered',       cover:'5L',  csr:'95.4%'}
+  ]
+};
+var posterData = [
+  {t:'Start Your SIP Today!',    i:'📈', tip:'SIP Rs5,000/month at 12% for 25 yrs = Rs94 Lakhs!',       bg:'linear-gradient(145deg,#1a237e,#283593)'},
+  {t:'Term Insurance Must!',     i:'🛡️', tip:'Rs1Cr cover at just Rs8,000/year for a 30-yr-old!',       bg:'linear-gradient(145deg,#1b5e20,#2e7d32)'},
+  {t:'Rule of 72',               i:'⚡', tip:'72 divided by 12% = 6 years to double your money!',       bg:'linear-gradient(145deg,#4a148c,#6a1b9a)'},
+  {t:'Save Tax with ELSS',       i:'💸', tip:'Save Rs46,800 in tax with ELSS under Section 80C!',       bg:'linear-gradient(145deg,#e65100,#f57c00)'},
+  {t:'Happy Diwali!',            i:'🎆', tip:'Wishing you wealth and prosperity this Diwali!',           bg:'linear-gradient(145deg,#b71c1c,#c62828)'},
+  {t:'Gold Investment Tip',      i:'🥇', tip:'Gold gave 11% CAGR over 20 years. Diversify!',            bg:'linear-gradient(145deg,#827717,#9e9d24)'},
+  {t:'Emergency Fund First!',    i:'🏦', tip:'Keep 6 months expenses safe before investing!',            bg:'linear-gradient(145deg,#006064,#00838f)'},
+  {t:'Power of Compounding',     i:'🚀', tip:'Rs10,000/month for 30 years at 12% = Rs3.5 Crores!',      bg:'linear-gradient(145deg,#1a237e,#0d47a1)'},
+  {t:'Health Insurance Now!',    i:'🏥', tip:'Rs10L family health cover at just Rs15,000 per year!',    bg:'linear-gradient(145deg,#880e4f,#ad1457)'},
+  {t:'Diversify Portfolio',      i:'📊', tip:'60% Equity + 30% Debt + 10% Gold = Smart portfolio mix!', bg:'linear-gradient(145deg,#004d40,#00695c)'},
+  {t:'Happy New Year!',          i:'🎉', tip:'New year, new financial goals. Start your SIP today!',    bg:'linear-gradient(145deg,#311b92,#4527a0)'},
+  {t:'IPO Investment Tip',       i:'📋', tip:'Apply IPOs via Motilal Oswal for best allotment chance!', bg:'linear-gradient(145deg,#0d47a1,#1565c0)'},
+  {t:'Republic Day',             i:'🏛️', tip:'Proud to serve India investors. Jai Hind!',               bg:'linear-gradient(145deg,#1b5e20,#2e7d32)'},
+  {t:'Retirement Planning',      i:'🌅', tip:'Start at 30 with SIP Rs10,000 = Rs3.5Cr by age 60!',     bg:'linear-gradient(145deg,#e65100,#bf360c)'},
+  {t:'NPS Tax Benefit',          i:'👴', tip:'Extra Rs50,000 tax deduction under Section 80CCD(1B)!',   bg:'linear-gradient(145deg,#4a148c,#38006b)'},
+  {t:'Happy Ugadi!',             i:'🌺', tip:'New year, new investments. Subhakankshalu!',               bg:'linear-gradient(145deg,#1a237e,#283593)'},
+  {t:'SIP on Market Dip!',       i:'📉', tip:'Market corrections are buying opportunities for SIP!',    bg:'linear-gradient(145deg,#212121,#424242)'},
+  {t:'Stokado Promise',          i:'💛', tip:'Rs150Cr AUM. 4000+ clients. Your Trust, Our Solutions!',  bg:'linear-gradient(145deg,#7b5e00,#c9890a)'},
+  {t:'Republic Day',e:'&#127988;',g:'linear-gradient(135deg,#FF9933,#FFFFFF,#138808)',m:'Jan 26'},
+  {t:'Valentines Day',e:'&#10084;&#65039;',g:'linear-gradient(135deg,#FF6B6B,#FF8E8E)',m:'Feb 14'},
+  {t:'Holi',e:'&#127776;',g:'linear-gradient(135deg,#FF6B6B,#F2C94C,#27AE60)',m:'March'},
+  {t:'Gudi Padwa',e:'&#127470;&#127475;',g:'linear-gradient(135deg,#FF9933,#F2C94C)',m:'April'},
+  {t:'Mothers Day',e:'&#128149;',g:'linear-gradient(135deg,#FF6B6B,#FF8E8E)',m:'May'},
+  {t:'Independence Day',e:'&#127987;',g:'linear-gradient(135deg,#FF9933,#FFFFFF,#138808)',m:'Aug 15'},
+  {t:'Ganesh Chaturthi',e:'&#129418;',g:'linear-gradient(135deg,#FF9933,#F2C94C)',m:'Aug-Sep'}
+];
+var calcData = {
+  sip:    {ico:'📈', name:'SIP Calculator', sub:'Systematic Investment Plan',
+    inputs:[{id:'p', label:'Monthly SIP (₹)', min:500, max:200000, step:500, val:25000},
+            {id:'r', label:'Return Rate (%)', min:1, max:30, step:0.1, val:12},
+            {id:'y', label:'Years', min:1, max:40, step:1, val:10}]},
+  lump:   {ico:'💰', name:'Lumpsum Calculator', sub:'One-time Investment',
+    inputs:[{id:'p', label:'
 // ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
 // Build: June 2026
 
@@ -4339,6 +4325,9 @@ document.addEventListener('click', function(e) {
   if(t.classList.contains('hub-tab')) {
     switchHub(t.getAttribute('data-hub'));
   }
+  if(t.classList.contains('hub-tab')) {
+    switchHub(t.getAttribute('data-hub'));
+  }
   if(t.classList.contains('nav-btn')) { navTo(t.getAttribute('data-pg'), t.getAttribute('data-nb')||'nb-more'); }
   if(t.classList.contains('calc-pdf-btn')) calcPDF(t.getAttribute('data-calc'));
   if(t.classList.contains('calc-share-btn')) calcShare(t.getAttribute('data-calc'));
@@ -5094,6 +5083,144 @@ function importSMS() {
 }
 
 
+// ═══════════════════════════════════════
+// FINANCE HUB
+// ═══════════════════════════════════════
+window._hubTab = 'learn';
+
+function switchHub(tab) {
+  window._hubTab = tab;
+  document.querySelectorAll('.hub-tab').forEach(function(b) {
+    b.className = 'hub-tab btn btn-sm ' + (b.getAttribute('data-hub')===tab ? 'btn-primary' : 'btn-outline');
+  });
+  document.querySelectorAll('.hub-pane').forEach(function(p) { p.style.display = 'none'; });
+  var pane = document.getElementById('hub-'+tab);
+  if (pane) pane.style.display = 'block';
+  if (tab==='goals') updateGoalPlanner();
+  if (tab==='funds') buildTopFunds();
+  if (tab==='calendar') buildFinCalendar();
+  if (tab==='news') buildFinTips();
+}
+
+function updateGoalPlanner() {
+  var tEl = document.getElementById('goal-target');
+  var yEl = document.getElementById('goal-years');
+  var rEl = document.getElementById('goal-returns');
+  if (!tEl||!yEl||!rEl) return;
+  var target=parseFloat(tEl.value)||5000000;
+  var yrs=parseFloat(yEl.value)||10;
+  var ret=parseFloat(rEl.value)||12;
+  var yvEl=document.getElementById('goal-years-v'); if(yvEl) yvEl.textContent=yrs+' yrs';
+  var rvEl=document.getElementById('goal-returns-v'); if(rvEl) rvEl.textContent=ret+'%';
+  var r=ret/12/100, mn=yrs*12;
+  var sip=target*r/(Math.pow(1+r,mn)-1);
+  var lump=target/Math.pow(1+ret/100,yrs);
+  var invested=sip*mn;
+  var gains=target-invested;
+  var gs=document.getElementById('goal-sip'); if(gs) gs.textContent='Rs.'+n(Math.ceil(sip/100)*100)+'/mo';
+  var gl=document.getElementById('goal-lump'); if(gl) gl.textContent='Rs.'+n(Math.round(lump));
+  var gi=document.getElementById('goal-inv'); if(gi) gi.textContent='Rs.'+n(Math.round(invested));
+  var gg=document.getElementById('goal-gain'); if(gg) gg.textContent='Rs.'+n(Math.round(gains));
+  var gy=document.getElementById('goal-yr-v'); if(gy) gy.textContent=yrs+' years';
+}
+
+var topFunds = {
+  largecap:[
+    {n:'Mirae Asset Large Cap',r1:'18.4%',r3:'21.2%',r5:'19.8%',s:5},
+    {n:'Nippon India Large Cap',r1:'22.3%',r3:'23.8%',r5:'21.4%',s:5},
+    {n:'ICICI Pru Bluechip',r1:'19.6%',r3:'22.1%',r5:'20.3%',s:5}
+  ],
+  midcap:[
+    {n:'HDFC Mid-Cap Opportunities',r1:'28.6%',r3:'24.8%',r5:'22.1%',s:5},
+    {n:'Kotak Emerging Equity',r1:'26.4%',r3:'23.2%',r5:'21.8%',s:5},
+    {n:'Nippon India Small Cap',r1:'34.8%',r3:'30.2%',r5:'27.4%',s:5}
+  ],
+  elss:[
+    {n:'Motilal Oswal ELSS Tax Saver',r1:'22.4%',r3:'20.8%',r5:'19.4%',s:5},
+    {n:'Mirae Asset ELSS Tax Saver',r1:'20.4%',r3:'19.6%',r5:'18.8%',s:5},
+    {n:'Axis ELSS Tax Saver',r1:'16.8%',r3:'17.2%',r5:'16.0%',s:4}
+  ],
+  index:[
+    {n:'HDFC Index Fund Nifty 50',r1:'15.0%',r3:'17.4%',r5:'16.6%',s:5},
+    {n:'UTI Nifty 50 Index',r1:'14.6%',r3:'17.0%',r5:'16.2%',s:4},
+    {n:'Nippon India Nifty 50',r1:'14.8%',r3:'17.2%',r5:'16.4%',s:4}
+  ]
+};
+
+function buildTopFunds() {
+  ['largecap','midcap','elss','index'].forEach(function(cat) {
+    var el = document.getElementById('top-'+cat); if(!el||el.innerHTML) return;
+    var h = '';
+    topFunds[cat].forEach(function(f,i) {
+      h += '<div class="mf-card" style="margin-bottom:8px;">'
+        +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">'
+        +'<div style="font-size:13px;font-weight:700;">'+(i===0?'🥇 ':i===1?'🥈 ':'🥉 ')+f.n+'</div>'
+        +'<div style="font-size:12px;color:var(--gold);">'+'★'.repeat(f.s)+'☆'.repeat(5-f.s)+'</div></div>'
+        +'<div class="mf-returns">'
+        +'<div class="mf-ret"><div class="mf-ret-val">'+f.r1+'</div><div class="mf-ret-lbl">1 Yr</div></div>'
+        +'<div class="mf-ret"><div class="mf-ret-val">'+f.r3+'</div><div class="mf-ret-lbl">3 Yr</div></div>'
+        +'<div class="mf-ret"><div class="mf-ret-val">'+f.r5+'</div><div class="mf-ret-lbl">5 Yr</div></div>'
+        +'</div></div>';
+    });
+    el.innerHTML = h;
+  });
+}
+
+var finCalendar = [
+  {month:'January',color:'var(--blue3)',events:[{date:'Jan 15',title:'Advance Tax Q3 Due',type:'tax',imp:true},{date:'Jan 26',title:'Republic Day',type:'holiday'},{date:'Jan 31',title:'SIP pause or restart deadline',type:'sip'}]},
+  {month:'February',color:'var(--gold)',events:[{date:'Feb 1',title:'Union Budget Presentation',type:'market',imp:true},{date:'Feb 14',title:'Valentines Day — Gift a SIP!',type:'tip'},{date:'Feb 28',title:'SGB Investment Window',type:'invest'}]},
+  {month:'March',color:'var(--red)',events:[{date:'Mar 15',title:'Advance Tax Q4 Final Due',type:'tax',imp:true},{date:'Mar 31',title:'Last day for 80C investments!',type:'tax',imp:true},{date:'Mar 31',title:'Financial Year 2025-26 Ends',type:'market',imp:true}]},
+  {month:'April',color:'var(--green)',events:[{date:'Apr 1',title:'New Financial Year 2026-27 Begins',type:'market'},{date:'Apr 15',title:'ITR Filing Season Opens',type:'tax'},{date:'Apr 30',title:'Form 16 expected from employer',type:'tax'}]},
+  {month:'May',color:'var(--blue3)',events:[{date:'May 15',title:'Advance Tax Q1 Due',type:'tax',imp:true},{date:'May 31',title:'TDS Certificate Form 16A due',type:'tax'}]},
+  {month:'June',color:'var(--gold)',events:[{date:'Jun 8',title:'Mid-year portfolio review!',type:'invest',imp:true},{date:'Jun 30',title:'Review SIP performance',type:'sip',imp:true}]},
+  {month:'July',color:'var(--green)',events:[{date:'Jul 15',title:'SGB Interest Credit',type:'invest'},{date:'Jul 31',title:'ITR Filing Deadline AY 2026-27',type:'tax',imp:true}]},
+  {month:'August',color:'var(--blue3)',events:[{date:'Aug 15',title:'Independence Day',type:'holiday'},{date:'Aug 31',title:'Revised ITR filing closes',type:'tax'}]},
+  {month:'September',color:'var(--gold)',events:[{date:'Sep 15',title:'Advance Tax Q2 Due',type:'tax',imp:true},{date:'Sep 30',title:'Q2 Results Season Begins',type:'market'}]},
+  {month:'October',color:'var(--red)',events:[{date:'Oct 2',title:'Gandhi Jayanti',type:'holiday'},{date:'Oct 31',title:'Diwali Muhurat Trading',type:'market',imp:true}]},
+  {month:'November',color:'var(--blue3)',events:[{date:'Nov 15',title:'Advance Tax Q3 Due',type:'tax',imp:true},{date:'Nov 30',title:'Review year-end tax saving',type:'tax'}]},
+  {month:'December',color:'var(--green)',events:[{date:'Dec 15',title:'Increase SIP by 10% this month',type:'sip',imp:true},{date:'Dec 25',title:'Christmas Day',type:'holiday'},{date:'Dec 31',title:'Last chance for tax planning!',type:'tax',imp:true}]}
+];
+
+function buildFinCalendar() {
+  var el = document.getElementById('fin-calendar'); if(!el||el.innerHTML) return;
+  var tc = {tax:'var(--red)',invest:'var(--green)',sip:'var(--blue3)',market:'var(--gold)',holiday:'var(--gray)',tip:'var(--gold)'};
+  var h = '';
+  finCalendar.forEach(function(m) {
+    h += '<div style="margin-bottom:14px;">'
+      + '<div style="font-size:12px;font-weight:700;color:'+m.color+';text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">'+m.month+'</div>';
+    m.events.forEach(function(ev) {
+      h += '<div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">'
+        + '<div style="font-size:10px;font-weight:700;color:var(--gray);min-width:40px;margin-top:2px;">'+ev.date.split(' ')[1]+'</div>'
+        + '<div><div style="font-size:12px;font-weight:'+(ev.imp?'700':'500')+';color:'+(ev.imp?'var(--white)':'var(--light2)')+';">'+ev.title+'</div>'
+        + '<div style="font-size:10px;color:'+(tc[ev.type]||'var(--gray)')+';margin-top:2px;text-transform:uppercase;letter-spacing:0.5px;">'+ev.type+'</div>'
+        + '</div></div>';
+    });
+    h += '</div>';
+  });
+  el.innerHTML = h;
+}
+
+var finTips = [
+  {ico:'💡',title:'Start SIP Today, Not Tomorrow',tip:'The best time to start investing was yesterday. Every month you delay costs you in compounding. Start with even Rs.500!'},
+  {ico:'🛡️',title:'Insurance Before Investment',tip:'Before investing, ensure you have term insurance (10x income) and health insurance (min Rs.10L family).'},
+  {ico:'📊',title:'Review Portfolio Every 6 Months',tip:'Rebalance if any fund lags its benchmark by more than 5% for 2+ years.'},
+  {ico:'🎯',title:'50-30-20 Budget Rule',tip:'50% for needs, 30% for wants, 20% for savings and investments. Simple but life-changing!'},
+  {ico:'🔄',title:'Step Up SIP by 10% Every Year',tip:'Rs.5,000 SIP at 10% step-up for 20 years creates 2x more wealth vs a flat SIP!'},
+  {ico:'🏦',title:'Emergency Fund First',tip:'Build 6 months expenses in FD or liquid MF before any investment. This prevents panic selling.'},
+  {ico:'📅',title:'Invest Lumpsum at Market Dips',tip:'Every 10%+ market fall is a golden lumpsum opportunity. Use our Lumpsum Calculator!'},
+  {ico:'🥇',title:'SGB vs Physical Gold',tip:'Sovereign Gold Bonds give gold returns PLUS 2.5% interest. Physical gold has 10-20% making charges.'}
+];
+
+function buildFinTips() {
+  var el = document.getElementById('fin-tips'); if(!el||el.innerHTML) return;
+  el.innerHTML = finTips.map(function(t) {
+    return '<div class="card" style="margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;">'
+      +'<div style="font-size:26px;flex-shrink:0;">'+t.ico+'</div>'
+      +'<div><div style="font-size:13px;font-weight:700;margin-bottom:6px;">'+t.title+'</div>'
+      +'<div style="font-size:12px;color:var(--gray);line-height:1.7;">'+t.tip+'</div></div></div>';
+  }).join('');
+}
+
 window.addEventListener('load', function() {
   var expDate = document.getElementById('exp-date');
   if(expDate) expDate.value = new Date().toISOString().split('T')[0];
@@ -5186,7 +5313,3 @@ function updateNavDisplay(code,nav) { updateNav(code,nav); }
 function addMFNavHeader() {}
 function buildTopMovers() {}
 
-
-</script>
-</body>
-</html>
