@@ -879,15 +879,15 @@ label { font-size: 12px; font-weight: 600; color: var(--light2); margin-bottom: 
 /* ── CALCULATOR TABS — category grouped ── */
 .calc-cats { display:flex; gap:6px; margin-bottom:8px; overflow-x:auto; scrollbar-width:none; }
 .calc-cats::-webkit-scrollbar { display:none; }
-.calc-cat-btn { flex-shrink:0; padding:6px 14px; border-radius:999px; font-size:11px; font-weight:700; cursor:pointer; border:1.5px solid var(--border); background:transparent; color:var(--gray); font-family:var(--font); text-transform:uppercase; letter-spacing:0.5px; }
-.calc-cat-btn.active { background:var(--navy3); border-color:var(--blue3); color:var(--gold); }
+.calc-cat-btn { flex-shrink:0; padding:6px 16px; border-radius:999px; font-size:11px; font-weight:700; cursor:pointer; border:1.5px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04); color:var(--gray); font-family:var(--font); white-space:nowrap; transition:all 0.2s; }
+.calc-cat-btn.active { background:linear-gradient(135deg,#1A56DB,#0A2463); border-color:var(--blue3); color:#fff; box-shadow:0 4px 14px rgba(26,86,219,0.35); }
 .calc-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
-.calc-card { background:var(--navy2); border:1px solid var(--border); border-radius:14px; padding:14px 12px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:10px; }
-.calc-card:active { transform:scale(0.96); }
-.calc-card.active { border-color:var(--blue3); background:rgba(26,86,219,0.12); }
-.calc-card-icon { font-size:22px; flex-shrink:0; }
+.calc-card { background:var(--navy2); border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:12px 10px; cursor:pointer; transition:all 0.18s; display:flex; align-items:center; gap:10px; }
+.calc-card:active { transform:scale(0.95); opacity:0.85; }
+.calc-card.calc-card-active { border-color:var(--blue3); background:rgba(26,86,219,0.14); box-shadow:0 4px 18px rgba(26,86,219,0.2); }
+.calc-card-icon { width:40px; height:40px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:19px; flex-shrink:0; }
 .calc-card-name { font-size:12px; font-weight:700; color:var(--white); line-height:1.3; }
-.calc-card-sub { font-size:10px; color:var(--gray); margin-top:1px; }
+.calc-card-sub { font-size:10px; color:var(--gray); margin-top:1px; line-height:1.4; }
 .calc-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 14px; scrollbar-width: none; }
 .calc-tabs::-webkit-scrollbar { display: none; }
 .calc-tab { flex-shrink: 0; padding: 7px 14px; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: transparent; color: var(--gray); font-family: var(--font); }
@@ -1845,370 +1845,208 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 
 <!-- ══════════════ MORE MENU ══════════════ -->
 <div class="pg" id="p-budget">
-<div class="pg-hdr">
+<div class="pg-hdr" style="padding-bottom:0;">
   <button class="pg-back" onclick="navTo('p-home','nb-home')">&#8592; Back</button>
   <div class="pg-title">Budget <span>Planner</span></div>
-  <div class="pg-sub" id="bud-month-label">June 2026</div>
 </div>
-<div class="pg-content">
+<div class="pg-content" style="padding-top:10px;">
 
-<!-- MONTH NAV -->
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-  <button id="bud-prev-btn" style="background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:8px 18px;color:var(--light2);font-size:20px;cursor:pointer;font-family:inherit;">‹</button>
-  <div id="bud-health-badge" style="font-size:12px;font-weight:700;padding:5px 16px;border-radius:999px;"></div>
-  <button id="bud-next-btn" style="background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:8px 18px;color:var(--light2);font-size:20px;cursor:pointer;font-family:inherit;">›</button>
-</div>
-
-<!-- SUMMARY STRIP -->
-<div class="grid3" style="margin-bottom:10px;">
-  <div class="card" style="text-align:center;padding:10px 6px;">
-    <div style="font-size:9px;color:var(--gray);margin-bottom:3px;">INCOME</div>
-    <div id="bud-total-inc" style="font-size:15px;font-weight:800;color:var(--green);font-family:var(--serif);">₹0</div>
-  </div>
-  <div class="card" style="text-align:center;padding:10px 6px;">
-    <div style="font-size:9px;color:var(--gray);margin-bottom:3px;">SPENT</div>
-    <div id="bud-total-exp" style="font-size:15px;font-weight:800;color:var(--red);font-family:var(--serif);">₹0</div>
-  </div>
-  <div class="card" style="text-align:center;padding:10px 6px;">
-    <div style="font-size:9px;color:var(--gray);margin-bottom:3px;">SAVED</div>
-    <div id="bud-total-sav" style="font-size:15px;font-weight:800;color:var(--blue3);font-family:var(--serif);">₹0</div>
-  </div>
-</div>
-
-<!-- SAVINGS BAR -->
-<div style="background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:12px;">
-  <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;">
-    <span style="font-weight:600;color:var(--light2);">Savings Rate</span>
-    <span id="bud-sav-pct" style="font-weight:700;color:var(--gold);">0%</span>
-  </div>
-  <div style="height:8px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden;">
-    <div id="bud-sav-bar" style="height:100%;width:0%;background:linear-gradient(90deg,var(--blue3),var(--green));border-radius:999px;transition:width 0.5s;"></div>
-  </div>
-  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gray);margin-top:4px;">
-    <span>Target: 20%</span><span id="bud-sav-status">—</span>
-  </div>
-</div>
-
-<!-- TABS -->
-<div style="display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;">
-  <button class="bud-tab btn btn-primary btn-sm" data-tab="overview">📊 Overview</button>
-  <button class="bud-tab btn btn-outline btn-sm" data-tab="income">💰 Income</button>
-  <button class="bud-tab btn btn-outline btn-sm" data-tab="expenses">💸 Expenses</button>
-  <button class="bud-tab btn btn-outline btn-sm" data-tab="emis">🏦 EMIs</button>
-  <button class="bud-tab btn btn-outline btn-sm" data-tab="sip">📈 SIP</button>
-  <button class="bud-tab btn btn-outline btn-sm" data-tab="goals">🎯 Goals</button>
-  <button class="bud-tab btn btn-outline btn-sm" data-tab="smstrack">📱 SMS Track</button>
-</div>
-
-<!-- OVERVIEW -->
-<div class="bud-pane" id="bud-overview">
-  <div class="grid2" style="margin-bottom:12px;">
-    <div class="card" style="padding:12px;">
-      <div class="sec-title" style="margin-bottom:8px;">Spending Breakdown</div>
-      <canvas id="bud-pie" height="180"></canvas>
+  <!-- MONTH NAV -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+    <button id="bud-prev-btn" style="background:var(--navy2);border:1.5px solid var(--border);border-radius:12px;padding:8px 16px;color:var(--light2);font-size:18px;cursor:pointer;">&#8249;</button>
+    <div style="text-align:center;">
+      <div id="bud-month-label" style="font-size:16px;font-weight:800;color:var(--white);font-family:var(--serif);">June 2026</div>
+      <div id="bud-health-badge" style="font-size:11px;font-weight:700;margin-top:2px;padding:3px 12px;border-radius:999px;display:inline-block;"></div>
     </div>
-    <div class="card" style="padding:12px;">
-      <div class="sec-title" style="margin-bottom:8px;">6-Month Trend</div>
-      <canvas id="bud-bar" height="180"></canvas>
+    <button id="bud-next-btn" style="background:var(--navy2);border:1.5px solid var(--border);border-radius:12px;padding:8px 16px;color:var(--light2);font-size:18px;cursor:pointer;">&#8250;</button>
+  </div>
+
+  <!-- TOP STATS — Axio style 3 cards -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
+    <div style="background:linear-gradient(135deg,#064E3B,#065F46);border-radius:16px;padding:12px 8px;text-align:center;">
+      <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Income</div>
+      <div id="bud-total-inc" style="font-size:16px;font-weight:800;color:#34D399;font-family:var(--serif);">Rs.0</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#7F1D1D,#991B1B);border-radius:16px;padding:12px 8px;text-align:center;">
+      <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Spent</div>
+      <div id="bud-total-exp" style="font-size:16px;font-weight:800;color:#F87171;font-family:var(--serif);">Rs.0</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#1E3A5F,#1A56DB);border-radius:16px;padding:12px 8px;text-align:center;">
+      <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Saved</div>
+      <div id="bud-total-sav" style="font-size:16px;font-weight:800;color:#60A5FA;font-family:var(--serif);">Rs.0</div>
     </div>
   </div>
-  <div class="sec-title">Category Breakdown</div>
-  <div id="bud-cat-summary"></div>
-  <div class="sec-title" style="margin-top:12px;">💡 Stokado Advice</div>
-  <div id="bud-advice" class="card card-gold" style="padding:14px;"></div>
-</div>
 
-<!-- INCOME -->
-<div class="bud-pane" id="bud-income" style="display:none;">
-  <div class="card" style="margin-bottom:12px;">
-    <div class="sec-title">Add Income Source</div>
-    <label>Category</label>
-    <select id="inc-cat">
-      <option>💼 Salary</option><option>🏢 Business</option>
-      <option>💻 Freelance</option><option>🏠 Rental</option>
-      <option>📈 Investments</option><option>📦 Other</option>
-    </select>
-    <label>Amount (₹)</label>
-    <input type="number" id="inc-amt" placeholder="80000"/>
-    <label>Note</label>
-    <input type="text" id="inc-desc" placeholder="e.g. Monthly salary"/>
-    <button class="btn btn-gold" id="inc-add-btn">+ Add Income</button>
+  <!-- SAVINGS PROGRESS BAR — Axio style -->
+  <div style="background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <span style="font-size:12px;font-weight:700;color:var(--light2);">Savings Rate</span>
+      <span id="bud-sav-pct" style="font-size:14px;font-weight:800;color:var(--gold);font-family:var(--serif);">0%</span>
+    </div>
+    <div style="height:10px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden;margin-bottom:6px;">
+      <div id="bud-sav-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#1A56DB,#10B981);border-radius:999px;transition:width 0.6s ease;"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--gray);">
+      <span>Target: 20% savings</span>
+      <span id="bud-sav-status" style="font-weight:600;"></span>
+    </div>
   </div>
-  <div class="sec-title">This Month Income</div>
-  <div id="inc-list"></div>
-</div>
 
-<!-- EXPENSES -->
-<div class="bud-pane" id="bud-expenses" style="display:none;">
-  <div class="card" style="margin-bottom:12px;">
-    <div class="sec-title">Add Expense</div>
-    <div class="grid2">
-      <div>
-        <label>Category</label>
-        <select id="exp-cat">
-          <option>🍔 Food</option><option>🚗 Transport</option>
-          <option>🏠 Rent</option><option>💊 Medical</option>
-          <option>👕 Shopping</option><option>📱 Bills</option>
-          <option>🎬 Entertainment</option><option>📚 Education</option>
-          <option>🛒 Groceries</option><option>⚡ Electricity</option>
-          <option>💈 Personal Care</option><option>🎁 Gifts</option>
-          <option>✈️ Travel</option><option>📦 Other</option>
-        </select>
+  <!-- TABS — Axio style pill tabs -->
+  <div style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;">
+    <button class="bud-tab" data-tab="overview" style="flex-shrink:0;padding:8px 14px;border-radius:999px;border:1.5px solid var(--blue3);background:var(--blue3);color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font);">Overview</button>
+    <button class="bud-tab" data-tab="income" style="flex-shrink:0;padding:8px 14px;border-radius:999px;border:1.5px solid var(--border);background:transparent;color:var(--gray);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font);">Income</button>
+    <button class="bud-tab" data-tab="expenses" style="flex-shrink:0;padding:8px 14px;border-radius:999px;border:1.5px solid var(--border);background:transparent;color:var(--gray);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font);">Expenses</button>
+    <button class="bud-tab" data-tab="emis" style="flex-shrink:0;padding:8px 14px;border-radius:999px;border:1.5px solid var(--border);background:transparent;color:var(--gray);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font);">EMIs</button>
+    <button class="bud-tab" data-tab="sip" style="flex-shrink:0;padding:8px 14px;border-radius:999px;border:1.5px solid var(--border);background:transparent;color:var(--gray);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font);">SIP</button>
+    <button class="bud-tab" data-tab="goals" style="flex-shrink:0;padding:8px 14px;border-radius:999px;border:1.5px solid var(--border);background:transparent;color:var(--gray);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font);">Goals</button>
+    <button class="bud-tab" data-tab="smstrack" style="flex-shrink:0;padding:8px 14px;border-radius:999px;border:1.5px solid var(--border);background:transparent;color:var(--gray);font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font);">SMS Import</button>
+  </div>
+
+  <!-- OVERVIEW TAB -->
+  <div class="bud-pane" id="bud-overview">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+      <div class="card" style="padding:12px;"><div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Spending</div><canvas id="bud-pie" height="160"></canvas></div>
+      <div class="card" style="padding:12px;"><div style="font-size:11px;font-weight:700;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">6-Month Trend</div><canvas id="bud-bar" height="160"></canvas></div>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Categories</div>
+    <div id="bud-cat-summary" style="margin-bottom:14px;"></div>
+    <div style="font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Stokado Advice</div>
+    <div id="bud-advice" style="background:rgba(245,197,24,0.08);border:1px solid rgba(245,197,24,0.25);border-radius:14px;padding:14px;font-size:12px;color:var(--light2);line-height:1.7;"></div>
+  </div>
+
+  <!-- INCOME TAB -->
+  <div class="bud-pane" id="bud-income" style="display:none;">
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--white);">+ Add Income</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Category</label>
+        <select id="inc-cat" style="margin-top:4px;"><option>Salary</option><option>Business</option><option>Freelance</option><option>Rental Income</option><option>Investment Returns</option><option>Other</option></select></div>
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Amount (Rs.)</label>
+        <input type="number" id="inc-amt" placeholder="e.g. 80000" style="margin-top:4px;"/></div>
       </div>
-      <div>
-        <label>Amount (₹)</label>
-        <input type="number" id="exp-amt" placeholder="500"/>
+      <label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Note (optional)</label>
+      <input type="text" id="inc-desc" placeholder="e.g. Monthly salary from company" style="margin-top:4px;margin-bottom:12px;"/>
+      <button class="btn btn-gold" id="inc-add-btn" style="width:100%;">+ Add Income</button>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">This Month</div>
+    <div id="inc-list"></div>
+  </div>
+
+  <!-- EXPENSES TAB -->
+  <div class="bud-pane" id="bud-expenses" style="display:none;">
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--white);">+ Add Expense</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Category</label>
+        <select id="exp-cat" style="margin-top:4px;"><option>Food &amp; Dining</option><option>Rent</option><option>Transport</option><option>Groceries</option><option>Shopping</option><option>Bills &amp; Utilities</option><option>Medical</option><option>Entertainment</option><option>Education</option><option>Personal Care</option><option>Travel</option><option>Gifts</option><option>Other</option></select></div>
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Amount (Rs.)</label>
+        <input type="number" id="exp-amt" placeholder="e.g. 500" style="margin-top:4px;"/></div>
       </div>
-    </div>
-    <label>Note (optional)</label>
-    <input type="text" id="exp-desc" placeholder="e.g. Swiggy order"/>
-    <label>Date</label>
-    <input type="date" id="exp-date"/>
-    <button class="btn btn-primary" id="exp-add-btn">+ Add Expense</button>
-  </div>
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-    <div class="sec-title" style="margin:0;">This Month Expenses</div>
-    <div id="exp-count" style="font-size:11px;color:var(--gray);"></div>
-  </div>
-  <div id="exp-list"></div>
-</div>
-
-<!-- EMIs -->
-<div class="bud-pane" id="bud-emis" style="display:none;">
-  <div class="card" style="margin-bottom:12px;">
-    <div class="sec-title">Add Loan / EMI</div>
-    <label>Loan Type</label>
-    <select id="emi-type">
-      <option>🏠 Home Loan</option><option>🚗 Car Loan</option>
-      <option>📱 Personal Loan</option><option>📚 Education Loan</option>
-      <option>💳 Credit Card</option><option>🏢 Business Loan</option>
-    </select>
-    <div class="grid2">
-      <div><label>EMI Amount (₹/mo)</label><input type="number" id="emi-amt" placeholder="15000"/></div>
-      <div><label>Months Remaining</label><input type="number" id="emi-rem" placeholder="48"/></div>
-    </div>
-    <label>Bank / Lender</label>
-    <input type="text" id="emi-bank" placeholder="HDFC Bank"/>
-    <button class="btn btn-primary" id="emi-add-btn">+ Add EMI</button>
-  </div>
-  <div class="sec-title">Active EMIs</div>
-  <div id="emi-list"></div>
-  <div id="emi-burden" style="display:none;" class="card" style="margin-top:10px;"></div>
-</div>
-
-<!-- SIP -->
-<div class="bud-pane" id="bud-sip" style="display:none;">
-  <div class="card" style="margin-bottom:12px;">
-    <div class="sec-title">Add SIP / Investment</div>
-    <label>Type</label>
-    <select id="sip-type">
-      <option>📈 Mutual Fund SIP</option><option>🏛️ PPF</option>
-      <option>👴 NPS</option><option>🥇 Gold SGB</option>
-      <option>🏦 FD / RD</option><option>📊 Stocks</option>
-    </select>
-    <label>Fund Name</label>
-    <input type="text" id="sip-name" placeholder="e.g. Mirae Asset Large Cap"/>
-    <div class="grid2">
-      <div><label>Monthly Amount (₹)</label><input type="number" id="sip-amt2" placeholder="5000"/></div>
-      <div><label>SIP Date</label><input type="number" id="sip-date2" min="1" max="31" placeholder="7"/></div>
-    </div>
-    <button class="btn btn-gold" id="sip-add-btn">+ Add SIP</button>
-  </div>
-  <div class="sec-title">Active SIPs</div>
-  <div id="sip-list"></div>
-  <div id="sip-projection" style="display:none;" class="card card-blue" style="margin-top:10px;text-align:center;padding:16px;"></div>
-</div>
-
-<!-- GOALS -->
-<div class="bud-pane" id="bud-goals" style="display:none;">
-  <div class="card" style="margin-bottom:12px;">
-    <div class="sec-title">Add Financial Goal</div>
-    <div class="grid2">
-      <div>
-        <label>Goal Type</label>
-        <select id="goal-type2">
-          <option>🏠 House</option><option>🚗 Car</option>
-          <option>👶 Child Education</option><option>💒 Wedding</option>
-          <option>✈️ Vacation</option><option>🌅 Retirement</option>
-          <option>🆘 Emergency Fund</option>
-        </select>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Note</label>
+        <input type="text" id="exp-desc" placeholder="e.g. Swiggy" style="margin-top:4px;"/></div>
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Date</label>
+        <input type="date" id="exp-date" style="margin-top:4px;"/></div>
       </div>
-      <div>
-        <label>Target Year</label>
-        <input type="number" id="goal-year" placeholder="2028" min="2024" max="2050"/>
+      <button class="btn btn-primary" id="exp-add-btn" style="width:100%;">+ Add Expense</button>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">This Month</div>
+    <div id="exp-list"></div>
+  </div>
+
+  <!-- EMIS TAB -->
+  <div class="bud-pane" id="bud-emis" style="display:none;">
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--white);">+ Add EMI</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Loan Type</label>
+        <select id="emi-type" style="margin-top:4px;"><option>Home Loan</option><option>Car Loan</option><option>Personal Loan</option><option>Education Loan</option><option>Business Loan</option><option>Gold Loan</option></select></div>
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Bank</label>
+        <input type="text" id="emi-bank" placeholder="e.g. HDFC Bank" style="margin-top:4px;"/></div>
       </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">EMI/Month (Rs.)</label>
+        <input type="number" id="emi-amt" placeholder="e.g. 15000" style="margin-top:4px;"/></div>
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Months Remaining</label>
+        <input type="number" id="emi-rem" placeholder="e.g. 48" style="margin-top:4px;"/></div>
+      </div>
+      <button class="btn btn-primary" id="emi-add-btn" style="width:100%;">+ Add EMI</button>
     </div>
-    <label>Goal Name</label>
-    <input type="text" id="goal-name2" placeholder="e.g. House Down Payment"/>
-    <div class="grid2">
-      <div><label>Target (₹)</label><input type="number" id="goal-target2" placeholder="1000000"/></div>
-      <div><label>Saved So Far (₹)</label><input type="number" id="goal-saved" placeholder="200000"/></div>
-    </div>
-    <button class="btn btn-gold" id="goal-add-btn">+ Add Goal</button>
+    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Active EMIs</div>
+    <div id="emi-list"></div>
+    <div id="emi-burden"></div>
   </div>
-  <div class="sec-title">Your Goals</div>
-  <div id="goal-list"></div>
+
+  <!-- SIP TAB -->
+  <div class="bud-pane" id="bud-sip" style="display:none;">
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--white);">+ Add SIP / Investment</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Type</label>
+        <select id="sip-type" style="margin-top:4px;"><option>Mutual Fund SIP</option><option>PPF</option><option>NPS</option><option>SGB (Gold Bond)</option><option>FD / RD</option><option>Stocks / ETF</option><option>ELSS</option></select></div>
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Monthly (Rs.)</label>
+        <input type="number" id="sip-amt2" placeholder="e.g. 5000" style="margin-top:4px;"/></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Fund / Scheme Name</label>
+        <input type="text" id="sip-name" placeholder="e.g. Mirae Asset Large Cap" style="margin-top:4px;"/></div>
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">SIP Date</label>
+        <input type="number" id="sip-date2" min="1" max="31" placeholder="7" style="margin-top:4px;"/></div>
+      </div>
+      <button class="btn btn-gold" id="sip-add-btn" style="width:100%;">+ Add SIP</button>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Active SIPs</div>
+    <div id="sip-list"></div>
+    <div id="sip-projection"></div>
+  </div>
+
+  <!-- GOALS TAB -->
+  <div class="bud-pane" id="bud-goals" style="display:none;">
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--white);">+ Add Goal</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Goal Type</label>
+        <select id="goal-type2" style="margin-top:4px;"><option>House</option><option>Car</option><option>Child Education</option><option>Wedding</option><option>Vacation</option><option>Retirement</option><option>Emergency Fund</option><option>Business</option></select></div>
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Target Year</label>
+        <input type="number" id="goal-year" placeholder="2028" min="2024" max="2050" style="margin-top:4px;"/></div>
+      </div>
+      <label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Goal Name</label>
+      <input type="text" id="goal-name2" placeholder="e.g. House down payment" style="margin-top:4px;margin-bottom:10px;"/>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Target Amount (Rs.)</label>
+        <input type="number" id="goal-target2" placeholder="e.g. 1000000" style="margin-top:4px;"/></div>
+        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Already Saved (Rs.)</label>
+        <input type="number" id="goal-saved" placeholder="e.g. 200000" style="margin-top:4px;"/></div>
+      </div>
+      <button class="btn btn-gold" id="goal-add-btn" style="width:100%;">+ Add Goal</button>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Your Goals</div>
+    <div id="goal-list"></div>
+  </div>
+
+  <!-- SMS IMPORT TAB -->
+  <div class="bud-pane" id="bud-smstrack" style="display:none;">
+    <div style="background:linear-gradient(135deg,rgba(26,86,219,0.15),rgba(26,86,219,0.05));border:1px solid rgba(26,86,219,0.3);border-radius:16px;padding:16px;margin-bottom:14px;">
+      <div style="font-size:22px;margin-bottom:8px;">&#128241;</div>
+      <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:6px;">Auto Transaction Import</div>
+      <div style="font-size:12px;color:var(--gray);line-height:1.7;margin-bottom:14px;">Copy all your bank SMS messages and paste below. Stokado reads bank debits, UPI, EMIs, salary credits and more!</div>
+      <textarea id="sms-input" placeholder="Paste your bank SMS messages here..." style="height:130px;font-size:11px;line-height:1.6;resize:vertical;width:100%;box-sizing:border-box;"></textarea>
+      <button class="btn btn-primary" id="sms-parse-btn" style="margin-top:8px;width:100%;">Scan &amp; Detect Transactions</button>
+    </div>
+    <div id="sms-results" style="display:none;">
+      <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Detected Transactions</div>
+      <div id="sms-list"></div>
+      <button class="btn btn-gold" id="sms-import-btn" style="margin-top:10px;width:100%;display:none;">Import All to Budget</button>
+    </div>
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:14px;margin-top:12px;">
+      <div style="font-size:11px;font-weight:700;color:var(--white);margin-bottom:8px;">How to Import</div>
+      <div style="font-size:11px;color:var(--gray);line-height:1.9;">1. Open SMS app on your phone<br/>2. Select all messages from your bank<br/>3. Copy them all<br/>4. Paste above and tap Scan<br/>5. Review and import automatically!</div>
+    </div>
+  </div>
+
 </div>
-
-<!-- SMS TRACKER -->
-<div class="bud-pane" id="bud-smstrack" style="display:none;">
-  <div class="card card-gold" style="margin-bottom:12px;padding:14px;">
-    <div style="font-size:22px;margin-bottom:8px;">📱</div>
-    <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:6px;">Auto Expense Tracking</div>
-    <div style="font-size:12px;color:var(--gray);line-height:1.7;margin-bottom:12px;">
-      Select ALL your SMS, copy, and paste below — even hundreds at once! Stokado reads everything like Axio:<br/><br/>
-      ✓ Bank debits &amp; credits ✓ UPI payments ✓ Card spends<br/>
-      ✓ IMPS/NEFT/RTGS transfers ✓ ATM withdrawals ✓ EMIs &amp; AutoPay<br/>
-      ✓ Salary &amp; refunds ✓ Credit card bills &amp; dues<br/><br/>
-      <strong style="color:var(--light2);">All banks:</strong> SBI, HDFC, ICICI, Axis, Kotak, PNB + PhonePe, GPay, Paytm, CRED
-    </div>
-    <textarea id="sms-input" placeholder="Paste your bank SMS here...&#10;&#10;Example:&#10;Rs.500 debited from a/c XXXX1234 on 08-Jun-26. UPI:Swiggy&#10;Rs.15000 credited to a/c XXXX1234 on 01-Jun-26. Salary&#10;Rs.2000 debited from a/c XXXX1234. Info: Electricity bill" style="height:140px;font-size:11px;line-height:1.6;resize:vertical;"></textarea>
-    <button class="btn btn-primary" id="sms-parse-btn" style="margin-top:4px;">🔍 Scan & Import Expenses</button>
-  </div>
-  <div id="sms-results" style="display:none;">
-    <div class="sec-title">Detected Transactions</div>
-    <div id="sms-list"></div>
-    <button class="btn btn-gold" id="sms-import-btn" style="margin-top:8px;display:none;">✅ Import All to Budget</button>
-  </div>
-  <div class="card" style="margin-top:12px;">
-    <div class="sec-title">📋 How to get bank SMS</div>
-    <div style="font-size:12px;color:var(--gray);line-height:1.8;">
-      1. Open your SMS app<br/>
-      2. Long-press a bank message → Select All (or select many)<br/>
-      3. Copy → come back here → Paste<br/>
-      4. Tap Scan — duplicates removed automatically!<br/>
-      5. Transactions go to the correct month automatically<br/><br/>
-      <strong style="color:var(--light2);">Privacy:</strong> All processing happens on your phone only. Nothing is sent to any server.
-    </div>
-  </div>
 </div>
-
-</div>
-</div>
-
-<div class="pg" id="p-more">
-<div class="pg-hdr">
-  <button class="pg-back" onclick="navTo('p-home','nb-home')">&#8592; Back</button>
-  <div class="pg-title">All <span>Features</span></div>
-  <div class="pg-sub">Everything Stokado offers</div>
-</div>
-<div class="pg-content">
-
-  <!-- INVEST & TRACK -->
-  <div class="sec-title">💰 Invest & Track</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
-    <div class="menu-card" onclick="navTo('p-mf','nb-mf')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#1A56DB,#0A2463);">📊</div>
-      <div class="menu-card-title">Mutual Funds</div>
-      <div class="menu-card-sub">40 curated funds</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-portfolio','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#10B981,#065F46);">💼</div>
-      <div class="menu-card-title">My Portfolio</div>
-      <div class="menu-card-sub">Track investments</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-ipo','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#F5C518,#C9890A);">🚀</div>
-      <div class="menu-card-title">IPO Tracker</div>
-      <div class="menu-card-sub">Open & upcoming</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-unlisted','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#8B5CF6,#4C1D95);">📈</div>
-      <div class="menu-card-title">Unlisted Shares</div>
-      <div class="menu-card-sub">Pre-IPO opportunities</div>
-    </div>
-  </div>
-
-  <!-- PLAN & PROTECT -->
-  <div class="sec-title">🛡️ Plan & Protect</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
-    <div class="menu-card" onclick="navTo('p-ins','nb-ins')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#EF4444,#7F1D1D);">🛡️</div>
-      <div class="menu-card-title">Insurance</div>
-      <div class="menu-card-sub">Term, Health, Car, Home</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-budget','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#F59E0B,#78350F);">📋</div>
-      <div class="menu-card-title">Budget Planner</div>
-      <div class="menu-card-sub">Axio-style tracking</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-remind','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#06B6D4,#0E7490);">⏰</div>
-      <div class="menu-card-title">SIP Reminders</div>
-      <div class="menu-card-sub">Never miss a date</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-health','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#10B981,#064E3B);">💚</div>
-      <div class="menu-card-title">Health Score</div>
-      <div class="menu-card-sub">Rate your finances</div>
-    </div>
-  </div>
-
-  <!-- LEARN & DISCOVER -->
-  <div class="sec-title">📚 Learn & Discover</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
-    <div class="menu-card" onclick="navTo('p-market','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#1A56DB,#1E3A5F);">🎓</div>
-      <div class="menu-card-title">Finance Hub</div>
-      <div class="menu-card-sub">Learn, Goals, Tips</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-calc','nb-calc')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#6366F1,#312E81);">🧮</div>
-      <div class="menu-card-title">Calculators</div>
-      <div class="menu-card-sub">18 financial tools</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-faq','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#F59E0B,#B45309);">❓</div>
-      <div class="menu-card-title">FAQ / Help</div>
-      <div class="menu-card-sub">Quick answers</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-chat','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#8B5CF6,#5B21B6);">🤖</div>
-      <div class="menu-card-title">AI Assistant</div>
-      <div class="menu-card-sub">Ask anything</div>
-    </div>
-  </div>
-
-  <!-- CONNECT WITH US -->
-  <div class="sec-title">🤝 Connect with Us</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
-    <div class="menu-card" onclick="navTo('p-appt','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#F5C518,#C9890A);">📅</div>
-      <div class="menu-card-title">Book Appointment</div>
-      <div class="menu-card-sub">Free consultation</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-refer','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#EC4899,#9D174D);">🎁</div>
-      <div class="menu-card-title">Refer & Earn</div>
-      <div class="menu-card-sub">Share & get rewards</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-reviews','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#F59E0B,#92400E);">⭐</div>
-      <div class="menu-card-title">Client Reviews</div>
-      <div class="menu-card-sub">What clients say</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-svc','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#10B981,#065F46);">🏢</div>
-      <div class="menu-card-title">Our Services</div>
-      <div class="menu-card-sub">What we offer</div>
-    </div>
-  </div>
-
-  <!-- MORE -->
-  <div class="sec-title">⚙️ More</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
-    <div class="menu-card" onclick="navTo('p-about','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#6B7A99,#374151);">ℹ️</div>
-      <div class="menu-card-title">About Us</div>
-      <div class="menu-card-sub">Our story & team</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-notif','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#1A56DB,#0A2463);">🔔</div>
-      <div class="menu-card-title">Notifications</div>
-      <div class="menu-card-sub">Recent activity</div>
-    </div></div>
-</div>
-
 </div><!-- /pages -->
 
 <!-- BOTTOM NAV -->
@@ -2575,119 +2413,96 @@ function buildHomeTips() {
 // CALCULATORS
 // ═══════════════════════════════════════
 var calcDefs = {
-  sip:    {ico:'📈',name:'SIP Calculator',sub:'Systematic Investment Plan',
-    inputs:[{id:'sip-amt',lbl:'Monthly SIP Amount (Rs.)',type:'number',val:5000},
+  sip:      {ico:'📈', col:'linear-gradient(135deg,#1A56DB,#0A2463)', name:'SIP Calculator', sub:'Monthly investment returns',
+    inputs:[{id:'sip-amt',lbl:'Monthly SIP (Rs.)',type:'number',val:5000},
             {id:'sip-yr',lbl:'Duration (Years)',type:'range',min:1,max:40,step:1,val:10},
-            {id:'sip-ret',lbl:'Expected Returns (% p.a.)',type:'range',min:6,max:24,step:0.5,val:12}],
-    fn:'calcSIP'},
-  lump:   {ico:'💰',name:'Lumpsum',sub:'One-time investment',
-    inputs:[{id:'ls-amt',lbl:'Investment Amount (Rs.)',type:'number',val:100000},
+            {id:'sip-ret',lbl:'Returns (% p.a.)',type:'range',min:6,max:24,step:0.5,val:12}], fn:'calcSIP'},
+  lump:     {ico:'💰', col:'linear-gradient(135deg,#10B981,#065F46)', name:'Lumpsum', sub:'One-time investment',
+    inputs:[{id:'ls-amt',lbl:'Investment (Rs.)',type:'number',val:100000},
             {id:'ls-yr',lbl:'Duration (Years)',type:'range',min:1,max:40,step:1,val:10},
-            {id:'ls-ret',lbl:'Expected Returns (% p.a.)',type:'range',min:4,max:24,step:0.5,val:12}],
-    fn:'calcLump'},
-  emi:    {ico:'🏠',name:'Home Loan EMI',sub:'Calculate your EMI',
-    inputs:[{id:'emi-amt',lbl:'Loan Amount (Rs.)',type:'number',val:2000000},
-            {id:'emi-rate',lbl:'Interest Rate (% p.a.)',type:'range',min:5,max:18,step:0.1,val:8.5},
-            {id:'emi-yr',lbl:'Tenure (Years)',type:'range',min:1,max:30,step:1,val:20}],
-    fn:'calcEMI'},
-  fd:     {ico:'🏦',name:'FD Returns',sub:'Fixed Deposit calculator',
-    inputs:[{id:'fd-amt',lbl:'Deposit Amount (Rs.)',type:'number',val:100000},
-            {id:'fd-rate',lbl:'Interest Rate (% p.a.)',type:'range',min:4,max:9,step:0.1,val:7},
-            {id:'fd-yr',lbl:'Duration (Years)',type:'range',min:1,max:10,step:1,val:5}],
-    fn:'calcFD'},
-  tax:    {ico:'💸',name:'Tax Saving 80C',sub:'Save up to Rs.46,800',
-    inputs:[{id:'tax-inc',lbl:'Annual Income (Rs.)',type:'number',val:1200000},
-            {id:'tax-inv',lbl:'80C Investments (Rs.)',type:'range',min:0,max:150000,step:5000,val:150000}],
-    fn:'calcTax'},
-  ret:    {ico:'🌅',name:'Retirement Planner',sub:'Plan your retirement',
-    inputs:[{id:'ret-age',lbl:'Current Age',type:'range',min:20,max:55,step:1,val:30},
-            {id:'ret-yr',lbl:'Retire At Age',type:'range',min:45,max:70,step:1,val:60},
-            {id:'ret-exp',lbl:'Monthly Expense (Rs.)',type:'number',val:50000}],
-    fn:'calcRetire'},
-  swp:    {ico:'💵',name:'SWP Calculator',sub:'Systematic Withdrawal Plan',
-    inputs:[{id:'swp-corp',lbl:'Corpus Amount (Rs.)',type:'number',val:5000000},
+            {id:'ls-ret',lbl:'Returns (% p.a.)',type:'range',min:6,max:24,step:0.5,val:12}], fn:'calcLump'},
+  stepup:   {ico:'🚀', col:'linear-gradient(135deg,#6366F1,#312E81)', name:'Step-Up SIP', sub:'Annual SIP increase',
+    inputs:[{id:'su-amt',lbl:'Starting SIP (Rs.)',type:'number',val:5000},
+            {id:'su-step',lbl:'Annual Increase (%)',type:'range',min:5,max:30,step:1,val:10},
+            {id:'su-yr',lbl:'Duration (Years)',type:'range',min:1,max:30,step:1,val:15},
+            {id:'su-ret',lbl:'Returns (% p.a.)',type:'range',min:6,max:24,step:0.5,val:12}], fn:'calcStepUp'},
+  swp:      {ico:'💸', col:'linear-gradient(135deg,#EC4899,#9D174D)', name:'SWP Calculator', sub:'Monthly withdrawal plan',
+    inputs:[{id:'swp-corp',lbl:'Corpus (Rs.)',type:'number',val:5000000},
             {id:'swp-with',lbl:'Monthly Withdrawal (Rs.)',type:'number',val:30000},
-            {id:'swp-ret',lbl:'Expected Returns (% p.a.)',type:'range',min:6,max:15,step:0.5,val:10}],
-    fn:'calcSWP'},
-  goal:   {ico:'🎯',name:'Goal Planning',sub:'How much to save',
-    inputs:[{id:'goal-amt',lbl:'Target Amount (Rs.)',type:'number',val:5000000},
-            {id:'goal-yr',lbl:'Years to Goal',type:'range',min:1,max:30,step:1,val:10},
-            {id:'goal-ret',lbl:'Expected Returns (% p.a.)',type:'range',min:6,max:20,step:0.5,val:12}],
-    fn:'calcGoal'},
-  ppf:    {ico:'🏛️',name:'PPF Calculator',sub:'Public Provident Fund',
-    inputs:[{id:'ppf-amt',lbl:'Annual Investment (Rs.)',type:'range',min:500,max:150000,step:500,val:150000},
-            {id:'ppf-yr',lbl:'Duration (Years)',type:'range',min:15,max:40,step:1,val:15}],
-    fn:'calcPPF'},
-  gold:   {ico:'🥇',name:'Gold Investment',sub:'Gold returns calculator',
-    inputs:[{id:'gold-amt',lbl:'Investment Amount (Rs.)',type:'number',val:100000},
-            {id:'gold-yr',lbl:'Duration (Years)',type:'range',min:1,max:20,step:1,val:5}],
-    fn:'calcGold'},
-  cagr:   {ico:'📊',name:'CAGR Calculator',sub:'Compound Annual Growth Rate',
-    inputs:[{id:'cagr-inv',lbl:'Initial Investment (Rs.)',type:'number',val:100000},
-            {id:'cagr-fin',lbl:'Final Value (Rs.)',type:'number',val:200000},
-            {id:'cagr-yr',lbl:'Duration (Years)',type:'range',min:1,max:30,step:1,val:5}],
-    fn:'calcCAGR'},
-  inflation:{ico:'📉',name:'Inflation Impact',sub:'Future value after inflation',
-    inputs:[{id:'inf-amt',lbl:'Current Amount (Rs.)',type:'number',val:100000},
-            {id:'inf-rate',lbl:'Inflation Rate (%)',type:'range',min:3,max:10,step:0.5,val:6},
-            {id:'inf-yr',lbl:'Years',type:'range',min:1,max:30,step:1,val:10}],
-    fn:'calcInflation'},
-  nps:    {ico:'👴',name:'NPS Calculator',sub:'National Pension System',
-    inputs:[{id:'nps-amt',lbl:'Monthly Contribution (Rs.)',type:'range',min:500,max:50000,step:500,val:5000},
+            {id:'swp-ret',lbl:'Returns (% p.a.)',type:'range',min:4,max:18,step:0.5,val:10}], fn:'calcSWP'},
+  goal:     {ico:'🎯', col:'linear-gradient(135deg,#F59E0B,#78350F)', name:'Goal Planner', sub:'Save for a target',
+    inputs:[{id:'gl-target',lbl:'Target Amount (Rs.)',type:'number',val:1000000},
+            {id:'gl-yr',lbl:'Time (Years)',type:'range',min:1,max:30,step:1,val:5},
+            {id:'gl-ret',lbl:'Returns (% p.a.)',type:'range',min:6,max:24,step:0.5,val:12}], fn:'calcGoal'},
+  mfcompare:{ico:'⚖️', col:'linear-gradient(135deg,#0891B2,#0C4A6E)', name:'MF Comparison', sub:'Compare two funds',
+    inputs:[{id:'mfc-amt',lbl:'Investment (Rs.)',type:'number',val:100000},
+            {id:'mfc-r1',lbl:'Fund A Returns (%)',type:'range',min:6,max:30,step:0.5,val:14},
+            {id:'mfc-r2',lbl:'Fund B Returns (%)',type:'range',min:6,max:30,step:0.5,val:11},
+            {id:'mfc-yr',lbl:'Duration (Years)',type:'range',min:1,max:30,step:1,val:10}], fn:'calcMFCompare'},
+  emi:      {ico:'🏠', col:'linear-gradient(135deg,#DC2626,#7F1D1D)', name:'EMI Calculator', sub:'Loan EMI breakdown',
+    inputs:[{id:'em-loan',lbl:'Loan Amount (Rs.)',type:'number',val:2000000},
+            {id:'em-rate',lbl:'Interest Rate (% p.a.)',type:'range',min:6,max:20,step:0.25,val:9},
+            {id:'em-yr',lbl:'Tenure (Years)',type:'range',min:1,max:30,step:1,val:20}], fn:'calcEMI'},
+  loan:     {ico:'🔄', col:'linear-gradient(135deg,#7C3AED,#4C1D95)', name:'Loan Comparison', sub:'Compare two loan offers',
+    inputs:[{id:'lc-amt',lbl:'Loan Amount (Rs.)',type:'number',val:1000000},
+            {id:'lc-r1',lbl:'Bank A Rate (%)',type:'range',min:6,max:20,step:0.25,val:9},
+            {id:'lc-r2',lbl:'Bank B Rate (%)',type:'range',min:6,max:20,step:0.25,val:10.5},
+            {id:'lc-yr',lbl:'Tenure (Years)',type:'range',min:1,max:30,step:1,val:20}], fn:'calcLoanCompare'},
+  emivssip: {ico:'💡', col:'linear-gradient(135deg,#059669,#064E3B)', name:'EMI vs SIP', sub:'Opportunity cost of loan',
+    inputs:[{id:'evs-emi',lbl:'Monthly EMI (Rs.)',type:'number',val:15000},
+            {id:'evs-rate',lbl:'Loan Rate (% p.a.)',type:'range',min:6,max:20,step:0.5,val:9},
+            {id:'evs-yr',lbl:'Loan Tenure (Years)',type:'range',min:1,max:30,step:1,val:10}], fn:'calcEMIvsSIP'},
+  budget:   {ico:'📋', col:'linear-gradient(135deg,#B45309,#78350F)', name:'Budget Calculator', sub:'Monthly budget planner',
+    inputs:[{id:'bg-inc',lbl:'Monthly Income (Rs.)',type:'number',val:60000},
+            {id:'bg-rent',lbl:'Rent/EMI (Rs.)',type:'number',val:15000},
+            {id:'bg-food',lbl:'Food & Groceries (Rs.)',type:'number',val:8000},
+            {id:'bg-other',lbl:'Other Expenses (Rs.)',type:'number',val:10000}], fn:'calcBudget'},
+  fd:       {ico:'🏦', col:'linear-gradient(135deg,#0369A1,#0C4A6E)', name:'FD Calculator', sub:'Fixed deposit returns',
+    inputs:[{id:'fd-amt',lbl:'Principal (Rs.)',type:'number',val:100000},
+            {id:'fd-rate',lbl:'Interest Rate (%)',type:'range',min:4,max:10,step:0.25,val:7},
+            {id:'fd-yr',lbl:'Duration (Years)',type:'range',min:1,max:10,step:1,val:3}], fn:'calcFD'},
+  ppf:      {ico:'🏛️', col:'linear-gradient(135deg,#1D4ED8,#1E3A8A)', name:'PPF Calculator', sub:'Public Provident Fund',
+    inputs:[{id:'ppf-amt',lbl:'Yearly Investment (Rs.)',type:'number',val:150000},
+            {id:'ppf-yr',lbl:'Years (max 15)',type:'range',min:1,max:15,step:1,val:15}], fn:'calcPPF'},
+  nps:      {ico:'👴', col:'linear-gradient(135deg,#7C2D12,#431407)', name:'NPS Calculator', sub:'Retirement + tax saving',
+    inputs:[{id:'nps-amt',lbl:'Monthly Contribution (Rs.)',type:'number',val:5000},
             {id:'nps-age',lbl:'Current Age',type:'range',min:20,max:55,step:1,val:30},
-            {id:'nps-ret',lbl:'Expected Returns (% p.a.)',type:'range',min:8,max:14,step:0.5,val:10}],
-    fn:'calcNPS'},
-  stepup: {ico:'📈+',name:'Step-Up SIP',sub:'Increase SIP yearly',
-    inputs:[{id:'su-amt',lbl:'Initial SIP (Rs.)',type:'range',min:500,max:50000,step:500,val:5000},
-            {id:'su-step',lbl:'Annual Step-Up (%)',type:'range',min:5,max:30,step:1,val:10},
-            {id:'su-yr',lbl:'Duration (Years)',type:'range',min:3,max:30,step:1,val:10}],
-    fn:'calcStepUp'},
-  loan:   {ico:'💳',name:'Loan Comparison',sub:'Compare loan offers',
-    inputs:[{id:'lc-amt',lbl:'Loan Amount (Rs.)',type:'number',val:500000},
-            {id:'lc-r1',lbl:'Rate 1 (% p.a.)',type:'range',min:6,max:20,step:0.1,val:10},
-            {id:'lc-r2',lbl:'Rate 2 (% p.a.)',type:'range',min:6,max:20,step:0.1,val:12}],
-    fn:'calcLoanComp'},
-  budget: {ico:'📋',name:'Budget Planner',sub:'Monthly budget tracker',
-    inputs:[{id:'bud-inc',lbl:'Monthly Income (Rs.)',type:'number',val:100000},
-            {id:'bud-exp',lbl:'Monthly Expenses (Rs.)',type:'number',val:60000},
-            {id:'bud-sip',lbl:'Monthly SIP (Rs.)',type:'number',val:10000}],
-    fn:'calcBudget'},
-  sgb:    {ico:'🏅',name:'SGB Calculator',sub:'Sovereign Gold Bond',
-    inputs:[{id:'sgb-qty',lbl:'Units (grams)',type:'range',min:1,max:500,step:1,val:10},
-            {id:'sgb-yr',lbl:'Hold Duration (Years)',type:'range',min:5,max:8,step:1,val:8}],
-    fn:'calcSGB'},
-  hraexempt:{ico:'🏠+',name:'HRA Exemption',sub:'How much HRA is tax-free?',
+            {id:'nps-ret',lbl:'Expected Returns (%)',type:'range',min:8,max:14,step:0.5,val:10}], fn:'calcNPS'},
+  tax:      {ico:'💸', col:'linear-gradient(135deg,#047857,#064E3B)', name:'Tax Saver 80C', sub:'How much tax you save',
+    inputs:[{id:'tx-income',lbl:'Annual Income (Rs.)',type:'number',val:1200000},
+            {id:'tx-invest',lbl:'80C Investment (Rs.)',type:'number',val:150000}], fn:'calcTax'},
+  hraexempt:{ico:'🏠', col:'linear-gradient(135deg,#0F766E,#134E4A)', name:'HRA Exemption', sub:'Tax-free house rent',
     inputs:[{id:'hra-recv',lbl:'HRA Received (Rs./yr)',type:'number',val:240000},
             {id:'hra-rent',lbl:'Rent Paid (Rs./yr)',type:'number',val:180000},
             {id:'hra-sal',lbl:'Basic Salary (Rs./yr)',type:'number',val:600000},
-            {id:'hra-metro',lbl:'Metro City?',type:'range',min:0,max:1,step:1,val:1}],
-    fn:'calcHRA'},
-  rental:{ico:'🏠',name:'Rental Yield',sub:'Is your property worth buying?',
+            {id:'hra-metro',lbl:'Metro City?',type:'range',min:0,max:1,step:1,val:1}], fn:'calcHRA'},
+  ret:      {ico:'🌅', col:'linear-gradient(135deg,#C2410C,#7C2D12)', name:'Retirement', sub:'Corpus & SIP needed',
+    inputs:[{id:'ret-age',lbl:'Current Age',type:'range',min:20,max:55,step:1,val:30},
+            {id:'ret-yr',lbl:'Retire at Age',type:'range',min:45,max:70,step:1,val:60},
+            {id:'ret-exp',lbl:'Monthly Expense Now (Rs.)',type:'number',val:50000}], fn:'calcRetire'},
+  gold:     {ico:'🥇', col:'linear-gradient(135deg,#CA8A04,#713F12)', name:'Gold SGB', sub:'Sovereign Gold Bond',
+    inputs:[{id:'go-grams',lbl:'Grams of Gold',type:'range',min:1,max:500,step:1,val:10},
+            {id:'go-price',lbl:'Gold Price (Rs./10g)',type:'number',val:152730},
+            {id:'go-yr',lbl:'Hold Period (Years)',type:'range',min:1,max:8,step:1,val:8}], fn:'calcGold'},
+  sgb:      {ico:'📊', col:'linear-gradient(135deg,#92400E,#451A03)', name:'SGB Returns', sub:'SGB vs physical gold',
+    inputs:[{id:'sg-invest',lbl:'Investment (Rs.)',type:'number',val:100000},
+            {id:'sg-yr',lbl:'Hold Years',type:'range',min:1,max:8,step:1,val:8}], fn:'calcSGB'},
+  cagr:     {ico:'📈', col:'linear-gradient(135deg,#1A56DB,#1E3A5F)', name:'CAGR Calculator', sub:'Compound annual return',
+    inputs:[{id:'ca-start',lbl:'Initial Value (Rs.)',type:'number',val:100000},
+            {id:'ca-end',lbl:'Final Value (Rs.)',type:'number',val:250000},
+            {id:'ca-yr',lbl:'Years',type:'range',min:1,max:30,step:1,val:5}], fn:'calcCAGR'},
+  inflation:{ico:'📉', col:'linear-gradient(135deg,#6B7280,#374151)', name:'Inflation Impact', sub:'Future value of money',
+    inputs:[{id:'in-amt',lbl:'Current Amount (Rs.)',type:'number',val:100000},
+            {id:'in-inf',lbl:'Inflation Rate (%)',type:'range',min:3,max:12,step:0.5,val:6},
+            {id:'in-yr',lbl:'Years',type:'range',min:1,max:30,step:1,val:10}], fn:'calcInflation'},
+  rental:   {ico:'🏢', col:'linear-gradient(135deg,#0891B2,#0E7490)', name:'Rental Yield', sub:'Property investment check',
     inputs:[{id:'ren-price',lbl:'Property Price (Rs.)',type:'number',val:5000000},
             {id:'ren-rent',lbl:'Monthly Rent (Rs.)',type:'number',val:20000},
-            {id:'ren-maint',lbl:'Annual Maintenance (Rs.)',type:'number',val:30000}],
-    fn:'calcRental'},
-  edufund:{ico:'🎓',name:'Education Fund',sub:'Future cost of child education',
+            {id:'ren-maint',lbl:'Annual Maintenance (Rs.)',type:'number',val:30000}], fn:'calcRental'},
+  edufund:  {ico:'🎓', col:'linear-gradient(135deg,#7C3AED,#5B21B6)', name:'Education Fund', sub:'Future education cost',
     inputs:[{id:'edu-cost',lbl:'Current Course Fee (Rs.)',type:'number',val:1500000},
             {id:'edu-yr',lbl:'Years Until Admission',type:'range',min:1,max:20,step:1,val:10},
-            {id:'edu-inf',lbl:'Education Inflation (% p.a.)',type:'range',min:6,max:15,step:0.5,val:10}],
-    fn:'calcEduFund'},
-  mfcompare:{ico:'⚖️',name:'MF Comparison',sub:'Compare two mutual funds',
-    inputs:[{id:'mfc-amt',lbl:'Investment Amount (Rs.)',type:'number',val:100000},
-            {id:'mfc-r1',lbl:'Fund A Returns (% p.a.)',type:'range',min:6,max:30,step:0.5,val:14},
-            {id:'mfc-r2',lbl:'Fund B Returns (% p.a.)',type:'range',min:6,max:30,step:0.5,val:11},
-            {id:'mfc-yr',lbl:'Duration (Years)',type:'range',min:1,max:30,step:1,val:10}],
-    fn:'calcMFCompare'},
-  emivssip:{ico:'💡',name:'EMI vs SIP',sub:'Loan EMI vs equivalent SIP wealth',
-    inputs:[{id:'evs-emi',lbl:'Your Monthly EMI (Rs.)',type:'number',val:15000},
-            {id:'evs-rate',lbl:'Loan Interest Rate (% p.a.)',type:'range',min:6,max:20,step:0.5,val:9},
-            {id:'evs-yr',lbl:'Loan Tenure (Years)',type:'range',min:1,max:30,step:1,val:10}],
-    fn:'calcEMIvsSIP'},
-    combo:  {ico:'🔄',name:'SIP vs Lumpsum',sub:'Which is better?',
-    inputs:[{id:'co-amt',lbl:'Total Amount (Rs.)',type:'number',val:1200000},
-            {id:'co-yr',lbl:'Duration (Years)',type:'range',min:1,max:30,step:1,val:10},
-            {id:'co-ret',lbl:'Expected Returns (% p.a.)',type:'range',min:6,max:20,step:0.5,val:12}],
-    fn:'calcCombo'}
+            {id:'edu-inf',lbl:'Education Inflation (%)',type:'range',min:6,max:15,step:0.5,val:10}], fn:'calcEduFund'}
 };
 
 var _calcActive = 'sip';
@@ -2742,15 +2557,15 @@ function renderCalcGrid(filterCat, cats, catColors) {
     var d = calcDefs[k];
     var cat = cats[k] || 'other';
     if (filterCat !== 'all' && cat !== filterCat) return;
-    var col = catColors[cat] || 'linear-gradient(135deg,#374151,#1F2937)';
-    var active = k === _calcActive ? 'border-color:var(--blue3);background:rgba(26,86,219,0.15);' : '';
-    h += '<div class="calc-card" style="'+active+'" data-calc="'+k+'">'
-      + '<div style="width:42px;height:42px;border-radius:12px;background:'+col+';display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">'+d.ico+'</div>'
-      + '<div><div class="calc-card-name">'+d.name+'</div>'
-      + '<div class="calc-card-sub">'+d.sub+'</div></div>'
-      + '</div>';
+    var isActive = k === _calcActive;
+    h += '<div class="calc-card'+(isActive?' calc-card-active':'')+'" data-calc="'+k+'">'
+      + '<div class="calc-card-icon" style="background:'+d.col+';">'+d.ico+'</div>'
+      + '<div style="min-width:0;">'
+      + '<div class="calc-card-name">'+d.name+'</div>'
+      + '<div class="calc-card-sub">'+d.sub+'</div>'
+      + '</div></div>';
   });
-  grid.innerHTML = h || '<div style="text-align:center;padding:20px;color:var(--gray);">No calculators in this category</div>';
+  grid.innerHTML = h || '<div style="text-align:center;padding:20px;color:var(--gray);">No calculators</div>';
 }
 function buildCalcPane(k) {
   var d = calcDefs[k]; if (!d) return;
@@ -5696,6 +5511,116 @@ function updateHomeTicker() {}
 function updateNavBadge() {}
 function updateNavDisplay(code,nav) { updateNav(code,nav); }
 function addMFNavHeader() {}
+function buildTopMovers() {}
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}) {}
+function buildTopMovers() {}
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {
+// ═══════════════════════════════════════
+// UNLISTED SHARES DATA
+// ═══════════════════════════════════════
+var unlistedData = [
+  {n:'HDB Financial Services',  sector:'NBFC',      price:1100, chg:+8.5,  lot:50,  desc:'HDFC Bank subsidiary, leading NBFC'},
+  {n:'Tata Capital',            sector:'Fintech',   price:975,  chg:+6.2,  lot:50,  desc:'Tata Group financial arm, diversified services'},
+  {n:'Reliance Retail',         sector:'Fintech',   price:1350, chg:+4.8,  lot:25,  desc:'Reliance retail vertical, fast growth'},
+  {n:'PhonePe',                 sector:'Fintech',   price:440,  chg:-2.1,  lot:100, desc:'India largest UPI payment app'},
+  {n:'NSDL',                    sector:'Fintech',   price:920,  chg:+12.4, lot:50,  desc:'National Securities Depository Limited'},
+  {n:'Boat (Imagine Marketing)',sector:'Technology',price:1550, chg:+5.6,  lot:25,  desc:'Audio electronics brand, IPO expected'},
+  {n:'OYO Rooms',               sector:'Technology',price:42,   chg:-5.2,  lot:500, desc:'Hospitality chain, restructuring phase'},
+  {n:'Swiggy Pre-IPO',          sector:'Technology',price:395,  chg:+3.1,  lot:100, desc:'Food delivery, listed on NSE/BSE recently'},
+  {n:'NAVI Technologies',       sector:'Fintech',   price:38,   chg:-1.8,  lot:500, desc:'Sachin Bansal fintech startup'},
+  {n:'Pharmeasy',               sector:'Pharma',    price:18,   chg:-3.4,  lot:500, desc:'Online pharmacy and healthcare platform'},
+  {n:'CarDekho (GirnarSoft)',   sector:'Technology',price:620,  chg:+7.8,  lot:50,  desc:'Auto classifieds and tech platform'},
+  {n:'Ixigo',                   sector:'Technology',price:175,  chg:+2.5,  lot:200, desc:'Travel booking app, IPO listed 2024'},
+  {n:'IndiGo (Pre rights)',     sector:'Technology',price:4850, chg:+1.2,  lot:10,  desc:'Indigo aviation, strong domestic demand'},
+  {n:'Waaree Energies',         sector:'EV / Energy',price:3200, chg:+9.4, lot:10,  desc:'Solar module manufacturer, IPO 2024'},
+  {n:'Premier Energies',        sector:'EV / Energy',price:1180, chg:+11.2,lot:25,  desc:'Solar EPC and modules, Hyderabad based'},
+  {n:'Ola Electric Pre-IPO',    sector:'EV / Energy',price:82,   chg:-4.6, lot:200, desc:'Electric 2-wheelers, IPO listed 2024'},
+  {n:'Imagicaaworld',           sector:'Infrastructure',price:98, chg:+1.5, lot:100,desc:'Theme park and entertainment company'},
+  {n:'Arohan Financial',        sector:'NBFC',      price:215,  chg:+3.2,  lot:100, desc:'Microfinance institution, NE India focused'},
+  {n:'Manipal Cigna Health',    sector:'Fintech',   price:365,  chg:+5.8,  lot:50,  desc:'Health insurance JV, growing fast'},
+  {n:'Hero FinCorp',            sector:'NBFC',      price:2250, chg:+4.1,  lot:20,  desc:'Hero Group NBFC, two-wheeler financing'},
+  {n:'National Stock Exchange', sector:'Fintech',   price:2890, chg:+6.5,  lot:10,  desc:'NSE exchange, massive unlisted gem'},
+  {n:'HDFC Securities',         sector:'Fintech',   price:4200, chg:+3.8,  lot:10,  desc:'HDFC Group brokerage arm'},
+  {n:'Sterlite Power',          sector:'Infrastructure',price:265, chg:+7.2, lot:100,desc:'Power transmission infrastructure'},
+  {n:'Polymatech Electronics',  sector:'Technology',price:185,  chg:+15.4, lot:100, desc:'Semiconductor assembly, Defense & consumer'},
+  {n:'KFintech',                sector:'Fintech',   price:810,  chg:+2.9,  lot:50,  desc:'Registrar & transfer agent, BSE/NSE listed'},
+  {n:'Sai Life Sciences',       sector:'Pharma',    price:540,  chg:+8.1,  lot:50,  desc:'CDMO pharma, IPO expected 2024-25'},
+  {n:'SRM Contractors',         sector:'Infrastructure',price:95, chg:+4.5, lot:200,desc:'Road construction, NH projects'},
+  {n:'DroneAcharya',            sector:'Defense',   price:72,   chg:+3.2,  lot:200, desc:'Drone training and services company'},
+  {n:'Solar Industries',        sector:'Defense',   price:11200, chg:+5.6, lot:5,   desc:'Explosives and defense, growing order book'},
+  {n:'Mukka Proteins',          sector:'Agri / Food',price:38,   chg:+1.8, lot:500, desc:'Fish meal and fish oil processing'},
+  {n:'Amul Dairy',              sector:'Agri / Food',price:450,  chg:+2.2, lot:100, desc:'Biggest dairy cooperative, expansion phase'}
+];
+
+window._unlistedData = unlistedData;
+
+function buildUnlisted() {
+  filterUnlisted();
+}
+
+function filterUnlisted() {
+  var el = document.getElementById('unlisted-list'); if (!el) return;
+  var search = (document.getElementById('unl-search')||{}).value||'';
+  var sector = (document.getElementById('unl-sector')||{}).value||'';
+  var data = window._unlistedData || [];
+  var filtered = data.filter(function(s) {
+    var matchSearch = !search || s.n.toLowerCase().indexOf(search.toLowerCase())>=0 || s.desc.toLowerCase().indexOf(search.toLowerCase())>=0;
+    var matchSector = !sector || s.sector===sector;
+    return matchSearch && matchSector;
+  });
+  if (!filtered.length) { el.innerHTML='<div style="text-align:center;padding:20px;color:var(--gray);">No stocks found</div>'; return; }
+  el.innerHTML = filtered.map(function(s) {
+    var isUp = s.chg >= 0;
+    var chgColor = isUp ? '#10B981' : '#EF4444';
+    var chgSign = isUp ? '+' : '';
+    return '<div style="background:var(--navy2);border:1.5px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">'
+      +'<div style="flex:1;min-width:0;">'
+      +'<div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:2px;">'+s.n+'</div>'
+      +'<div style="font-size:10px;font-weight:700;color:var(--blue3);text-transform:uppercase;letter-spacing:0.5px;">'+s.sector+'</div>'
+      +'</div>'
+      +'<div style="text-align:right;flex-shrink:0;margin-left:12px;">'
+      +'<div style="font-size:16px;font-weight:800;color:var(--white);font-family:var(--serif);">Rs.'+s.price+'</div>'
+      +'<div style="font-size:11px;font-weight:700;color:'+chgColor+';">'+chgSign+s.chg+'% GMP</div>'
+      +'</div></div>'
+      +'<div style="font-size:11px;color:var(--gray);line-height:1.6;margin-bottom:10px;">'+s.desc+'</div>'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;">'
+      +'<div style="font-size:10px;color:var(--gray);">Min Lot: '+s.lot+' shares &nbsp;|&nbsp; Rs.'+(s.price*s.lot).toLocaleString('en-IN')+'</div>'
+      +'<button style="background:var(--blue3);border:none;border-radius:10px;padding:7px 14px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font);" onclick="window.open(\'https://wa.me/916300716517?text=Interested+in+'+encodeURIComponent(s.n)+'+unlisted+shares+at+Rs.'+s.price+'\',\'_blank\')">Enquire</button>'
+      +'</div></div>';
+  }).join('');
+}
+}arket() {}
+function fetchLiveMarketData() {}
+function mktRenderStatic() {}
+function mktSet() {}
+function mktNum(n) { return Math.round(n).toLocaleString('en-IN'); }
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}) {}
 function buildTopMovers() {}
 function renderMarketData() {}
 function renderTopMovers() {}
