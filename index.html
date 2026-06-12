@@ -1208,18 +1208,50 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
         </select>
       </div>
       <div id="ins-health-row" style="display:none;">
+        <label>Plan Type</label>
+        <select id="ins-health-type" onchange="toggleFamilyForm()" style="margin-bottom:8px;">
+          <option value="individual">Individual</option>
+          <option value="family">Family Floater</option>
+          <option value="senior">Senior Citizen (60+)</option>
+        </select>
+        <!-- FAMILY DETAILS -->
+        <div id="ins-family-row" style="display:none;background:rgba(26,86,219,0.08);border:1px solid rgba(26,86,219,0.25);border-radius:12px;padding:12px;margin-bottom:8px;">
+          <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:10px;">Family Members</div>
+          <div class="grid2" style="gap:6px;">
+            <div>
+              <label style="font-size:10px;">Self Age</label>
+              <input type="number" id="ins-self-age" value="32" min="18" max="65" onchange="buildIns()" style="margin-bottom:4px;"/>
+            </div>
+            <div>
+              <label style="font-size:10px;">Spouse Age (0 = not included)</label>
+              <input type="number" id="ins-spouse-age" value="29" min="0" max="65" onchange="buildIns()" style="margin-bottom:4px;"/>
+            </div>
+            <div>
+              <label style="font-size:10px;">Child 1 Age (0 = none)</label>
+              <input type="number" id="ins-child1-age" value="5" min="0" max="25" onchange="buildIns()" style="margin-bottom:4px;"/>
+            </div>
+            <div>
+              <label style="font-size:10px;">Child 2 Age (0 = none)</label>
+              <input type="number" id="ins-child2-age" value="0" min="0" max="25" onchange="buildIns()" style="margin-bottom:4px;"/>
+            </div>
+          </div>
+          <div id="ins-family-summary" style="font-size:11px;color:var(--blue3);margin-top:6px;"></div>
+        </div>
         <label>Sum Insured</label>
         <select id="ins-health-cover" onchange="buildIns()" style="margin-bottom:0;">
-          <option>₹3 Lakh</option>
-          <option>₹5 Lakh</option>
-          <option selected>₹10 Lakh</option>
-          <option>₹20 Lakh</option>
-          <option>₹50 Lakh</option>
+          <option>Rs.3 Lakh</option>
+          <option>Rs.5 Lakh</option>
+          <option selected>Rs.10 Lakh</option>
+          <option>Rs.20 Lakh</option>
+          <option>Rs.50 Lakh</option>
         </select>
       </div>
     </div>
 
-    <div class="sec-title" id="ins-results-title">Best Quotes — Sorted by Price</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div class="sec-title" id="ins-results-title" style="margin:0;">Best Quotes — Sorted by Price</div>
+      <button class="btn btn-primary btn-sm" id="ins-pdf-btn" style="padding:7px 14px;">📄 PDF</button>
+    </div>
     <div id="ins-results"></div>
   </div>
 </div>
@@ -2176,48 +2208,8 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
       <div class="menu-card-sub">Recent activity</div>
     </div>
     <div class="menu-card" onclick="navTo('p-profile','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#8B5CF6,#4C1D95);">👤</div>
-      <div class="menu-card-title">My Profile</div>
-      <div class="menu-card-sub">Account settings</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-admin','nb-more')">
-      <div class="menu-card-icon" style="background:linear-gradient(135deg,#EF4444,#7F1D1D);">🔐</div>
-      <div class="menu-card-title">Admin</div>
-      <div class="menu-card-sub">Stokado dashboard</div>
-    </div>
-  </div>
-
-</div>
-</div>
-
-
-</div><!-- /pages -->
-
-<!-- BOTTOM NAV -->
-<nav class="bnav">
-  <button class="bnav-btn active" id="nb-home" onclick="navTo('p-home','nb-home')"><span class="bnav-icon">🏠</span><span class="bnav-label">Home</span></button>
-  <button class="bnav-btn" id="nb-calc" onclick="navTo('p-calc','nb-calc')"><span class="bnav-icon">&#129518;</span><span class="bnav-label">Calc</span></button>
-  <button class="bnav-btn" id="nb-ins" onclick="navTo('p-ins','nb-ins')"><span class="bnav-icon">&#128737;&#65039;</span><span class="bnav-label">Insure</span></button>
-  <button class="bnav-btn" id="nb-mf" onclick="navTo('p-mf','nb-mf')"><span class="bnav-icon">&#128202;</span><span class="bnav-label">MF</span></button>
-  <button class="bnav-btn" id="nb-more" onclick="navTo('p-more','nb-more')"><span class="bnav-icon">&#8943;</span><span class="bnav-label">More</span></button>
-</nav>
-
-</div><!-- /app -->
-<div id="toast"></div>
-
-<!-- FLOATING DAILY TIP -->
-<div id="floating-tip" style="display:none;">
-  <div class="tip-icon" id="ft-icon">&#128161;</div>
-  <div class="tip-content">
-    <div class="tip-label" id="ft-label">Daily Tip</div>
-    <div class="tip-title" id="ft-title">Loading...</div>
-    <div class="tip-body" id="ft-body"></div>
-  </div>
-  <div class="tip-close" id="tip-close-btn">&#10005;</div>
-</div>
-
 <script>
-// ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
+      <div class="menu-card-icon" s// ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
 // Build: June 2026
 
 // ═══════════════════════════════════════
@@ -2839,14 +2831,29 @@ function calcTax() {
   ]);
 }
 function calcRetire() {
-  var age=v('ret-age'),retAge=v('ret-yr'),exp=v('ret-exp');
-  sv('ret-age-v',age+'yrs'); sv('ret-yr-v',retAge+'yrs');
-  var yrsToRetire=retAge-age, corpus=exp*12*25;
-  var r=0.12/12, mn=yrsToRetire*12;
-  var sipNeeded=corpus*r/(Math.pow(1+r,mn)-1);
-  showResult('ret','Rs.'+n(corpus),'Corpus Needed',[
-    {val:yrsToRetire+' yrs',lbl:'Years to Retire'},{val:'Rs.'+n(sipNeeded)+'/mo',lbl:'SIP Needed'},
-    {val:'Rs.'+n(exp)+'/mo',lbl:'Monthly Expense'},{val:retAge+' yrs',lbl:'Retire Age'}
+  var age=v('ret-age'), retAge=v('ret-yr'), exp=v('ret-exp');
+  sv('ret-age-v', age+' yrs');
+  sv('ret-yr-v', retAge+' yrs');
+  var yrsToRetire = retAge - age;
+  if (yrsToRetire <= 0) {
+    showResult('ret','--','Please set retire age higher than current age',[]);
+    return;
+  }
+  var retYears = 25; // expected years in retirement
+  // Inflate monthly expense to retirement date at 6% inflation
+  var inflatedExp = exp * Math.pow(1.06, yrsToRetire);
+  // Corpus needed = inflated monthly expense x 12 x 25 years (at 6% SWR we need ~300x monthly)
+  var corpus = inflatedExp * 12 * retYears;
+  // SIP needed to build that corpus
+  var r = 0.12/12, mn = yrsToRetire * 12;
+  var sipNeeded = corpus * r / (Math.pow(1+r, mn) - 1);
+  // Lumpsum alternative
+  var lumpNeeded = corpus / Math.pow(1.12, yrsToRetire);
+  showResult('ret', 'Rs.'+n(Math.round(corpus)), 'Retirement Corpus Needed', [
+    {val: yrsToRetire+' yrs', lbl: 'Years to Retire'},
+    {val: 'Rs.'+n(Math.round(sipNeeded))+'/mo', lbl: 'Monthly SIP @12%'},
+    {val: 'Rs.'+n(Math.round(inflatedExp))+'/mo', lbl: 'Expense at Retirement'},
+    {val: 'Rs.'+n(Math.round(lumpNeeded)), lbl: 'Lumpsum Today @12%'}
   ]);
 }
 function calcSWP() {
@@ -3329,9 +3336,9 @@ var insPlans = [
   {name:'Edelweiss Tokio Zindagi Plus',base:755,csr:98.5,claim:'24h',founded:2009}
 ];
 function toggleFamilyForm() {
-  var type = (document.getElementById('ins-health-type')||{}).value||'individual';
+  var type = (document.getElementById('ins-health-type')||{}).value || 'individual';
   var fr = document.getElementById('ins-family-row');
-  if (fr) fr.style.display = type==='family' ? 'block' : 'none';
+  if (fr) fr.style.display = (type === 'family') ? 'block' : 'none';
   buildIns();
 }
 
@@ -3393,7 +3400,29 @@ function buildIns() {
     } else if (planType==='senior') {
       aM = 2.8;
     }
-    var hM = cov2===3?0.5:cov2===5?0.75:cov2===10?1:cov2===20?1.6:2.5;
+    var planType = (document.getElementById('ins-health-type')||{}).value || 'individual';
+    var familyM = 1;
+    if (planType === 'family') {
+      var selfAge2 = parseInt((document.getElementById('ins-self-age')||{}).value)||32;
+      var spouseAge = parseInt((document.getElementById('ins-spouse-age')||{}).value)||0;
+      var child1 = parseInt((document.getElementById('ins-child1-age')||{}).value)||0;
+      var child2 = parseInt((document.getElementById('ins-child2-age')||{}).value)||0;
+      var members = 1 + (spouseAge>0?1:0) + (child1>0?1:0) + (child2>0?1:0);
+      familyM = members>=4?1.9:members===3?1.55:members===2?1.28:1;
+      aM = (selfAge2<30?1:selfAge2<35?1.25:selfAge2<40?1.55:1.9);
+      // Update summary
+      var sumEl = document.getElementById('ins-family-summary');
+      if (sumEl) {
+        var mnames = ['Self ('+selfAge2+')'];
+        if (spouseAge>0) mnames.push('Spouse ('+spouseAge+')');
+        if (child1>0) mnames.push('Child 1 ('+child1+')');
+        if (child2>0) mnames.push('Child 2 ('+child2+')');
+        sumEl.textContent = members+' members: '+mnames.join(', ');
+      }
+    } else if (planType === 'senior') {
+      aM = 2.8; familyM = 1;
+    }
+    var hM = (cov2===3?0.5:cov2===5?0.75:cov2===10?1:cov2===20?1.6:2.5) * familyM;
     hM = hM * familyM;
     var healthPlans = [
       {name:'Star Health Comprehensive',base:8500,csr:99.1,feat:'No Room Rent Limit'},
@@ -3420,7 +3449,7 @@ function buildIns() {
         +'<div style="font-size:10px;color:var(--gray);">CSR '+p.csr+'%</div></div>'
         +'<div class="ins-price">Rs.'+n(p.premium)+' <span style="font-size:13px;color:var(--gray);font-weight:400;">/yr</span></div>'
         +'<div class="ins-details">Sum Insured: Rs.'+cov2+' Lakh | '+p.feat+'</div>'
-        +'<button class="btn btn-primary btn-sm ins-quote-btn" style="width:100%;margin-top:10px;" data-ins="'+p.name+' ('+planType+' Health Rs.'+cov2+'L)" data-prem="'+p.premium+'">Get Quote via WhatsApp</button>'
+        +'<button class="btn btn-primary btn-sm ins-quote-btn" style="width:100%;margin-top:10px;" data-ins="'+p.name+' ('+planType.charAt(0).toUpperCase()+planType.slice(1)+' Health Rs.'+cov2+'L)" data-prem="'+p.premium+'">Get Quote via WhatsApp</button>'
         +'</div>';
     });
   }
@@ -4072,6 +4101,7 @@ document.addEventListener('click', function(e) {
   }
 
   // Insurance quote
+  if(t.id==='ins-pdf-btn') { buildInsPDF(); return; }
   if(t.classList.contains('ins-type-tab')) {
     window._insType = t.getAttribute('data-ins-type');
     document.querySelectorAll('.ins-type-tab').forEach(function(b){
@@ -5231,24 +5261,170 @@ function buildFinTips() {
 function showFloatingTip() {
   var dismissed = localStorage.getItem('stk_tip_date');
   var today = new Date().toLocaleDateString('en-IN');
-  if (dismissed === today) return; // already dismissed today
-  var tips = getTodayTips();
-  if (!tips || !tips.length) return;
-  var t = tips[0];
+  if (dismissed === today) return;
+  var el = document.getElementById('floating-tip');
+  if (!el) return;
+  // Get today's tip
+  var allTips = typeof _allDailyTips !== 'undefined' ? _allDailyTips : [];
+  if (!allTips.length) return;
+  var dayIdx = new Date().getDay() * 4 + new Date().getDate();
+  var t = allTips[dayIdx % allTips.length];
   var icon = document.getElementById('ft-icon');
   var label = document.getElementById('ft-label');
   var title = document.getElementById('ft-title');
   var body = document.getElementById('ft-body');
-  var el = document.getElementById('floating-tip');
-  if (!el) return;
-  if (icon) icon.textContent = t.ico;
-  if (label) label.textContent = t.cat;
-  if (title) title.textContent = t.title;
-  if (body) body.textContent = t.body;
-  // Show after 3 seconds
+  if (icon) icon.textContent = t.ico || '💡';
+  if (label) label.textContent = t.cat || 'Daily Tip';
+  if (title) title.textContent = t.title || '';
+  if (body) body.textContent = t.body || '';
+  // Show after 3s
   setTimeout(function() {
-    el.style.display = 'flex';
+    if (el) {
+      el.style.display = 'flex';
+      el.style.opacity = '0';
+      el.style.transition = 'opacity 0.4s';
+      setTimeout(function(){ el.style.opacity = '1'; }, 50);
+    }
   }, 3000);
+}
+
+function buildInsPDF() {
+  if (!window.jspdf) { showToast('PDF loading, try again...'); return; }
+  var insType = window._insType || 'term';
+  var typeNames = {term:'Term Life',health:'Health',car:'Car',home:'Home'};
+  var typeName = typeNames[insType] || 'Insurance';
+  var age = (document.getElementById('ins-age')||{}).value || '30';
+  var gender = (document.getElementById('ins-gender')||{}).value || 'Male';
+
+  // Collect plan cards from results
+  var results = document.getElementById('ins-results');
+  if (!results || !results.children.length) { showToast('No quotes to download!'); return; }
+
+  var planType = (document.getElementById('ins-health-type')||{}).value || 'individual';
+  var covEl = document.getElementById('ins-health-cover') || document.getElementById('ins-cover');
+  var cover = covEl ? covEl.value : '';
+
+  var doc = new window.jspdf.jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
+  var W=210, H=297;
+
+  // HEADER
+  doc.setFillColor(10,22,40); doc.rect(0,0,W,42,'F');
+  doc.setFillColor(245,197,24); doc.rect(0,0,5,42,'F');
+  doc.setFillColor(245,197,24); doc.circle(22,21,10,'F');
+  doc.setFontSize(14); doc.setFont('helvetica','bold'); doc.setTextColor(10,22,40);
+  doc.text('S',22,25,{align:'center'});
+  doc.setTextColor(255,255,255); doc.setFontSize(17); doc.setFont('helvetica','bold');
+  doc.text('Stokado Financial Solutions',34,16);
+  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(160,175,210);
+  doc.text('SEBI Registered  |  IRDAI IC38 Certified Advisor  |  Vijayawada, AP',34,23);
+  doc.text('Phone: +91 6300716517  |  +91 9030061988  |  stokado999@gmail.com',34,29);
+  doc.text('27-14-35, Balaji Jewels World, Rajagopalachari Street, Vijayawada 520002',34,35);
+  doc.setTextColor(245,197,24); doc.setFontSize(9);
+  doc.text(new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}),W-8,12,{align:'right'});
+
+  // TITLE
+  doc.setFillColor(26,86,219); doc.rect(0,42,W,14,'F');
+  doc.setTextColor(255,255,255); doc.setFontSize(13); doc.setFont('helvetica','bold');
+  doc.text(typeName+' Insurance — Comparison Report',W/2,52,{align:'center'});
+
+  // CLIENT DETAILS
+  var y=66;
+  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(10,22,40);
+  doc.text('Quote Details',14,y);
+  doc.setFillColor(245,197,24); doc.rect(14,y+1,24,1,'F');
+  y+=8;
+
+  var details = [
+    {k:'Insurance Type', v:typeName},
+    {k:'Age', v:age+' years'},
+    {k:'Gender', v:gender},
+    {k:'Cover Amount', v:cover || 'Rs.1 Crore'}
+  ];
+  if (insType==='health' && planType==='family') {
+    var selfAge2 = (document.getElementById('ins-self-age')||{}).value||'32';
+    var spouseAge2 = (document.getElementById('ins-spouse-age')||{}).value||'0';
+    var child1Age2 = (document.getElementById('ins-child1-age')||{}).value||'0';
+    details.push({k:'Plan Type', v:'Family Floater'});
+    details.push({k:'Self', v:selfAge2+' yrs'});
+    if(parseInt(spouseAge2)>0) details.push({k:'Spouse', v:spouseAge2+' yrs'});
+    if(parseInt(child1Age2)>0) details.push({k:'Children', v:child1Age2+' yrs'});
+  }
+
+  doc.setFillColor(240,244,255); doc.rect(12,y-4,W-24,details.length*7+6,'F');
+  doc.setDrawColor(200,215,240); doc.setLineWidth(0.3); doc.rect(12,y-4,W-24,details.length*7+6,'S');
+  details.forEach(function(d,i){
+    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(80,100,130);
+    doc.text(d.k+':', 18, y+i*7);
+    doc.setFont('helvetica','bold'); doc.setTextColor(10,22,40);
+    doc.text(d.v, 80, y+i*7);
+  });
+  y += details.length*7 + 10;
+
+  // PLANS TABLE
+  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(10,22,40);
+  doc.text('Insurance Plans — Best to Lowest Price',14,y);
+  doc.setFillColor(245,197,24); doc.rect(14,y+1,60,1,'F');
+  y+=8;
+
+  // Table header
+  doc.setFillColor(10,22,40); doc.rect(12,y-4,W-24,8,'F');
+  doc.setTextColor(255,255,255); doc.setFontSize(8); doc.setFont('helvetica','bold');
+  doc.text('#', 16, y); doc.text('Insurance Company', 24, y);
+  doc.text('Annual Premium', 120, y); doc.text('CSR%', 162, y); doc.text('Claim', 178, y);
+  y+=6;
+
+  // Extract plan data from cards
+  var cards = results.querySelectorAll('.ins-card');
+  var planCount = 0;
+  cards.forEach(function(card, i) {
+    if (y > H-50) return;
+    var nameEl = card.querySelector('.ins-name');
+    var priceEl = card.querySelector('.ins-price');
+    var detEl = card.querySelector('.ins-details');
+    var name = nameEl ? nameEl.textContent.replace(/[^\x20-\x7E]/g,' ').trim().slice(0,35) : 'Plan '+(i+1);
+    var price = priceEl ? priceEl.textContent.replace(/[^\x20-\x7E]/g,'').replace(/\s+/g,' ').trim().slice(0,20) : '';
+    var det = detEl ? detEl.textContent.replace(/[^\x20-\x7E]/g,'').trim().slice(0,40) : '';
+    // Extract CSR from details text
+    var csrM = card.textContent.match(/CSR\s*([\d.]+)%/);
+    var csr = csrM ? csrM[1]+'%' : '';
+    var claimM = card.textContent.match(/(\d+h)\b/);
+    var claim = claimM ? claimM[1] : '';
+
+    doc.setFillColor(i%2===0?240:248, i%2===0?244:250, 255);
+    doc.rect(12,y-3,W-24,8,'F');
+    if (i===0) { doc.setFillColor(255,248,220); doc.rect(12,y-3,3,8,'F'); } // gold star for best
+    doc.setFontSize(8.5); doc.setFont(i===0?'helvetica':'helvetica', i===0?'bold':'normal');
+    doc.setTextColor(10,22,40);
+    doc.text(String(i+1), 16, y+2);
+    doc.text(name, 24, y+2);
+    doc.setFont('helvetica','bold'); doc.setTextColor(i===0?0:50,i===0?120:80,i===0?0:50);
+    doc.text(price, 120, y+2);
+    doc.setFont('helvetica','normal'); doc.setTextColor(80,100,130);
+    doc.text(csr, 162, y+2);
+    doc.text(claim, 178, y+2);
+    y+=8; planCount++;
+  });
+  y+=6;
+
+  // RECOMMENDATION BOX
+  doc.setFillColor(10,22,40); doc.roundedRect(12,y,W-24,28,3,3,'F');
+  doc.setFillColor(245,197,24); doc.roundedRect(12,y,5,28,2,2,'F');
+  doc.setTextColor(245,197,24); doc.setFontSize(10); doc.setFont('helvetica','bold');
+  doc.text('Stokado Recommendation',22,y+9);
+  doc.setTextColor(200,215,240); doc.setFontSize(8.5); doc.setFont('helvetica','normal');
+  doc.text('The top-ranked plan offers the best value for your profile. However, always compare CSR',22,y+16);
+  doc.text('(Claim Settlement Ratio) and coverage features before purchasing.',22,y+22);
+
+  // FOOTER
+  doc.setFillColor(10,22,40); doc.rect(0,H-22,W,22,'F');
+  doc.setFillColor(245,197,24); doc.rect(0,H-22,W,2,'F');
+  doc.setTextColor(180,195,220); doc.setFontSize(8); doc.setFont('helvetica','normal');
+  doc.text('Stokado Financial Solutions  |  27-14-35, Balaji Jewels World, Vijayawada 520002',W/2,H-14,{align:'center'});
+  doc.setTextColor(245,197,24);
+  doc.text('+91 6300716517  |  +91 9030061988  |  stokado999@gmail.com',W/2,H-8,{align:'center'});
+
+  doc.save('Stokado-'+typeName+'-Insurance-Quotes.pdf');
+  showToast('Insurance PDF downloaded!');
 }
 
 window.addEventListener('load', function() {
@@ -5378,6 +5554,68 @@ function buildTopMovers() {}{
 }
 
 // Stub functions for compatibility
+function loadMarket() {}
+function fetchLiveMarketData() {}
+function mktRenderStatic() {}
+function mktSet() {}
+function mktNum(n) { return Math.round(n).toLocaleString('en-IN'); }
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}
+
+  // Market auto-refresh page title
+  startMarketAutoRefresh();
+
+function startMarketAutoRefresh() {
+  setInterval(function(){
+    var pg=$('p-market');
+    if(pg&&pg.classList.contains('active')) {
+      // market widgets auto-refresh themselves
+    }
+  }, 60000);
+}
+
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}
+
+  // Market auto-refresh page title
+  startMarketAutoRefresh();
+
+function startMarketAutoRefresh() {
+  setInterval(function(){
+    var pg=$('p-market');
+    if(pg&&pg.classList.contains('active')) {
+      // market widgets auto-refresh themselves
+    }
+  }, 60000);
+}
+
+// Stub functions for compatibility
+function loadMarket() {}
+function fetchLiveMarketData() {}
+function mktRenderStatic() {}
+function mktSet() {}
+function mktNum(n) { return Math.round(n).toLocaleString('en-IN'); }
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}compatibility
 function loadMarket() {}
 function fetchLiveMarketData() {}
 function mktRenderStatic() {}
