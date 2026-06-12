@@ -2206,10 +2206,38 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
       <div class="menu-card-icon" style="background:linear-gradient(135deg,#1A56DB,#0A2463);">🔔</div>
       <div class="menu-card-title">Notifications</div>
       <div class="menu-card-sub">Recent activity</div>
-    </div>
-    <div class="menu-card" onclick="navTo('p-profile','nb-more')">
+    </div></div>
+</div>
+
+</div><!-- /pages -->
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="bnav-btn active" id="nb-home" onclick="navTo('p-home','nb-home')"><span class="bnav-icon">&#127968;</span><span class="bnav-label">Home</span></button>
+  <button class="bnav-btn" id="nb-calc" onclick="navTo('p-calc','nb-calc')"><span class="bnav-icon">&#129518;</span><span class="bnav-label">Calc</span></button>
+  <button class="bnav-btn" id="nb-ins" onclick="navTo('p-ins','nb-ins')"><span class="bnav-icon">&#128737;</span><span class="bnav-label">Insure</span></button>
+  <button class="bnav-btn" id="nb-mf" onclick="navTo('p-mf','nb-mf')"><span class="bnav-icon">&#128202;</span><span class="bnav-label">MF</span></button>
+  <button class="bnav-btn" id="nb-more" onclick="navTo('p-more','nb-more')"><span class="bnav-icon">&#8943;</span><span class="bnav-label">More</span></button>
+</nav>
+
+</div><!-- /app -->
+<div id="toast"></div>
+
+<!-- FLOATING DAILY TIP -->
+<div id="floating-tip" style="display:none;">
+  <div class="tip-icon" id="ft-icon">&#128161;</div>
+  <div class="tip-content">
+    <div class="tip-label" id="ft-label">Daily Tip</div>
+    <div class="tip-title" id="ft-title">Loading...</div>
+    <div class="tip-body" id="ft-body"></div>
+  </div>
+  <div class="tip-close" id="tip-close-btn">&#10005;</div>
+</div>
+
 <script>
-      <div class="menu-card-icon" s// ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
+
+    <div class="menu-card" onclick="navTo('p-profile','nb-more')">
+// ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
 // Build: June 2026
 
 // ═══════════════════════════════════════
