@@ -5330,21 +5330,6 @@ function updateNavDisplay(code,nav) { updateNav(code,nav); }
 function addMFNavHeader() {}
 function buildTopMovers() {}
 
-
-  // Init home
-  buildHomeTips();
-  setTimeout(function(){ if(typeof buildFlyers!=="undefined") buildFlyers(); }, 100);
-
-  // Check if logged in user
-  var user=JSON.parse(localStorage.getItem('stk_user')||'null');
-  if(user) {
-    var btn=$('profile-btn');
-    if(btn) btn.textContent=user.name.charAt(0).toUpperCase();
-  }
-
-  // Market auto-refresh page title
-  startMarketAutoRefresh();
-
 function startMarketAutoRefresh() {
   setInterval(function(){
     var pg=$('p-market');
