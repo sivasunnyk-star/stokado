@@ -4378,7 +4378,11 @@ function showFeaturedFlyer(idx){var i=(idx!==undefined)?idx:Math.floor(Math.rand
 function buildFlyerCard(f,idx,featured){var sz=featured?'padding:22px;min-height:190px;':'padding:12px;min-height:140px;';var ts=featured?'font-size:17px;':'font-size:12px;';var ss=featured?'font-size:11px;':'font-size:10px;';return '<div style="background:'+f.bg+';border-radius:16px;'+sz+'position:relative;overflow:hidden;" data-flyer-idx="'+idx+'"><div style="position:absolute;top:-15px;right:-15px;font-size:70px;opacity:0.1;">'+f.icon+'</div><div style="position:relative;z-index:1;"><div style="font-size:'+(featured?'26px':'20px')+';">'+f.icon+'</div><div style="font-family:var(--serif);'+ts+'font-weight:800;color:#FFF;margin:5px 0 2px;line-height:1.2;">'+f.title+'</div><div style="'+ss+'color:rgba(255,255,255,0.7);margin-bottom:'+(featured?'10px':'5px')+';">'+f.sub+'</div>'+(featured?'<div style="margin-bottom:10px;">'+f.points.map(function(p){return '<div style="font-size:11px;color:rgba(255,255,255,0.9);margin-bottom:3px;display:flex;gap:5px;"><span style="color:'+f.accent+';">✓</span>'+p+'</div>';}).join('')+'</div>':'')+'<div style="display:flex;gap:6px;"><button class="flyer-download-btn" data-flyer-idx="'+idx+'" style="background:'+f.accent+';border:none;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:700;color:#0A1628;cursor:pointer;font-family:inherit;">↓ Download</button><button class="flyer-share-btn" data-flyer-idx="'+idx+'" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;">↑ Share</button></div><div style="font-size:9px;color:rgba(255,255,255,0.4);margin-top:5px;">Stokado Financial • +91 6300716517</div></div></div>';}
 function filterFlyers(){var filtered=_flyerCat==='all'?flyerData:flyerData.filter(function(f){return f.cat===_flyerCat;});var el=document.getElementById('flyer-grid');if(!el)return;el.innerHTML=filtered.map(function(f){return buildFlyerCard(f,flyerData.indexOf(f),false);}).join('');}
 function downloadFlyer(idx){var f=flyerData[idx];if(!f)return;var c=document.createElement('canvas');c.width=800;c.height=600;var ctx=c.getContext('2d');var cols=f.bg.match(/#[0-9a-fA-F]{6}/g)||['#0A1628','#1A56DB'];var g=ctx.createLinearGradient(0,0,800,600);g.addColorStop(0,cols[0]);g.addColorStop(1,cols[1]||cols[0]);ctx.fillStyle=g;ctx.beginPath();ctx.roundRect(0,0,800,600,20);ctx.fill();ctx.font='150px serif';ctx.globalAlpha=0.1;ctx.fillStyle='#FFF';ctx.fillText(f.icon,500,380);ctx.globalAlpha=1;ctx.fillStyle='#FFF';ctx.font='bold 38px Georgia,serif';ctx.fillText(f.title,50,88);ctx.fillStyle='rgba(255,255,255,0.75)';ctx.font='21px Arial,sans-serif';ctx.fillText(f.sub,50,126);ctx.fillStyle=f.accent;ctx.fillRect(50,146,160,4);f.points.forEach(function(p,i){ctx.fillStyle=f.accent;ctx.font='bold 18px Arial,sans-serif';ctx.fillText('✓',50,200+i*46);ctx.fillStyle='#FFF';ctx.font='18px Arial,sans-serif';ctx.fillText(p,75,200+i*46);});ctx.fillStyle=f.accent;ctx.beginPath();ctx.roundRect(50,452,295,50,10);ctx.fill();ctx.fillStyle='#0A1628';ctx.font='bold 18px Arial,sans-serif';ctx.fillText(f.cta,65,484);ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='14px Arial,sans-serif';ctx.fillText('Stokado Financial Solutions | Vijayawada | +91 6300716517',50,562);var a=document.createElement('a');a.download='stokado-'+f.cat+'-'+(idx+1)+'.png';a.href=c.toDataURL('image/png');a.click();showToast('Flyer downloaded! 📥');}
-function shareFlyer(idx){var f=flyerData[idx];if(!f)return;var txt=f.title+'\n\n'+f.points.join('\n')+'\n\nStokado Financial Solutions\n+91 6300716517 | Vijayawada';if(navigator.share){navigator.share({title:f.title,text:txt});}else{window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');}}
+function shareFlyer(idx){
+var f=flyerData[idx];if(!f)return;var txt=f.title+'\n\n'+f.points.join('\n')+'\n\nStokado Financial Solutions\n+91 6300716517 | Vijayawada';if(navigator.share){
+navigator.share({
+title:f.title,text:txt});}else{
+window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');}}
 
 // ═══════════════════════════════════════
 // BUDGET PLANNER
@@ -4727,8 +4731,10 @@ var SMS_PATTERNS = [
   {re:new RegExp('EMI\\s+of\\s+'+SMS_AMT+'|'+SMS_AMT+'\\s+(?:towards|for)\\s+(?:your\\s+)?EMI','i'), type:'debit', sub:'EMI'},
 
   // ── CREDITS (specific first, generic last) ──
-  {re:new RegExp('refund\\s+of\\s+'+SMS_AMT+'|'+SMS_AMT+'.{0,20}refund(?:ed)?','i'), type:'credit', sub:'Refund'},
-  {re:new RegExp('cashback\\s+of\\s+'+SMS_AMT+'|'+SMS_AMT+'.{0,20}cashback','i'), type:'credit', sub:'Cashback'},
+  {
+re:new RegExp('refund\\s+of\\s+'+SMS_AMT+'|'+SMS_AMT+'.{0,20}refund(?:ed)?','i'), type:'credit', sub:'Refund'},
+  {
+re:new RegExp('cashback\\s+of\\s+'+SMS_AMT+'|'+SMS_AMT+'.{0,20}cashback','i'), type:'credit', sub:'Cashback'},
   {re:new RegExp('(?:interest)\\s+(?:of\\s+)?'+SMS_AMT+'\\s+credited','i'), type:'credit', sub:'Interest'},
   {re:new RegExp('(?:salary|sal)\\b.{0,40}?'+SMS_AMT,'i'), type:'credit', sub:'Salary'},
   {re:new RegExp(SMS_AMT+'\\s*(?:has been\\s+)?(?:credited|received|deposited)','i'), type:'credit', sub:'Credit'},
@@ -4737,7 +4743,8 @@ var SMS_PATTERNS = [
   // ── INFO (CC BILLS / DUES) ──
   {re:new RegExp('(?:total\\s+)?(?:bill|amount)\\s+(?:due|payable)(?:\\s+is)?\\s*:?\\s*'+SMS_AMT,'i'), type:'info', sub:'CC Bill Due'},
   {re:new RegExp('min(?:imum)?\\s+(?:amount\\s+)?due\\s*:?\\s*'+SMS_AMT,'i'), type:'info', sub:'CC Min Due'},
-  {re:new RegExp('(?:statement|stmt).{0,30}generated.{0,40}?'+SMS_AMT,'i'), type:'info', sub:'CC Statement'}
+  {
+re:new RegExp('(?:statement|stmt).{0,30}generated.{0,40}?'+SMS_AMT,'i'), type:'info', sub:'CC Statement'}
 ];
 
 var SMS_BANKS = ['SBI','HDFC','ICICI','AXIS','KOTAK','PNB','BOB','CANARA','UNION','IDBI','YES BANK','INDUSIND','FEDERAL','IDFC','RBL','CITI','HSBC','SC ','AU BANK','BANDHAN','UCO','INDIAN BANK','CENTRAL BANK','PAYTM','PHONEPE','GPAY','GOOGLE PAY','AMAZON PAY','MOBIKWIK','FREECHARGE','CRED','SLICE','LAZYPAY','SIMPL'];
@@ -5456,7 +5463,8 @@ function updateHomeTicker() {}
 function updateNavBadge() {}
 function updateNavDisplay(code,nav) { updateNav(code,nav); }
 function addMFNavHeader() {}
-function buildTopMovers() {}compatibility
+function buildTopMovers() {}
+compatibility
 function loadMarket() {}
 function fetchLiveMarketData() {}
 function mktRenderStatic() {}
