@@ -1274,9 +1274,48 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     </div>
     <div style="font-size:11px;color:var(--gray);margin-bottom:10px;" id="mf-count">Showing 40 funds</div>
     <div id="mf-list"></div>
-    <div style="display:flex;gap:8px;margin-top:4px;">
-      <button id="nav-refresh-btn" class="btn btn-outline btn-sm">↻ Refresh NAV</button>
+    <div style="display:flex;gap:8px;margin-top:4px;margin-bottom:16px;">
+      <button id="nav-refresh-btn" class="btn btn-primary btn-sm" style="padding:8px 16px;font-weight:700;">&#8635; Refresh NAV</button>
     </div>
+
+    <!-- SIP QUICK CALCULATOR -->
+    <div style="background:linear-gradient(135deg,var(--navy2),var(--navy3));border:1.5px solid rgba(26,86,219,0.3);border-radius:18px;padding:18px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <div style="width:38px;height:38px;background:linear-gradient(135deg,#1A56DB,#0A2463);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">&#128200;</div>
+        <div>
+          <div style="font-size:14px;font-weight:800;color:var(--white);">Quick SIP Calculator</div>
+          <div style="font-size:11px;color:var(--gray);">How much can you grow?</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div>
+          <label style="font-size:10px;color:var(--gray);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Monthly SIP (Rs.)</label>
+          <input type="number" id="mf-sip-amt" value="5000" style="margin-top:4px;" oninput="calcMFSIP()"/>
+        </div>
+        <div>
+          <label style="font-size:10px;color:var(--gray);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;">Duration: <span id="mf-sip-yr-v">10 yrs</span></label>
+          <input type="range" id="mf-sip-yr" min="1" max="30" step="1" value="10" style="margin-top:8px;width:100%;" oninput="document.getElementById('mf-sip-yr-v').textContent=this.value+' yrs';calcMFSIP()"/>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
+        <div style="background:var(--navy);border-radius:12px;padding:10px;text-align:center;">
+          <div id="mf-corpus" style="font-size:14px;font-weight:800;color:var(--gold);font-family:var(--serif);">Rs.23.2L</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:3px;text-transform:uppercase;">@12% Returns</div>
+        </div>
+        <div style="background:var(--navy);border-radius:12px;padding:10px;text-align:center;">
+          <div id="mf-invested" style="font-size:14px;font-weight:800;color:var(--light2);font-family:var(--serif);">Rs.6.0L</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:3px;text-transform:uppercase;">Invested</div>
+        </div>
+        <div style="background:var(--navy);border-radius:12px;padding:10px;text-align:center;">
+          <div id="mf-gain" style="font-size:14px;font-weight:800;color:#10B981;font-family:var(--serif);">Rs.17.2L</div>
+          <div style="font-size:9px;color:var(--gray);margin-top:3px;text-transform:uppercase;">Gain</div>
+        </div>
+      </div>
+      <button class="btn btn-gold" style="width:100%;font-weight:800;" onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('sip');},400);">
+        Open Full SIP Calculator &#8594;
+      </button>
+    </div>
+
   </div>
 </div>
 
@@ -1844,6 +1883,118 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 </div>
 
 <!-- ══════════════ MORE MENU ══════════════ -->
+<div class="pg" id="p-more">
+<div class="pg-hdr">
+  <button class="pg-back" onclick="navTo('p-home','nb-home')">&#8592; Back</button>
+  <div class="pg-title">All <span>Features</span></div>
+  <div class="pg-sub">Everything Stokado offers</div>
+</div>
+<div class="pg-content">
+
+  <div class="sec-title" style="margin-bottom:10px;">&#128200; Invest &amp; Track</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+    <div class="menu-card" onclick="navTo('p-mf','nb-mf')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#1A56DB,#0A2463);">&#128202;</div>
+      <div><div class="menu-card-title">Mutual Funds</div><div class="menu-card-sub">40 curated funds</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-portfolio','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#10B981,#065F46);">&#128188;</div>
+      <div><div class="menu-card-title">My Portfolio</div><div class="menu-card-sub">Track investments</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-ipo','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#F5C518,#C9890A);">&#128640;</div>
+      <div><div class="menu-card-title">IPO Tracker</div><div class="menu-card-sub">Open &amp; upcoming</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-unlisted','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#8B5CF6,#4C1D95);">&#128196;</div>
+      <div><div class="menu-card-title">Unlisted Shares</div><div class="menu-card-sub">Pre-IPO opportunities</div></div>
+    </div>
+  </div>
+
+  <div class="sec-title" style="margin-bottom:10px;">&#128737; Plan &amp; Protect</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+    <div class="menu-card" onclick="navTo('p-ins','nb-ins')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#EF4444,#7F1D1D);">&#128737;</div>
+      <div><div class="menu-card-title">Insurance</div><div class="menu-card-sub">Term, Health, Car, Home</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-budget','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#F59E0B,#78350F);">&#128203;</div>
+      <div><div class="menu-card-title">Budget Planner</div><div class="menu-card-sub">Axio-style tracking</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-remind','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#06B6D4,#0E7490);">&#9200;</div>
+      <div><div class="menu-card-title">SIP Reminders</div><div class="menu-card-sub">Never miss a date</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-health','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#10B981,#064E3B);">&#128154;</div>
+      <div><div class="menu-card-title">Health Score</div><div class="menu-card-sub">Financial health check</div></div>
+    </div>
+  </div>
+
+  <div class="sec-title" style="margin-bottom:10px;">&#128218; Learn &amp; Discover</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+    <div class="menu-card" onclick="navTo('p-market','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#1A56DB,#1E3A5F);">&#127891;</div>
+      <div><div class="menu-card-title">Finance Hub</div><div class="menu-card-sub">Learn, Goals, Tips</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-calc','nb-calc')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#6366F1,#312E81);">&#129518;</div>
+      <div><div class="menu-card-title">Calculators</div><div class="menu-card-sub">22 financial tools</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-faq','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#F59E0B,#B45309);">&#10067;</div>
+      <div><div class="menu-card-title">FAQ / Help</div><div class="menu-card-sub">Quick answers</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-chat','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#8B5CF6,#5B21B6);">&#129302;</div>
+      <div><div class="menu-card-title">AI Assistant</div><div class="menu-card-sub">Ask anything</div></div>
+    </div>
+  </div>
+
+  <div class="sec-title" style="margin-bottom:10px;">&#129309; Connect with Us</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+    <div class="menu-card" onclick="navTo('p-appt','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#F5C518,#C9890A);">&#128197;</div>
+      <div><div class="menu-card-title">Book Appointment</div><div class="menu-card-sub">Free consultation</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-refer','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#EC4899,#9D174D);">&#127873;</div>
+      <div><div class="menu-card-title">Refer &amp; Earn</div><div class="menu-card-sub">Share &amp; get rewards</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-reviews','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#F59E0B,#92400E);">&#11088;</div>
+      <div><div class="menu-card-title">Client Reviews</div><div class="menu-card-sub">What clients say</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-svc','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#10B981,#065F46);">&#127970;</div>
+      <div><div class="menu-card-title">Our Services</div><div class="menu-card-sub">What we offer</div></div>
+    </div>
+  </div>
+
+  <div class="sec-title" style="margin-bottom:10px;">&#9881; More</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+    <div class="menu-card" onclick="navTo('p-about','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#6B7A99,#374151);">&#8505;</div>
+      <div><div class="menu-card-title">About Us</div><div class="menu-card-sub">Our story &amp; team</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-notif','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#1A56DB,#0A2463);">&#128276;</div>
+      <div><div class="menu-card-title">Notifications</div><div class="menu-card-sub">Recent activity</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-profile','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#8B5CF6,#4C1D95);">&#128100;</div>
+      <div><div class="menu-card-title">My Profile</div><div class="menu-card-sub">Account settings</div></div>
+    </div>
+    <div class="menu-card" onclick="navTo('p-admin','nb-more')">
+      <div class="menu-card-icon" style="background:linear-gradient(135deg,#EF4444,#7F1D1D);">&#128274;</div>
+      <div><div class="menu-card-title">Admin</div><div class="menu-card-sub">Stokado dashboard</div></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
 <div class="pg" id="p-budget">
 <div class="pg-hdr" style="padding-bottom:0;">
   <button class="pg-back" onclick="navTo('p-home','nb-home')">&#8592; Back</button>
@@ -1981,99 +2132,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
   <!-- SIP TAB -->
   <div class="bud-pane" id="bud-sip" style="display:none;">
     <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;">
-      <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--white);">+ Add SIP / Investment</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
-        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Type</label>
-        <select id="sip-type" style="margin-top:4px;"><option>Mutual Fund SIP</option><option>PPF</option><option>NPS</option><option>SGB (Gold Bond)</option><option>FD / RD</option><option>Stocks / ETF</option><option>ELSS</option></select></div>
-        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Monthly (Rs.)</label>
-        <input type="number" id="sip-amt2" placeholder="e.g. 5000" style="margin-top:4px;"/></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Fund / Scheme Name</label>
-        <input type="text" id="sip-name" placeholder="e.g. Mirae Asset Large Cap" style="margin-top:4px;"/></div>
-        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">SIP Date</label>
-        <input type="number" id="sip-date2" min="1" max="31" placeholder="7" style="margin-top:4px;"/></div>
-      </div>
-      <button class="btn btn-gold" id="sip-add-btn" style="width:100%;">+ Add SIP</button>
-    </div>
-    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Active SIPs</div>
-    <div id="sip-list"></div>
-    <div id="sip-projection"></div>
-  </div>
-
-  <!-- GOALS TAB -->
-  <div class="bud-pane" id="bud-goals" style="display:none;">
-    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;">
-      <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:var(--white);">+ Add Goal</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
-        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Goal Type</label>
-        <select id="goal-type2" style="margin-top:4px;"><option>House</option><option>Car</option><option>Child Education</option><option>Wedding</option><option>Vacation</option><option>Retirement</option><option>Emergency Fund</option><option>Business</option></select></div>
-        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Target Year</label>
-        <input type="number" id="goal-year" placeholder="2028" min="2024" max="2050" style="margin-top:4px;"/></div>
-      </div>
-      <label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Goal Name</label>
-      <input type="text" id="goal-name2" placeholder="e.g. House down payment" style="margin-top:4px;margin-bottom:10px;"/>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Target Amount (Rs.)</label>
-        <input type="number" id="goal-target2" placeholder="e.g. 1000000" style="margin-top:4px;"/></div>
-        <div><label style="font-size:10px;color:var(--gray);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Already Saved (Rs.)</label>
-        <input type="number" id="goal-saved" placeholder="e.g. 200000" style="margin-top:4px;"/></div>
-      </div>
-      <button class="btn btn-gold" id="goal-add-btn" style="width:100%;">+ Add Goal</button>
-    </div>
-    <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Your Goals</div>
-    <div id="goal-list"></div>
-  </div>
-
-  <!-- SMS IMPORT TAB -->
-  <div class="bud-pane" id="bud-smstrack" style="display:none;">
-    <div style="background:linear-gradient(135deg,rgba(26,86,219,0.15),rgba(26,86,219,0.05));border:1px solid rgba(26,86,219,0.3);border-radius:16px;padding:16px;margin-bottom:14px;">
-      <div style="font-size:22px;margin-bottom:8px;">&#128241;</div>
-      <div style="font-size:14px;font-weight:700;color:var(--gold);margin-bottom:6px;">Auto Transaction Import</div>
-      <div style="font-size:12px;color:var(--gray);line-height:1.7;margin-bottom:14px;">Copy all your bank SMS messages and paste below. Stokado reads bank debits, UPI, EMIs, salary credits and more!</div>
-      <textarea id="sms-input" placeholder="Paste your bank SMS messages here..." style="height:130px;font-size:11px;line-height:1.6;resize:vertical;width:100%;box-sizing:border-box;"></textarea>
-      <button class="btn btn-primary" id="sms-parse-btn" style="margin-top:8px;width:100%;">Scan &amp; Detect Transactions</button>
-    </div>
-    <div id="sms-results" style="display:none;">
-      <div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Detected Transactions</div>
-      <div id="sms-list"></div>
-      <button class="btn btn-gold" id="sms-import-btn" style="margin-top:10px;width:100%;display:none;">Import All to Budget</button>
-    </div>
-    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:14px;padding:14px;margin-top:12px;">
-      <div style="font-size:11px;font-weight:700;color:var(--white);margin-bottom:8px;">How to Import</div>
-      <div style="font-size:11px;color:var(--gray);line-height:1.9;">1. Open SMS app on your phone<br/>2. Select all messages from your bank<br/>3. Copy them all<br/>4. Paste above and tap Scan<br/>5. Review and import automatically!</div>
-    </div>
-  </div>
-
-</div>
-</div>
-</div><!-- /pages -->
-
-<!-- BOTTOM NAV -->
-<nav class="bnav">
-  <button class="bnav-btn active" id="nb-home" onclick="navTo('p-home','nb-home')"><span class="bnav-icon">&#127968;</span><span class="bnav-label">Home</span></button>
-  <button class="bnav-btn" id="nb-calc" onclick="navTo('p-calc','nb-calc')"><span class="bnav-icon">&#129518;</span><span class="bnav-label">Calc</span></button>
-  <button class="bnav-btn" id="nb-ins" onclick="navTo('p-ins','nb-ins')"><span class="bnav-icon">&#128737;</span><span class="bnav-label">Insure</span></button>
-  <button class="bnav-btn" id="nb-mf" onclick="navTo('p-mf','nb-mf')"><span class="bnav-icon">&#128202;</span><span class="bnav-label">MF</span></button>
-  <button class="bnav-btn" id="nb-more" onclick="navTo('p-more','nb-more')"><span class="bnav-icon">&#8943;</span><span class="bnav-label">More</span></button>
-</nav>
-
-</div><!-- /app -->
-<div id="toast"></div>
-
-<!-- FLOATING DAILY TIP -->
-<div id="floating-tip" style="display:none;">
-  <div class="tip-icon" id="ft-icon">&#128161;</div>
-  <div class="tip-content">
-    <div class="tip-label" id="ft-label">Daily Tip</div>
-    <div class="tip-title" id="ft-title">Loading...</div>
-    <div class="tip-body" id="ft-body"></div>
-  </div>
-  <div class="tip-close" id="tip-close-btn">&#10005;</div>
-</div>
-
-<script>
-// ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
+      <div style="font-size:13px;font-weight// ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
 // Build: June 2026
 
 // ═══════════════════════════════════════
@@ -2477,8 +2536,8 @@ var calcDefs = {
             {id:'hra-sal',lbl:'Basic Salary (Rs./yr)',type:'number',val:600000},
             {id:'hra-metro',lbl:'Metro City?',type:'range',min:0,max:1,step:1,val:1}], fn:'calcHRA'},
   ret:      {ico:'🌅', col:'linear-gradient(135deg,#C2410C,#7C2D12)', name:'Retirement', sub:'Corpus & SIP needed',
-    inputs:[{id:'ret-age',lbl:'Current Age',type:'range',min:20,max:55,step:1,val:30},
-            {id:'ret-yr',lbl:'Retire at Age',type:'range',min:45,max:70,step:1,val:60},
+    inputs:[{id:'ret-age',lbl:'Current Age (years)',type:'number',val:30},
+            {id:'ret-yr',lbl:'Retire at Age (years)',type:'number',val:60},
             {id:'ret-exp',lbl:'Monthly Expense Now (Rs.)',type:'number',val:50000}], fn:'calcRetire'},
   gold:     {ico:'🥇', col:'linear-gradient(135deg,#CA8A04,#713F12)', name:'Gold SGB', sub:'Sovereign Gold Bond',
     inputs:[{id:'go-grams',lbl:'Grams of Gold',type:'range',min:1,max:500,step:1,val:10},
@@ -5161,6 +5220,193 @@ function buildInsPDF() {
   doc.setFillColor(245,197,24); doc.circle(22,21,10,'F');
   doc.setFontSize(14); doc.setFont('helvetica','bold'); doc.setTextColor(10,22,40);
   doc.text('S',22,25,{align:'center'});
+  doc.setTextColor(255,255,255); doc.setFontSize(17); doc.setFont('helvetica','bold');
+  doc.text('Stokado Financial Solutions',34,16);
+  doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(160,175,210);
+  doc.text('SEBI Registered  |  IRDAI IC38 Certified Advisor  |  Vijayawada, AP',34,23);
+  doc.text('Phone: +91 6300716517  |  +91 9030061988  |  stokado999@gmail.com',34,29);
+  doc.text('27-14-35, Balaji Jewels World, Rajagopalachari Street, Vijayawada 520002',34,35);
+  doc.setTextColor(245,197,24); doc.setFontSize(9);
+  doc.text(new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}),W-8,12,{align:'right'});
+
+  // TITLE
+  doc.setFillColor(26,86,219); doc.rect(0,42,W,14,'F');
+  doc.setTextColor(255,255,255); doc.setFontSize(13); doc.setFont('helvetica','bold');
+  doc.text(typeName+' Insurance — Comparison Report',W/2,52,{align:'center'});
+
+  // CLIENT DETAILS
+  var y=66;
+  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(10,22,40);
+  doc.text('Quote Details',14,y);
+  doc.setFillColor(245,197,24); doc.rect(14,y+1,24,1,'F');
+  y+=8;
+
+  var details = [
+    {k:'Insurance Type', v:typeName},
+    {k:'Age', v:age+' years'},
+    {k:'Gender', v:gender},
+    {k:'Cover Amount', v:cover || 'Rs.1 Crore'}
+  ];
+  if (insType==='health' && planType==='family') {
+    var selfAge2 = (document.getElementById('ins-self-age')||{}).value||'32';
+    var spouseAge2 = (document.getElementById('ins-spouse-age')||{}).value||'0';
+    var child1Age2 = (document.getElementById('ins-child1-age')||{}).value||'0';
+    details.push({k:'Plan Type', v:'Family Floater'});
+    details.push({k:'Self', v:selfAge2+' yrs'});
+    if(parseInt(spouseAge2)>0) details.push({k:'Spouse', v:spouseAge2+' yrs'});
+    if(parseInt(child1Age2)>0) details.push({k:'Children', v:child1Age2+' yrs'});
+  }
+
+  doc.setFillColor(240,244,255); doc.rect(12,y-4,W-24,details.length*7+6,'F');
+  doc.setDrawColor(200,215,240); doc.setLineWidth(0.3); doc.rect(12,y-4,W-24,details.length*7+6,'S');
+  details.forEach(function(d,i){
+    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(80,100,130);
+    doc.text(d.k+':', 18, y+i*7);
+    doc.setFont('helvetica','bold'); doc.setTextColor(10,22,40);
+    doc.text(d.v, 80, y+i*7);
+  });
+  y += details.length*7 + 10;
+
+  // PLANS TABLE
+  doc.setFontSize(10); doc.setFont('helvetica','bold'); doc.setTextColor(10,22,40);
+  doc.text('Insurance Plans — Best to Lowest Price',14,y);
+  doc.setFillColor(245,197,24); doc.rect(14,y+1,60,1,'F');
+  y+=8;
+
+  // Table header
+  doc.setFillColor(10,22,40); doc.rect(12,y-4,W-24,8,'F');
+  doc.setTextColor(255,255,255); doc.setFontSize(8); doc.setFont('helvetica','bold');
+  doc.text('#', 16, y); doc.text('Insurance Company', 24, y);
+  doc.text('Annual Premium', 120, y); doc.text('CSR%', 162, y); doc.text('Claim', 178, y);
+  y+=6;
+
+  // Extract plan data from cards
+  var cards = results.querySelectorAll('.ins-card');
+  var planCount = 0;
+  cards.forEach(function(card, i) {
+    if (y > H-50) return;
+    var nameEl = card.querySelector('.ins-name');
+    var priceEl = card.querySelector('.ins-price');
+    var detEl = card.querySelector('.ins-details');
+    var name = nameEl ? nameEl.textContent.replace(/[^\x20-\x7E]/g,' ').trim().slice(0,35) : 'Plan '+(i+1);
+    var price = priceEl ? priceEl.textContent.replace(/[^\x20-\x7E]/g,'').replace(/\s+/g,' ').trim().slice(0,20) : '';
+    var det = detEl ? detEl.textContent.replace(/[^\x20-\x7E]/g,'').trim().slice(0,40) : '';
+    // Extract CSR from details text
+    var csrM = card.textContent.match(/CSR\s*([\d.]+)%/);
+    var csr = csrM ? csrM[1]+'%' : '';
+    var claimM = card.textContent.match(/(\d+h)\b/);
+    var claim = claimM ? claimM[1] : '';
+
+    doc.setFillColor(i%2===0?240:248, i%2===0?244:250, 255);
+    doc.rect(12,y-3,W-24,8,'F');
+    if (i===0) { doc.setFillColor(255,248,220); doc.rect(12,y-3,3,8,'F'); } // gold star for best
+    doc.setFontSize(8.5); doc.setFont(i===0?'helvetica':'helvetica', i===0?'bold':'normal');
+    doc.setTextColor(10,22,40);
+    doc.text(String(i+1), 16, y+2);
+    doc.text(name, 24, y+2);
+    doc.setFont('helvetica','bold'); doc.setTextColor(i===0?0:50,i===0?120:80,i===0?0:50);
+    doc.text(price, 120, y+2);
+    doc.setFont('helvetica','normal'); doc.setTextColor(80,100,130);
+    doc.text(csr, 162, y+2);
+    doc.text(claim, 178, y+2);
+    y+=8; planCount++;
+  });
+  y+=6;
+
+  // RECOMMENDATION BOX
+  doc.setFillColor(10,22,40); doc.roundedRect(12,y,W-24,28,3,3,'F');
+  doc.setFillColor(245,197,24); doc.roundedRect(12,y,5,28,2,2,'F');
+  doc.setTextColor(245,197,24); doc.setFontSize(10); doc.setFont('helvetica','bold');
+  doc.text('Stokado Recommendation',22,y+9);
+  doc.setTextColor(200,215,240); doc.setFontSize(8.5); doc.setFont('helvetica','normal');
+  doc.text('The top-ranked plan offers the best value for your profile. However, always compare CSR',22,y+16);
+  doc.text('(Claim Settlement Ratio) and coverage features before purchasing.',22,y+22);
+
+  // FOOTER
+  doc.setFillColor(10,22,40); doc.rect(0,H-22,W,22,'F');
+  doc.setFillColor(245,197,24); doc.rect(0,H-22,W,2,'F');
+  doc.setTextColor(180,195,220); doc.setFontSize(8); doc.setFont('helvetica','normal');
+  doc.text('Stokado Financial Solutions  |  27-14-35, Balaji Jewels World, Vijayawada 520002',W/2,H-14,{align:'center'});
+  doc.setTextColor(245,197,24);
+  doc.text('+91 6300716517  |  +91 9030061988  |  stokado999@gmail.com',W/2,H-8,{align:'center'});
+
+  doc.save('Stokado-'+typeName+'-Insurance-Quotes.pdf');
+  showToast('Insurance PDF downloaded!');
+}
+
+function loadMarket() {}
+function fetchLiveMarketData() {}
+function mktRenderStatic() {}
+function mktSet() {}
+function mktNum(n) { return Math.round(n).toLocaleString('en-IN'); }
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}
+
+function calcMFSIP() {
+  var amt = parseFloat((document.getElementById('mf-sip-amt')||{}).value) || 5000;
+  var yr = parseInt((document.getElementById('mf-sip-yr')||{}).value) || 10;
+  var r = 0.12/12, mn = yr*12;
+  var corpus = amt * ((Math.pow(1+r,mn)-1)/r) * (1+r);
+  var invested = amt * mn;
+  var gain = corpus - invested;
+  var c = document.getElementById('mf-corpus');
+  var i = document.getElementById('mf-invested');
+  var g = document.getElementById('mf-gain');
+  if(c) c.textContent = 'Rs.'+n(Math.round(corpus));
+  if(i) i.textContent = 'Rs.'+n(Math.round(invested));
+  if(g) g.textContent = 'Rs.'+n(Math.round(gain));
+}
+
+window.addEventListener('load', function() {
+  var expDate = document.getElementById('exp-date');
+  if (expDate) expDate.value = new Date().toISOString().split('T')[0];
+
+  // Show app
+  var appEl = document.getElementById('app');
+  if (appEl) appEl.style.display = 'flex';
+
+  // Hide splash after 2.2s
+  setTimeout(function() {
+    var splash = $('splash');
+    if (splash) {
+      splash.style.opacity = '0';
+      splash.style.transition = 'opacity 0.4s';
+      setTimeout(function() { if(splash) splash.style.display = 'none'; }, 400);
+    }
+  }, 2200);
+
+  // Init home page
+  buildHomeTips();
+  setTimeout(function() { if (typeof buildFlyers !== 'undefined') buildFlyers(); }, 100);
+
+  // Restore logged-in user
+  var user = JSON.parse(localStorage.getItem('stk_user') || 'null');
+  if (user) {
+    var btn = $('profile-btn');
+    if (btn) btn.textContent = user.name.charAt(0).toUpperCase();
+  }
+
+  // Show floating tip
+  showFloatingTip();
+
+  // Start market auto-refresh
+  startMarketAutoRefresh();
+});
+
+function startMarketAutoRefresh() {
+  setInterval(function() {
+    var pg = $('p-market');
+    if (pg && pg.classList.contains('active')) {
+      // market widgets auto-refresh themselves
+    }
+  }, 60000);
+}
+c.text('S',22,25,{align:'center'});
   doc.setTextColor(255,255,255); doc.setFontSize(17); doc.setFont('helvetica','bold');
   doc.text('Stokado Financial Solutions',34,16);
   doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(160,175,210);
