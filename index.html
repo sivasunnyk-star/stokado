@@ -5290,175 +5290,49 @@ function buildTopMovers() {}
 
 window.addEventListener('load', function() {
   var expDate = document.getElementById('exp-date');
-  if(expDate) expDate.value = new Date().toISOString().split('T')[0];
-  // Hide splash after 2.2s
-  // Show app immediately (behind splash)
+  if (expDate) expDate.value = new Date().toISOString().split('T')[0];
+
+  // Show app
   var appEl = document.getElementById('app');
   if (appEl) appEl.style.display = 'flex';
 
+  // Hide splash after 2.2s
   setTimeout(function() {
-    $('splash').style.opacity='0';
-    $('splash').style.transition='opacity 0.4s';
-    setTimeout(function() {
-      $('splash').style.display='none';
-    }, 400);
+    var splash = $('splash');
+    if (splash) {
+      splash.style.opacity = '0';
+      splash.style.transition = 'opacity 0.4s';
+      setTimeout(function() { if(splash) splash.style.display = 'none'; }, 400);
+    }
   }, 2200);
 
-  // Init home
+  // Init home page
   buildHomeTips();
-  showFloatingTip();
-  setTimeout(function(){ if(typeof buildFlyers!=="undefined") buildFlyers(); }, 100);
+  setTimeout(function() { if (typeof buildFlyers !== 'undefined') buildFlyers(); }, 100);
 
-  // Check if logged in user
-  var user=JSON.parse(localStorage.getItem('stk_user')||'null');
-  if(user) {
-    var btn=$('profile-btn');
-    if(btn) btn.textContent=user.name.charAt(0).toUpperCase();
+  // Restore logged-in user
+  var user = JSON.parse(localStorage.getItem('stk_user') || 'null');
+  if (user) {
+    var btn = $('profile-btn');
+    if (btn) btn.textContent = user.name.charAt(0).toUpperCase();
   }
 
-  // Market auto-refresh page title
+  // Show floating tip
+  showFloatingTip();
+
+  // Start market auto-refresh
   startMarketAutoRefresh();
 });
 
 function startMarketAutoRefresh() {
-  setInterval(function(){
-    var pg=$('p-market');
-    if(pg&&pg.classList.contains('active')) {
+  setInterval(function() {
+    var pg = $('p-market');
+    if (pg && pg.classList.contains('active')) {
       // market widgets auto-refresh themselves
     }
   }, 60000);
-function updateNavBadge() {}
-function updateNavDisplay(code,nav) { updateNav(code,nav); }
-function addMFNavHeader() {}
-function buildTopMovers() {}
-
-  // Market auto-refresh page title
-  startMarketAutoRefresh();
-, 60000);
 }
 
-// Stub functions for compatibility
-function renderMarketData() {}
-function renderTopMovers() {}
-function updateHomeTicker() {}
-function updateNavBadge() {}
-function updateNavDisplay(code,nav) { updateNav(code,nav); }
-function addMFNavHeader() {}
-function buildTopMovers() {}
-compatibility
-
-  // Market auto-refresh page title
-  startMarketAutoRefresh();
-, 60000);
-}
-
-function updateNavBadge() {}
-function updateNavDisplay(code,nav) { updateNav(code,nav); }
-function addMFNavHeader() {}
-function buildTopMovers() {}
-
-  // Market auto-refresh page title
-  startMarketAutoRefresh();
-, 60000);
-}
-
-// Stub functions for compatibility
-function renderMarketData() {}
-function renderTopMovers() {}
-function updateHomeTicker() {}
-function updateNavBadge() {}
-function updateNavDisplay(code,nav) { updateNav(code,nav); }
-function addMFNavHeader() {}
-function buildTopMovers() {}
-// UNLISTED SHARES DATA
-// ═══════════════════════════════════════
-var unlistedData = [
-  {n:'HDB Financial Services',  sector:'NBFC',      price:1100, chg:+8.5,  lot:50,  desc:'HDFC Bank subsidiary, leading NBFC'},
-  {n:'Tata Capital',            sector:'Fintech',   price:975,  chg:+6.2,  lot:50,  desc:'Tata Group financial arm, diversified services'},
-  {n:'Reliance Retail',         sector:'Fintech',   price:1350, chg:+4.8,  lot:25,  desc:'Reliance retail vertical, fast growth'},
-  {n:'PhonePe',                 sector:'Fintech',   price:440,  chg:-2.1,  lot:100, desc:'India largest UPI payment app'},
-  {n:'NSDL',                    sector:'Fintech',   price:920,  chg:+12.4, lot:50,  desc:'National Securities Depository Limited'},
-  {n:'Boat (Imagine Marketing)',sector:'Technology',price:1550, chg:+5.6,  lot:25,  desc:'Audio electronics brand, IPO expected'},
-  {n:'OYO Rooms',               sector:'Technology',price:42,   chg:-5.2,  lot:500, desc:'Hospitality chain, restructuring phase'},
-  {n:'Swiggy Pre-IPO',          sector:'Technology',price:395,  chg:+3.1,  lot:100, desc:'Food delivery, listed on NSE/BSE recently'},
-  {n:'NAVI Technologies',       sector:'Fintech',   price:38,   chg:-1.8,  lot:500, desc:'Sachin Bansal fintech startup'},
-  {n:'Pharmeasy',               sector:'Pharma',    price:18,   chg:-3.4,  lot:500, desc:'Online pharmacy and healthcare platform'},
-  {n:'CarDekho (GirnarSoft)',   sector:'Technology',price:620,  chg:+7.8,  lot:50,  desc:'Auto classifieds and tech platform'},
-  {n:'Ixigo',                   sector:'Technology',price:175,  chg:+2.5,  lot:200, desc:'Travel booking app, IPO listed 2024'},
-  {n:'IndiGo (Pre rights)',     sector:'Technology',price:4850, chg:+1.2,  lot:10,  desc:'Indigo aviation, strong domestic demand'},
-  {n:'Waaree Energies',         sector:'EV / Energy',price:3200, chg:+9.4, lot:10,  desc:'Solar module manufacturer, IPO 2024'},
-  {n:'Premier Energies',        sector:'EV / Energy',price:1180, chg:+11.2,lot:25,  desc:'Solar EPC and modules, Hyderabad based'},
-  {n:'Ola Electric Pre-IPO',    sector:'EV / Energy',price:82,   chg:-4.6, lot:200, desc:'Electric 2-wheelers, IPO listed 2024'},
-  {n:'Imagicaaworld',           sector:'Infrastructure',price:98, chg:+1.5, lot:100,desc:'Theme park and entertainment company'},
-  {n:'Arohan Financial',        sector:'NBFC',      price:215,  chg:+3.2,  lot:100, desc:'Microfinance institution, NE India focused'},
-  {n:'Manipal Cigna Health',    sector:'Fintech',   price:365,  chg:+5.8,  lot:50,  desc:'Health insurance JV, growing fast'},
-  {n:'Hero FinCorp',            sector:'NBFC',      price:2250, chg:+4.1,  lot:20,  desc:'Hero Group NBFC, two-wheeler financing'},
-  {n:'National Stock Exchange', sector:'Fintech',   price:2890, chg:+6.5,  lot:10,  desc:'NSE exchange, massive unlisted gem'},
-  {n:'HDFC Securities',         sector:'Fintech',   price:4200, chg:+3.8,  lot:10,  desc:'HDFC Group brokerage arm'},
-  {n:'Sterlite Power',          sector:'Infrastructure',price:265, chg:+7.2, lot:100,desc:'Power transmission infrastructure'},
-  {n:'Polymatech Electronics',  sector:'Technology',price:185,  chg:+15.4, lot:100, desc:'Semiconductor assembly, Defense & consumer'},
-  {n:'KFintech',                sector:'Fintech',   price:810,  chg:+2.9,  lot:50,  desc:'Registrar & transfer agent, BSE/NSE listed'},
-  {n:'Sai Life Sciences',       sector:'Pharma',    price:540,  chg:+8.1,  lot:50,  desc:'CDMO pharma, IPO expected 2024-25'},
-  {n:'SRM Contractors',         sector:'Infrastructure',price:95, chg:+4.5, lot:200,desc:'Road construction, NH projects'},
-  {n:'DroneAcharya',            sector:'Defense',   price:72,   chg:+3.2,  lot:200, desc:'Drone training and services company'},
-  {n:'Solar Industries',        sector:'Defense',   price:11200, chg:+5.6, lot:5,   desc:'Explosives and defense, growing order book'},
-  {n:'Mukka Proteins',          sector:'Agri / Food',price:38,   chg:+1.8, lot:500, desc:'Fish meal and fish oil processing'},
-  {n:'Amul Dairy',              sector:'Agri / Food',price:450,  chg:+2.2, lot:100, desc:'Biggest dairy cooperative, expansion phase'}
-];
-
-window._unlistedData = unlistedData;
-
-function buildUnlisted() {
-  filterUnlisted();
-}
-
-function filterUnlisted() {
-  var el = document.getElementById('unlisted-list'); if (!el) return;
-  var search = (document.getElementById('unl-search')||{}).value||'';
-  var sector = (document.getElementById('unl-sector')||{}).value||'';
-  var data = window._unlistedData || [];
-  var filtered = data.filter(function(s) {
-    var matchSearch = !search || s.n.toLowerCase().indexOf(search.toLowerCase())>=0 || s.desc.toLowerCase().indexOf(search.toLowerCase())>=0;
-    var matchSector = !sector || s.sector===sector;
-    return matchSearch && matchSector;
-  });
-  if (!filtered.length) { el.innerHTML='<div style="text-align:center;padding:20px;color:var(--gray);">No stocks found</div>'; return; }
-  el.innerHTML = filtered.map(function(s) {
-    var isUp = s.chg >= 0;
-    var chgColor = isUp ? '#10B981' : '#EF4444';
-    var chgSign = isUp ? '+' : '';
-    return '<div style="background:var(--navy2);border:1.5px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;">'
-      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">'
-      +'<div style="flex:1;min-width:0;">'
-      +'<div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:2px;">'+s.n+'</div>'
-      +'<div style="font-size:10px;font-weight:700;color:var(--blue3);text-transform:uppercase;letter-spacing:0.5px;">'+s.sector+'</div>'
-      +'</div>'
-      +'<div style="text-align:right;flex-shrink:0;margin-left:12px;">'
-      +'<div style="font-size:16px;font-weight:800;color:var(--white);font-family:var(--serif);">Rs.'+s.price+'</div>'
-      +'<div style="font-size:11px;font-weight:700;color:'+chgColor+';">'+chgSign+s.chg+'% GMP</div>'
-      +'</div></div>'
-      +'<div style="font-size:11px;color:var(--gray);line-height:1.6;margin-bottom:10px;">'+s.desc+'</div>'
-      +'<div style="display:flex;justify-content:space-between;align-items:center;">'
-      +'<div style="font-size:10px;color:var(--gray);">Min Lot: '+s.lot+' shares &nbsp;|&nbsp; Rs.'+(s.price*s.lot).toLocaleString('en-IN')+'</div>'
-      +'<button style="background:var(--blue3);border:none;border-radius:10px;padding:7px 14px;color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font);" onclick="window.open(\'https://wa.me/916300716517?text=Interested+in+'+encodeURIComponent(s.n)+'+unlisted+shares+at+Rs.'+s.price+'\',\'_blank\')">Enquire</button>'
-      +'</div></div>';
-  }).join('');
-}
-function renderMarketData() {}
-function renderTopMovers() {}
-function updateHomeTicker() {}
-function updateNavBadge() {}
-function updateNavDisplay(code,nav) { updateNav(code,nav); }
-function addMFNavHeader() {}
-function buildTopMovers() {}) {}
-function buildTopMovers() {}
-function renderMarketData() {}
-function renderTopMovers() {}
-function updateHomeTicker() {}
-function updateNavBadge() {}
-function updateNavDisplay(code,nav) { updateNav(code,nav); }
-function addMFNavHeader() {}
-function buildTopMovers() {}
 </script>
 </body>
 </html>
