@@ -1149,7 +1149,18 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     <div class="pg-sub">23 tools — PDF download</div>
   </div>
   <div class="pg-content">
-    <div class="calc-tabs" id="calc-tab-row"></div>
+    <!-- Category filter -->
+    <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px;scrollbar-width:none;">
+      <button class="calc-cat-btn active" data-cat="all">All 22</button>
+      <button class="calc-cat-btn" data-cat="sip">SIP & MF</button>
+      <button class="calc-cat-btn" data-cat="loan">Loan & EMI</button>
+      <button class="calc-cat-btn" data-cat="tax">Tax & Savings</button>
+      <button class="calc-cat-btn" data-cat="property">Property</button>
+      <button class="calc-cat-btn" data-cat="other">Other</button>
+    </div>
+    <!-- Calculator card grid -->
+    <div id="calc-card-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;"></div>
+    <!-- Selected calculator pane -->
     <div id="calc-panes"></div>
   </div>
 </div>
@@ -2185,14 +2196,25 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 <!-- BOTTOM NAV -->
 <nav class="bnav">
   <button class="bnav-btn active" id="nb-home" onclick="navTo('p-home','nb-home')"><span class="bnav-icon">🏠</span><span class="bnav-label">Home</span></button>
-  <button class="bnav-btn" id="nb-calc" onclick="navTo('p-calc','nb-calc')"><span class="bnav-icon">🧮</span><span class="bnav-label">Calc</span></button>
-  <button class="bnav-btn" id="nb-ins" onclick="navTo('p-ins','nb-ins')"><span class="bnav-icon">🛡️</span><span class="bnav-label">Insure</span></button>
-  <button class="bnav-btn" id="nb-mf" onclick="navTo('p-mf','nb-mf')"><span class="bnav-icon">📊</span><span class="bnav-label">MF</span></button>
-  <button class="bnav-btn" id="nb-more" onclick="navTo('p-more','nb-more')"><span class="bnav-icon">⋯</span><span class="bnav-label">More</span></button>
+  <button class="bnav-btn" id="nb-calc" onclick="navTo('p-calc','nb-calc')"><span class="bnav-icon">&#129518;</span><span class="bnav-label">Calc</span></button>
+  <button class="bnav-btn" id="nb-ins" onclick="navTo('p-ins','nb-ins')"><span class="bnav-icon">&#128737;&#65039;</span><span class="bnav-label">Insure</span></button>
+  <button class="bnav-btn" id="nb-mf" onclick="navTo('p-mf','nb-mf')"><span class="bnav-icon">&#128202;</span><span class="bnav-label">MF</span></button>
+  <button class="bnav-btn" id="nb-more" onclick="navTo('p-more','nb-more')"><span class="bnav-icon">&#8943;</span><span class="bnav-label">More</span></button>
 </nav>
 
 </div><!-- /app -->
 <div id="toast"></div>
+
+<!-- FLOATING DAILY TIP -->
+<div id="floating-tip" style="display:none;">
+  <div class="tip-icon" id="ft-icon">&#128161;</div>
+  <div class="tip-content">
+    <div class="tip-label" id="ft-label">Daily Tip</div>
+    <div class="tip-title" id="ft-title">Loading...</div>
+    <div class="tip-body" id="ft-body"></div>
+  </div>
+  <div class="tip-close" id="tip-close-btn">&#10005;</div>
+</div>
 
 <script>
 // ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
@@ -2333,9 +2355,10 @@ var posterData = [
 ];
 var calcData = {
   sip:    {ico:'📈', name:'SIP Calculator', sub:'Systematic Investment Plan',
-    inputs:[{id:'p', label:'Monthly SIP (Rs.)', min:500, max:200000, step:500, val:25000},
-            {id:'r', label:'Return Rate (%)', min:1, max:30, step:0.1, val:12},
-            {id:'y', label:'Years', min:1, max:40, step:1, val:10}]},
+    inputs:[{id:'sip-amt',lbl:'Monthly SIP Amount (Rs.)',type:'number',val:5000},
+            {id:'sip-yr',lbl:'Duration (Years)',type:'range',min:1,max:40,step:1,val:10},
+            {id:'sip-ret',lbl:'Expected Returns (% p.a.)',type:'range',min:6,max:24,step:0.5,val:12}],
+    fn:'calcSIP'},
   lump:   {ico:'💰', name:'Lumpsum Calculator', sub:'One-time Investment',
     inputs:[{id:'p', label:'Investment (Rs.)', min:5000, max:10000000, step:5000, val:100000},
             {id:'r', label:'Return Rate (%)', min:1, max:30, step:0.1, val:12},
@@ -2651,20 +2674,65 @@ var calcDefs = {
 
 var _calcActive = 'sip';
 function buildCalcTabs() {
-  var tabRow = $('calc-tab-row'), paneBox = $('calc-panes');
-  if (!tabRow || !paneBox) return;
-  // Always rebuild cleanly to prevent duplicates
-  var tabH = '', paneH = '';
-  var keys = Object.keys(calcDefs);
-  keys.forEach(function(k) {
-    var d = calcDefs[k];
-    var label = d.name.replace(/Calculator|Planner|Returns|Planning|Comparison|Impact|Calculator/gi,'').trim().split(' ')[0];
-    tabH += '<button class="calc-tab'+(k===_calcActive?' active':'')+'" data-calc="'+k+'">'+d.ico+' '+label+'</button>';
-    paneH += '<div class="calc-pane'+(k===_calcActive?' active':'')+'" id="calc-pane-'+k+'"></div>';
+  var grid = document.getElementById('calc-card-grid');
+  var paneBox = document.getElementById('calc-panes');
+  if (!grid || !paneBox) return;
+
+  // Category map
+  var cats = {
+    sip:'sip',lump:'sip',stepup:'sip',combo:'sip',swp:'sip',goal:'sip',
+    emi:'loan',loan:'loan',budget:'loan',
+    tax:'tax',ppf:'tax',nps:'tax',sgb:'tax',hraexempt:'tax',
+    rental:'property',edufund:'property',mfcompare:'other',emivssip:'other',
+    fd:'other',gold:'other',cagr:'other',inflation:'other',ret:'other'
+  };
+  var catLabels = {sip:'SIP & MF',loan:'Loan & EMI',tax:'Tax & Savings',property:'Property',other:'Other'};
+  var catColors = {
+    sip:'linear-gradient(135deg,#1A56DB,#0A2463)',
+    loan:'linear-gradient(135deg,#EF4444,#7F1D1D)',
+    tax:'linear-gradient(135deg,#10B981,#065F46)',
+    property:'linear-gradient(135deg,#F59E0B,#78350F)',
+    other:'linear-gradient(135deg,#8B5CF6,#4C1D95)'
+  };
+
+  // Filter cat buttons
+  var catBtns = document.querySelectorAll('.calc-cat-btn');
+  catBtns.forEach(function(btn) {
+    btn.onclick = function() {
+      catBtns.forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      renderCalcGrid(btn.getAttribute('data-cat'), cats, catColors);
+    };
   });
-  tabRow.innerHTML = tabH;
+
+  // Build panes
+  var paneH = '';
+  Object.keys(calcDefs).forEach(function(k) {
+    paneH += '<div class="calc-pane" id="calc-pane-'+k+'"></div>';
+  });
   paneBox.innerHTML = paneH;
-  buildCalcPane(_calcActive);
+
+  // Render grid
+  renderCalcGrid('all', cats, catColors);
+}
+
+function renderCalcGrid(filterCat, cats, catColors) {
+  var grid = document.getElementById('calc-card-grid');
+  if (!grid) return;
+  var h = '';
+  Object.keys(calcDefs).forEach(function(k) {
+    var d = calcDefs[k];
+    var cat = cats[k] || 'other';
+    if (filterCat !== 'all' && cat !== filterCat) return;
+    var col = catColors[cat] || 'linear-gradient(135deg,#374151,#1F2937)';
+    var active = k === _calcActive ? 'border-color:var(--blue3);background:rgba(26,86,219,0.15);' : '';
+    h += '<div class="calc-card" style="'+active+'" data-calc="'+k+'">'
+      + '<div style="width:42px;height:42px;border-radius:12px;background:'+col+';display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">'+d.ico+'</div>'
+      + '<div><div class="calc-card-name">'+d.name+'</div>'
+      + '<div class="calc-card-sub">'+d.sub+'</div></div>'
+      + '</div>';
+  });
+  grid.innerHTML = h || '<div style="text-align:center;padding:20px;color:var(--gray);">No calculators in this category</div>';
 }
 function buildCalcPane(k) {
   var d = calcDefs[k]; if (!d) return;
@@ -3260,6 +3328,13 @@ var insPlans = [
   {name:'PNB MetLife Mera Term',base:770,csr:97.5,claim:'24h',founded:2001},
   {name:'Edelweiss Tokio Zindagi Plus',base:755,csr:98.5,claim:'24h',founded:2009}
 ];
+function toggleFamilyForm() {
+  var type = (document.getElementById('ins-health-type')||{}).value||'individual';
+  var fr = document.getElementById('ins-family-row');
+  if (fr) fr.style.display = type==='family' ? 'block' : 'none';
+  buildIns();
+}
+
 function buildIns() {
   var insType = window._insType || 'term';
   var age = parseInt(($('ins-age')||{}).value)||30;
@@ -3305,7 +3380,21 @@ function buildIns() {
   else if (insType === 'health') {
     var covH = [3,5,10,20,50]; var covIdx2 = ($('ins-health-cover')||{}).selectedIndex||2;
     var cov2 = covH[covIdx2]||10;
+    var planType = (document.getElementById('ins-health-type')||{}).value||'individual';
+    var familyM = 1;
+    if (planType==='family') {
+      var selfAge2 = parseInt((document.getElementById('ins-self-age')||{}).value)||32;
+      var spouseAge = parseInt((document.getElementById('ins-spouse-age')||{}).value)||0;
+      var child1 = parseInt((document.getElementById('ins-child1-age')||{}).value)||0;
+      var child2 = parseInt((document.getElementById('ins-child2-age')||{}).value)||0;
+      var memberCount = 1 + (spouseAge>0?1:0) + (child1>0?1:0) + (child2>0?1:0);
+      familyM = memberCount>=4?1.8:memberCount===3?1.5:memberCount===2?1.25:1;
+      aM = selfAge2<30?1:selfAge2<35?1.25:selfAge2<40?1.55:1.9;
+    } else if (planType==='senior') {
+      aM = 2.8;
+    }
     var hM = cov2===3?0.5:cov2===5?0.75:cov2===10?1:cov2===20?1.6:2.5;
+    hM = hM * familyM;
     var healthPlans = [
       {name:'Star Health Comprehensive',base:8500,csr:99.1,feat:'No Room Rent Limit'},
       {name:'Care Health Supreme',base:7800,csr:95.2,feat:'Unlimited Restoration'},
@@ -3331,7 +3420,7 @@ function buildIns() {
         +'<div style="font-size:10px;color:var(--gray);">CSR '+p.csr+'%</div></div>'
         +'<div class="ins-price">Rs.'+n(p.premium)+' <span style="font-size:13px;color:var(--gray);font-weight:400;">/yr</span></div>'
         +'<div class="ins-details">Sum Insured: Rs.'+cov2+' Lakh | '+p.feat+'</div>'
-        +'<button class="btn btn-primary btn-sm ins-quote-btn" style="width:100%;margin-top:10px;" data-ins="'+p.name+' (Health Rs.'+cov2+'L)" data-prem="'+p.premium+'">Get Quote via WhatsApp</button>'
+        +'<button class="btn btn-primary btn-sm ins-quote-btn" style="width:100%;margin-top:10px;" data-ins="'+p.name+' ('+planType+' Health Rs.'+cov2+'L)" data-prem="'+p.premium+'">Get Quote via WhatsApp</button>'
         +'</div>';
     });
   }
@@ -3832,22 +3921,65 @@ function checkBirthday() {
 // AI CHATBOT
 // ═══════════════════════════════════════
 var chatKB = {
-  'sip':'SIP (Systematic Investment Plan) lets you invest a fixed amount regularly. Start with Rs.500/month! Rs.5,000/month at 12% for 20 years = Rs.49.9 Lakhs. Power of compounding works best when you start early!',
-  'mutual fund':'Mutual Funds pool money to invest in stocks/bonds. Stokado recommends 40+ top funds. Types: Large Cap (stable), Mid Cap (growth), Small Cap (high growth), ELSS (tax saving). Contact Shiva: +91 6300716517',
-  'insurance':'Term Insurance: Rs.1 Crore cover from just Rs.8,000/year for age 30! Health Insurance from Rs.5,000/year. Get free quotes in our Insurance section. IRDAI IC38 certified advisors.',
-  'tax':'Save up to Rs.46,800 tax under Section 80C! Invest in ELSS (3-yr lock-in), PPF, NPS, or life insurance premiums. Use our Tax 80C Calculator for your exact savings.',
-  'nifty':'Nifty 50 tracks India top 50 companies on NSE. Current: ~23,165. Has given 13% CAGR over 20 years! A great benchmark for long-term wealth creation.',
-  'gold':'Gold: Rs.1,52,730 per 10g today. Invest via: Sovereign Gold Bonds (SGB) — earn extra 2.5% interest! Gold ETFs, Digital Gold, or Physical Gold. SGBs are best for 8-year hold.',
-  'ipo':'IPO = Company goes public for first time! Apply via Motilal Oswal using our link. Check upcoming IPOs in the IPO Tracker. High return potential but risky — invest wisely!',
-  'fd':'Fixed Deposits give 7-8% returns. Safe but inflation eats gains. Better for short-term (1-2 years). For 5+ years, Mutual Funds significantly outperform FDs.',
-  'retire':'Start retirement planning early! Rs.10,000/month SIP at 12% for 30 years = Rs.3.5 Crores. Use NPS + PPF + Equity MF combination. Use our Retirement Calculator!',
-  'sensex':'Sensex tracks BSE top 30 companies. Current: ~73,610. Has grown from 1,000 in 1990 to 73,000+ today — 73x growth! Invest in index funds to capture this growth.',
-  'contact':'📱 K. Shiva: +91 6300716517\n📱 Manish: +91 9030061988\n📧 stokado999@gmail.com\n📍 Balaji Jewels World, Vijayawada\n⏰ Mon-Sat: 9 AM - 6 PM',
-  'default':'Great question! For personalized advice, contact our NISM-certified advisors:\n📱 K. Shiva: +91 6300716517\n📱 Manish: +91 9030061988\nOr book a free appointment in the app!'
-};
+  // Greetings
+  'hi':    'Hello! Welcome to Stokado Financial Solutions!\n\nI am your AI financial assistant. I can help you with:\n\n📈 SIP & Mutual Funds\n🛡️ Insurance Planning\n💸 Tax Saving (80C)\n🧮 EMI & Loan Calculations\n🥇 Gold Investments\n🌅 Retirement Planning\n📊 IPO & Stock Market\n\nWhat would you like to know today?',
+  'hello': 'Hello! Welcome to Stokado!\n\nI am here to help with all your financial questions. Ask me anything about SIP, Mutual Funds, Insurance, Tax Saving, IPO, or Retirement Planning!',
+  'hey':   'Hey there! Welcome to Stokado Financial Solutions, Vijayawada.\n\nHow can I help you today? Ask me about investments, insurance, or tax saving!',
+
+  // SIP
+  'sip': 'SIP (Systematic Investment Plan) — Invest Fixed Amount Monthly\n\nKey Benefits:\n- Start with just Rs.500 per month\n- Rupee cost averaging in volatile markets\n- Power of compounding grows wealth exponentially\n- Auto-debit from bank — no manual effort\n\nExample Returns:\nRs.5,000/month at 12% for 10 yrs = Rs.11.6 Lakhs\nRs.5,000/month at 12% for 20 yrs = Rs.49.9 Lakhs\nRs.5,000/month at 12% for 30 yrs = Rs.1.76 Crores\n\nBest SIP Funds: Mirae Asset, HDFC Midcap, Nippon India, Axis ELSS\n\nWant to start a SIP? Contact:\n📱 K. Shiva: +91 6300716517',
+
+  'step up sip': 'Step-Up SIP — Increase Investment by 10% Every Year\n\nNormal SIP Rs.5,000 for 15 yrs = Rs.25 Lakhs\nStep-Up SIP (10% annual increase) = Rs.40 Lakhs!\n\nDifference = Rs.15 Lakhs extra with same discipline.\n\nUse our Step-Up SIP Calculator to see your numbers!',
+
+  // Mutual Funds
+  'mutual fund': 'Mutual Funds — Professional Money Management\n\nTypes of Funds:\n1. Large Cap — Stable, lower risk (12-15% returns)\n2. Mid Cap — Higher growth, moderate risk (15-20%)\n3. Small Cap — Aggressive growth (18-25%)\n4. ELSS — Tax saving + equity returns\n5. Index Fund — Tracks Nifty/Sensex, lowest cost\n6. Debt Fund — Safe, FD-like returns\n\nTop Picks by Stokado:\n- Mirae Asset Large Cap (5 stars)\n- HDFC Mid-Cap Opportunities (5 stars)\n- Nippon India Small Cap (5 stars)\n- Motilal Oswal ELSS (5 stars)\n\nTo invest, contact:\n📱 Manish: +91 9030061988',
+
+  'elss': 'ELSS — Best Tax Saving Investment!\n\nBenefits:\n- Save up to Rs.46,800 tax under Section 80C\n- Only 3-year lock-in (shortest of all 80C options)\n- Historical returns: 14-18% CAGR\n- Better than PPF and FD for long-term wealth\n\nTop ELSS Funds:\n1. Motilal Oswal ELSS — 22.4% (1yr)\n2. Mirae Asset ELSS — 20.4% (1yr)\n3. Axis ELSS Tax Saver — 16.8% (1yr)\n\nDeadline: March 31 every year!\nContact: 📱 +91 6300716517',
+
+  // Insurance
+  'insurance': 'Insurance Planning — Protect Before You Invest!\n\nStokado offers 4 types:\n\n1. Term Life Insurance\n   - Rs.1 Crore cover from Rs.8,000/year\n   - For age 30 male, non-smoker\n   - Best: HDFC Life, Max Life, Tata AIA\n\n2. Health Insurance\n   - Rs.10 Lakh family cover from Rs.10,000/year\n   - Cashless at 7500+ hospitals\n   - Best: Star Health, Care Health, HDFC ERGO\n\n3. Car Insurance — Mandatory by law\n4. Home Insurance — Protect your property\n\nFree quotes available! Contact:\n📱 K. Shiva: +91 6300716517',
+
+  'term': 'Term Life Insurance — Must Have!\n\nWhy Buy Term Insurance?\n- Rs.1 Crore cover at age 30 = Rs.8,000/year ONLY\n- Protects your family if anything happens to you\n- Pure protection — no savings component\n- Premium increases with age — buy NOW!\n\nPremium Comparison (Rs.1 Cr, Male, 30 yrs):\nKotak e-Term: Rs.6,200/yr (Lowest)\nBajaj Allianz: Rs.6,900/yr\nHDFC Life: Rs.7,200/yr\nTata AIA: Rs.6,600/yr\n\nGet your quote in the Insurance section!\nContact: 📱 +91 6300716517',
+
+  'health': 'Health Insurance — Medical Bills Can Wipe Savings!\n\nKey Facts:\n- Average cancer treatment: Rs.10-20 Lakhs\n- Medical inflation: 14% per year in India\n- Rs.10L health cover costs Rs.7,000-12,000/year\n\nTop Health Plans:\n1. Star Health Comprehensive — Rs.10,800/yr\n2. Care Health Advantage — Rs.9,600/yr\n3. Niva Bupa Reassure 2.0 — Rs.10,400/yr\n\nFamily Floater Option:\nCover entire family in one plan — 20-30% cheaper!\n\nFor family quotes, go to Insurance and select Family Floater option!\nContact: 📱 +91 6300716517',
+
+  // Tax
+  'tax': 'Tax Saving — Save Up to Rs.62,400 in Taxes!\n\nSection 80C (Rs.1.5 Lakh limit):\n- ELSS Mutual Fund (best returns + tax saving)\n- PPF — 7.1% safe returns\n- Life Insurance Premium\n- NPS Contribution\n- Tax saved: Rs.46,800 (30% bracket)\n\nSection 80CCD (Extra Rs.50,000):\n- Additional NPS contribution\n- Extra tax saving: Rs.15,600\n\nTotal saving: Rs.46,800 + Rs.15,600 = Rs.62,400/year!\n\nDeadline: March 31 every year!\n📅 Book a tax planning session: +91 6300716517',
+
+  '80c': 'Section 80C — Save Rs.46,800 in Taxes!\n\nInvest Rs.1.5 Lakh, save Rs.46,800 tax (30% bracket)\n\nBest 80C Options:\n1. ELSS MF — 3yr lock-in, 14-18% returns (Best!)\n2. PPF — 7.1%, 15yr, 100% tax-free maturity\n3. NPS — 8-12% returns + pension at 60\n4. NSC — 7.7%, 5yr, safe\n5. Life Insurance Premium — also qualifies\n\nDeadline: March 31 each year. Invest early!',
+
+  // Gold
+  'gold': 'Gold Investment — Smart Ways to Invest!\n\nOptions Ranked Best to Worst:\n\n1. Sovereign Gold Bonds (SGB) - BEST!\n   - Gold price appreciation guaranteed\n   - PLUS 2.5% annual interest\n   - Zero storage risk or making charges\n   - Tax-free capital gains if held 8 years\n   - Government of India guaranteed\n\n2. Gold ETF — Trade on exchange, no making charges\n3. Digital Gold — Buy from Rs.1, safely stored\n4. Gold MF — SIP in gold funds\n5. Physical Gold — High making charges (10-20%), not recommended\n\nCurrent Gold Price: Rs.1,52,730/10g',
+
+  'sgb': 'Sovereign Gold Bonds — Best Gold Investment!\n\nFeatures:\n- Get gold price appreciation fully\n- PLUS 2.5% annual interest paid every 6 months\n- 8-year maturity, exit after 5th year on exchange\n- Capital gains tax-free at maturity\n- Issued by RBI, guaranteed by Government\n- Minimum 1 gram, maximum 4kg per year\n\nPhysical gold making charges: 10-20%\nSGB: Zero charges, PLUS interest!\n\nSGB typically issued 4-6 times per year.\nContact us for next SGB window:\n📱 +91 6300716517',
+
+  // Retirement
+  'retire': 'Retirement Planning — Start Early, Retire Rich!\n\nIf you start at age 30:\nRs.10,000/month SIP for 30 years at 12% = Rs.3.5 Crores!\n\nIf you start at age 40:\nRs.10,000/month SIP for 20 years at 12% = Rs.99 Lakhs\n\nDifference: Rs.2.5 Crores by starting 10 years earlier!\n\nRetirement Corpus Calculation:\nMonthly expense Rs.50,000 today\n6% inflation for 30 years = Rs.2.87 Lakh/month needed\nCorpus required: Rs.7.2 Crores\n\nUse our Retirement Calculator to plan yours!\nBook a session: 📱 +91 9030061988',
+
+  // IPO
+  'ipo': 'IPO Investment — Apply via Stokado!\n\nWhat is an IPO?\n- Company offers shares to public for first time\n- Buy at issue price, list on stock exchange\n- GMP (Grey Market Premium) shows expected listing gain\n\nHow to Apply:\n1. Open Demat account via Stokado + Motilal Oswal\n2. Apply via ASBA through your net banking\n3. Allotment is usually within 6 days\n4. Listing happens in 10-12 days\n\nCheck our IPO Tracker for:\n- Currently Open IPOs\n- Upcoming IPOs with GMP\n- Listed IPOs and their returns\n\nApply Now: mosl.co/PCgNPj07W1\n📱 +91 6300716517',
+
+  // Market
+  'nifty': 'Nifty 50 — India\'s Top Stock Index\n\nCurrent Level: ~23,165\nYTD Return: -4.2% (correction phase)\n\n20-Year Track Record:\n2005: 2,100 | 2025: 23,165\nCAGR: ~13.1% per year\n\nRs.10,000/month SIP in Nifty 50 Index Fund:\n10 years = Rs.23.4 Lakhs\n20 years = Rs.1.01 Crores\n\nBest way to invest in Nifty:\n- HDFC Nifty 50 Index Fund (expense: 0.1%)\n- UTI Nifty 50 Index Fund\n- Nippon India Nifty 50\n\nStart today: 📱 +91 6300716517',
+
+  'sensex': 'Sensex — Bombay Stock Exchange Index\n\nCurrent Level: ~73,610 (BSE)\nTracks top 30 companies of India\n\nHistorical Growth:\n1990: 1,000 | 2025: 73,000+\nGrowth: 73x in 35 years!\n\nBest for investors: Invest in Sensex via index funds\nInvest via: SBI Sensex Index Fund or HDFC BSE Sensex Fund',
+
+  // General advice
+  'invest': 'Smart Investment Strategy by Stokado:\n\nStep 1: Emergency Fund First\n- Keep 6 months expenses in FD or Liquid MF\n\nStep 2: Get Insurance\n- Term insurance: 10x annual income\n- Health insurance: Rs.10L minimum for family\n\nStep 3: Start SIP\n- Begin with Rs.5,000/month in Large Cap + ELSS\n- Increase by 10% every year\n\nStep 4: Tax Planning\n- ELSS for 80C (Rs.1.5L limit)\n- NPS for extra Rs.50K deduction\n\nStep 5: Review Yearly\n- Check fund performance vs benchmark\n- Rebalance if needed\n\nFree consultation: 📱 +91 6300716517',
+
+  'contact': 'Stokado Financial Solutions\n\n📱 K. Shiva: +91 6300716517\n📱 Manish Kumar Jain: +91 9030061988\n📧 stokado999@gmail.com\n\n📍 27-14-35, Balaji Jewels World\n   Rajagopalachari Street\n   Vijayawada - 520002, AP\n\n⏰ Mon-Sat: 9 AM to 6 PM\n\n🌐 Certifications: NISM 5A, IRDAI IC38, Motilal Oswal, SEBI Registered\n\n📅 Book free appointment in the app!',
+
+  'default': 'Thank you for your question!\n\nI can help you with:\n📈 SIP & Mutual Funds — Type: sip or mutual fund\n🛡️ Insurance — Type: insurance or term or health\n💸 Tax Saving — Type: tax or 80c or elss\n🥇 Gold — Type: gold or sgb\n🌅 Retirement — Type: retire\n🚀 IPO — Type: ipo\n📊 Market — Type: nifty or sensex\n\nFor personalized advice:\n📱 K. Shiva: +91 6300716517\n📱 Manish: +91 9030061988\n\n📅 Or book a FREE appointment in the app!'
+};;
 function getChatReply(q) {
-  q=q.toLowerCase();
-  for(var k in chatKB) { if(q.includes(k)) return chatKB[k]; }
+  var ql = q.toLowerCase().trim();
+  if (chatKB[ql]) return chatKB[ql];
+  if (ql==='hi'||ql==='hello'||ql==='hey'||ql.indexOf('hi ')==0) return chatKB['hi'];
+  var keys = Object.keys(chatKB).filter(function(k){return k!=='default';});
+  keys.sort(function(a,b){return b.length-a.length;});
+  for (var i=0;i<keys.length;i++) {
+    if (ql.indexOf(keys[i])>=0) return chatKB[keys[i]];
+  }
   return chatKB['default'];
 }
 function addChatMsg(text, isUser) {
@@ -3909,6 +4041,18 @@ document.addEventListener('click', function(e) {
   var t=e.target;
 
   // Calc tabs
+  if(t.classList.contains('calc-card') || t.closest('.calc-card')) {
+    var card = t.classList.contains('calc-card') ? t : t.closest('.calc-card');
+    switchCalc(card.getAttribute('data-calc'));
+    // Highlight selected card
+    document.querySelectorAll('.calc-card').forEach(function(c){
+      c.style.borderColor=''; c.style.background='';
+    });
+    card.style.borderColor='var(--blue3)'; card.style.background='rgba(26,86,219,0.15)';
+    // Scroll to pane
+    var pane = document.getElementById('calc-panes');
+    if(pane) pane.scrollIntoView({behavior:'smooth',block:'start'});
+  }
   if(t.classList.contains('calc-tab')) switchCalc(t.getAttribute('data-calc'));
 
   // MF filter
@@ -4179,6 +4323,11 @@ document.addEventListener('click', function(e) {
   }
   if(t.classList.contains('flyer-download-btn')) downloadFlyer(parseInt(t.getAttribute('data-flyer-idx')));
   if(t.classList.contains('flyer-share-btn')) shareFlyer(parseInt(t.getAttribute('data-flyer-idx')));
+  if(t.id==='tip-close-btn') {
+    var ft=document.getElementById('floating-tip');
+    if(ft){ft.style.opacity='0';setTimeout(function(){ft.style.display='none';},300);}
+    localStorage.setItem('stk_tip_date', new Date().toLocaleDateString('en-IN'));
+  }
   if(t.classList.contains('hub-tab')) {
     switchHub(t.getAttribute('data-hub'));
   }
@@ -5078,6 +5227,30 @@ function buildFinTips() {
   }).join('');
 }
 
+// ── FLOATING DAILY TIP ──
+function showFloatingTip() {
+  var dismissed = localStorage.getItem('stk_tip_date');
+  var today = new Date().toLocaleDateString('en-IN');
+  if (dismissed === today) return; // already dismissed today
+  var tips = getTodayTips();
+  if (!tips || !tips.length) return;
+  var t = tips[0];
+  var icon = document.getElementById('ft-icon');
+  var label = document.getElementById('ft-label');
+  var title = document.getElementById('ft-title');
+  var body = document.getElementById('ft-body');
+  var el = document.getElementById('floating-tip');
+  if (!el) return;
+  if (icon) icon.textContent = t.ico;
+  if (label) label.textContent = t.cat;
+  if (title) title.textContent = t.title;
+  if (body) body.textContent = t.body;
+  // Show after 3 seconds
+  setTimeout(function() {
+    el.style.display = 'flex';
+  }, 3000);
+}
+
 window.addEventListener('load', function() {
   var expDate = document.getElementById('exp-date');
   if(expDate) expDate.value = new Date().toISOString().split('T')[0];
@@ -5096,6 +5269,7 @@ window.addEventListener('load', function() {
 
   // Init home
   buildHomeTips();
+  showFloatingTip();
   setTimeout(function(){ if(typeof buildFlyers!=="undefined") buildFlyers(); }, 100);
 
   // Check if logged in user
@@ -5163,6 +5337,116 @@ function mktRenderStatic() {}
 function mktSet() {}
 function mktNum(n) { return Math.round(n).toLocaleString('en-IN'); }
 function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}rket auto-refresh page title
+  startMarketAutoRefresh();
+
+function startMarketAutoRefresh() {
+  setInterval(function(){
+    var pg=$('p-market');
+    if(pg&&pg.classList.contains('active')) {
+      // market widgets auto-refresh themselves
+    }
+  }, 60000);
+}
+
+// Stub functions for compatibility
+function loadMarket() {}
+function fetchLiveMarketData() {}
+function mktRenderStatic() {}
+function mktSet() {}
+function mktNum(n) { return Math.round(n).toLocaleString('en-IN'); }
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}{
+  setInterval(function(){
+    var pg=$('p-market');
+    if(pg&&pg.classList.contains('active')) {
+      // market widgets auto-refresh themselves
+    }
+  }, 60000);
+}
+
+// Stub functions for compatibility
+function loadMarket() {}
+function fetchLiveMarketData() {}
+function mktRenderStatic() {}
+function mktSet() {}
+function mktNum(n) { return Math.round(n).toLocaleString('en-IN'); }
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}rket auto-refresh page title
+  startMarketAutoRefresh();
+
+function startMarketAutoRefresh() {
+  setInterval(function(){
+    var pg=$('p-market');
+    if(pg&&pg.classList.contains('active')) {
+      // market widgets auto-refresh themselves
+    }
+  }, 60000);
+}
+
+// Stub functions for compatibility
+function loadMarket() {}
+function fetchLiveMarketData() {}
+function mktRenderStatic() {}
+function mktSet() {}
+function mktNum(n) { return Math.round(n).toLocaleString('en-IN'); }
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}unction renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}rket auto-refresh page title
+  startMarketAutoRefresh();
+
+function startMarketAutoRefresh() {
+  setInterval(function(){
+    var pg=$('p-market');
+    if(pg&&pg.classList.contains('active')) {
+      // market widgets auto-refresh themselves
+    }
+  }, 60000);
+}
+
+// Stub functions for compatibility
+function loadMarket() {}
+function fetchLiveMarketData() {}
+function mktRenderStatic() {}
+function mktSet() {}
+function mktNum(n) { return Math.round(n).toLocaleString('en-IN'); }
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}unction renderMarketData() {}
 function renderTopMovers() {}
 function updateHomeTicker() {}
 function updateNavBadge() {}
