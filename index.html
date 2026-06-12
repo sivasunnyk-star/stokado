@@ -5328,12 +5328,6 @@ function startMarketAutoRefresh() {
     }
   }, 60000);
 }
-
-// Stub functions for compatibility
-
-function startMarketAutoRefresh() {
-  setInterval(function(){
-    var pg=$('p-market');
     if(pg&&pg.classList.contains('active')) {
       // market widgets auto-refresh themselves
     }
