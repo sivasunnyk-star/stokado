@@ -2367,17 +2367,97 @@ var ipoData = {
   ]
 };
 var unlistedData = [
-  {n:'Reliance Retail',price:'Rs1,400',lot:'50 shares',min:'Rs70,000',sector:'Retail',change:'+12%'},
-  {n:'NSDL',price:'Rs820',lot:'100 shares',min:'Rs82,000',sector:'Finance',change:'+8%'},
-  {n:'HDB Financial',price:'Rs1,100',lot:'50 shares',min:'Rs55,000',sector:'NBFC',change:'+15%'},
-  {n:'Tata Capital',price:'Rs780',lot:'100 shares',min:'Rs78,000',sector:'Finance',change:'+18%'},
-  {n:'PhonePe',price:'Rs4,200',lot:'25 shares',min:'Rs1,05,000',sector:'Fintech',change:'+22%'},
-  {n:'Swiggy Pre-IPO',price:'Rs340',lot:'100 shares',min:'Rs34,000',sector:'Food Tech',change:'+31%'},
-  {n:'Boat',price:'Rs1,650',lot:'50 shares',min:'Rs82,500',sector:'Consumer',change:'+9%'},
-  {n:'OYO Rooms',price:'Rs42',lot:'500 shares',min:'Rs21,000',sector:'Hospitality',change:'-4%'},
-  {n:'Bira 91',price:'Rs680',lot:'100 shares',min:'Rs68,000',sector:'FMCG',change:'+6%'},
-  {n:'Carrier Midea',price:'Rs920',lot:'50 shares',min:'Rs46,000',sector:'HVAC',change:'+14%'}
+  {n:'HDB Financial Services',  sector:'NBFC',      price:1100, chg:+8.5,  lot:50,  desc:'HDFC Bank NBFC subsidiary, strong growth'},
+  {n:'Tata Capital',            sector:'Fintech',   price:975,  chg:+6.2,  lot:50,  desc:'Tata Group diversified financial services'},
+  {n:'NSE (Natl Stock Exchange)',sector:'Fintech',  price:2890, chg:+6.5,  lot:10,  desc:'India biggest stock exchange, unlisted gem'},
+  {n:'NSDL',                    sector:'Fintech',   price:920,  chg:+12.4, lot:50,  desc:'National Securities Depository Limited'},
+  {n:'PhonePe',                 sector:'Fintech',   price:440,  chg:-2.1,  lot:100, desc:'Indias largest UPI payment platform'},
+  {n:'Reliance Retail',         sector:'Retail',    price:1350, chg:+4.8,  lot:25,  desc:'Reliance retail arm, fast growing vertical'},
+  {n:'Boat (Imagine Marketing)',sector:'Technology',price:1550, chg:+5.6,  lot:25,  desc:'Top audio electronics brand, IPO pending'},
+  {n:'CarDekho (GirnarSoft)',   sector:'Technology',price:620,  chg:+7.8,  lot:50,  desc:'Auto classifieds and fintech platform'},
+  {n:'Hero FinCorp',            sector:'NBFC',      price:2250, chg:+4.1,  lot:20,  desc:'Hero Group NBFC, two-wheeler financing leader'},
+  {n:'HDFC Securities',         sector:'Fintech',   price:4200, chg:+3.8,  lot:10,  desc:'HDFC Group brokerage and investment arm'},
+  {n:'Waaree Energies',         sector:'EV & Energy',price:3200,chg:+9.4,  lot:10,  desc:'Top solar module manufacturer in India'},
+  {n:'Premier Energies',        sector:'EV & Energy',price:1180,chg:+11.2, lot:25,  desc:'Solar EPC and modules, Hyderabad based'},
+  {n:'Sterlite Power',          sector:'Infrastructure',price:265,chg:+7.2, lot:100, desc:'Power transmission infrastructure company'},
+  {n:'Polymatech Electronics',  sector:'Technology',price:185,  chg:+15.4, lot:100, desc:'Semiconductor assembly for Defense and consumer'},
+  {n:'Arohan Financial',        sector:'NBFC',      price:215,  chg:+3.2,  lot:100, desc:'Microfinance institution, Northeast India focus'},
+  {n:'Solar Industries',        sector:'Defense',   price:11200,chg:+5.6,  lot:5,   desc:'Explosives and defense, strong order book'},
+  {n:'OYO Rooms',               sector:'Technology',price:42,   chg:-5.2,  lot:500, desc:'Hospitality chain, restructuring in progress'},
+  {n:'Pharmeasy',               sector:'Pharma',    price:18,   chg:-3.4,  lot:500, desc:'Online pharmacy, healthcare delivery platform'},
+  {n:'Sai Life Sciences',       sector:'Pharma',    price:540,  chg:+8.1,  lot:50,  desc:'CDMO pharma company, IPO expected soon'},
+  {n:'Manipal Cigna Health',    sector:'Insurance', price:365,  chg:+5.8,  lot:50,  desc:'Health insurance JV, rapidly growing'},
+  {n:'Ola Electric Pre-IPO',    sector:'EV & Energy',price:82,  chg:-4.6,  lot:200, desc:'Electric 2-wheelers, listed 2024'},
+  {n:'NAVI Technologies',       sector:'Fintech',   price:38,   chg:-1.8,  lot:500, desc:'Sachin Bansal fintech startup'},
+  {n:'Droneacharya',            sector:'Defense',   price:72,   chg:+3.2,  lot:200, desc:'Drone training and services company'},
+  {n:'Mukka Proteins',          sector:'Agri & Food',price:38,  chg:+1.8,  lot:500, desc:'Fish meal and fish oil processing'},
+  {n:'Amul Dairy',              sector:'Agri & Food',price:450, chg:+2.2,  lot:100, desc:'Biggest dairy cooperative, expansion phase'},
+  {n:'KFintech',                sector:'Fintech',   price:810,  chg:+2.9,  lot:50,  desc:'Registrar and transfer agent, now listed'},
+  {n:'SRM Contractors',         sector:'Infrastructure',price:95,chg:+4.5, lot:200, desc:'Road construction, NH projects pipeline'},
+  {n:'Imagicaaworld',           sector:'Entertainment',price:98, chg:+1.5, lot:100, desc:'Theme park and entertainment company'},
+  {n:'Tata Play',               sector:'Technology',price:185,  chg:-2.3,  lot:100, desc:'DTH and streaming, Tata Group arm'},
+  {n:'AGS Transact Technologies',sector:'Fintech',  price:92,   chg:+4.8,  lot:200, desc:'ATM and payment solutions provider'}
 ];
+
+function buildUnlisted() {
+  // Add search/filter UI to unlisted page if not already there
+  var pg = document.getElementById('p-unlisted');
+  var pgContent = pg ? pg.querySelector('.pg-content') : null;
+  if (pgContent && !document.getElementById('unl-search')) {
+    var filterHtml = '<div style="display:flex;gap:8px;margin-bottom:10px;">'
+      + '<input type="text" id="unl-search" placeholder="Search company..." oninput="filterUnlisted()" style="flex:1;"/>'
+      + '<select id="unl-sector" onchange="filterUnlisted()" style="width:110px;">'
+      + '<option value="">All Sectors</option>'
+      + '<option>Fintech</option><option>NBFC</option><option>Pharma</option>'
+      + '<option>Defense</option><option>EV & Energy</option><option>Infrastructure</option>'
+      + '<option>Technology</option><option>Retail</option><option>Agri & Food</option>'
+      + '<option>Insurance</option><option>Entertainment</option>'
+      + '</select></div>'
+      + '<div style="font-size:10px;color:var(--gray);margin-bottom:10px;padding:8px 12px;background:rgba(245,197,24,0.06);border-radius:10px;border:1px solid rgba(245,197,24,0.2);">Prices are indicative GMP. Contact us for latest quotes: +91 6300716517</div>';
+    var listEl = document.getElementById('unlisted-list');
+    if (listEl) pgContent.insertBefore(createHtmlEl(filterHtml), listEl);
+  }
+  filterUnlisted();
+}
+
+function createHtmlEl(html) {
+  var d = document.createElement('div'); d.innerHTML = html;
+  return d.firstChild;
+}
+
+function filterUnlisted() {
+  var el = document.getElementById('unlisted-list'); if (!el) return;
+  var search = ((document.getElementById('unl-search')||{}).value||'').toLowerCase();
+  var sector = (document.getElementById('unl-sector')||{}).value||'';
+  var filtered = unlistedData.filter(function(s) {
+    var matchSearch = !search || s.n.toLowerCase().indexOf(search)>=0 || s.desc.toLowerCase().indexOf(search)>=0 || s.sector.toLowerCase().indexOf(search)>=0;
+    var matchSector = !sector || s.sector===sector;
+    return matchSearch && matchSector;
+  });
+  if (!filtered.length) { el.innerHTML='<div style="text-align:center;padding:20px;color:var(--gray);">No stocks found</div>'; return; }
+  el.innerHTML = filtered.map(function(s, i) {
+    var isUp = s.chg >= 0;
+    var chgColor = isUp ? '#10B981' : '#EF4444';
+    var chgSign = isUp ? '+' : '';
+    var totalMin = (s.price * s.lot).toLocaleString('en-IN');
+    return '<div style="background:var(--navy2);border:1.5px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">'
+      +'<div style="flex:1;">'
+      +'<div style="font-size:13px;font-weight:700;color:var(--white);margin-bottom:3px;">'+s.n+'</div>'
+      +'<div style="font-size:10px;font-weight:700;color:var(--blue3);text-transform:uppercase;letter-spacing:0.5px;">'+s.sector+'</div>'
+      +'</div>'
+      +'<div style="text-align:right;margin-left:12px;flex-shrink:0;">'
+      +'<div style="font-size:17px;font-weight:800;color:var(--white);font-family:var(--serif);">Rs.'+s.price+'</div>'
+      +'<div style="font-size:11px;font-weight:700;color:'+chgColor+';">'+chgSign+s.chg+'% GMP</div>'
+      +'</div></div>'
+      +'<div style="font-size:11px;color:var(--gray);line-height:1.6;margin-bottom:10px;">'+s.desc+'</div>'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;">'
+      +'<div style="font-size:10px;color:var(--gray);">Min Lot: '+s.lot+' shares &nbsp;|&nbsp; Rs.'+totalMin+'</div>'
+      +'<button class="btn btn-primary btn-sm" style="padding:7px 14px;" onclick="window.open(\'https://wa.me/916300716517?text=Interested+in+'+encodeURIComponent(s.n)+'+unlisted+at+Rs.'+s.price+'\',\'_blank\')">Enquire</button>'
+      +'</div></div>';
+  }).join('');
+}
+
 
 // ═══════════════════════════════════════
 // CORE APP
