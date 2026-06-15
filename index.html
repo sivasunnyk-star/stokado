@@ -2643,6 +2643,21 @@ var calcDefs = {
     inputs:[{id:'edu-cost',lbl:'Current Course Fee (Rs.)',type:'number',val:1500000},
             {id:'edu-yr',lbl:'Years Until Admission',type:'range',min:1,max:20,step:1,val:10},
             {id:'edu-inf',lbl:'Education Inflation (%)',type:'range',min:6,max:15,step:0.5,val:10}], fn:'calcEduFund'}
+
+  sipswp:{ico:'🔄',name:'SIP + Stepped SWP',sub:'Invest via SIP then withdraw in phases',
+    inputs:[
+      {id:'ss-sip-amt',  lbl:'Monthly SIP Amount (Rs.)',         type:'number', val:15000},
+      {id:'ss-sip-ret',  lbl:'SIP Returns (% p.a.)',             type:'range', min:8, max:20, step:0.5, val:12},
+      {id:'ss-sip-from', lbl:'SIP Start Year (e.g. 1995)',       type:'number', val:1995},
+      {id:'ss-sip-to',   lbl:'SIP End Year / SWP Start Year',   type:'number', val:2010},
+      {id:'ss-swp1',     lbl:'Phase 1 Monthly SWP (Rs.)',        type:'number', val:50000},
+      {id:'ss-swp1-yrs', lbl:'Phase 1 Duration (Years)',         type:'range', min:1, max:20, step:1, val:5},
+      {id:'ss-swp2',     lbl:'Phase 2 Monthly SWP (Rs.)',        type:'number', val:75000},
+      {id:'ss-swp2-yrs', lbl:'Phase 2 Duration (Years)',         type:'range', min:1, max:20, step:1, val:5},
+      {id:'ss-swp3',     lbl:'Phase 3 Monthly SWP (Rs.)',        type:'number', val:100000},
+      {id:'ss-swp-ret',  lbl:'Portfolio Returns during SWP (%)', type:'range', min:6, max:16, step:0.5, val:10}
+    ],
+    fn:'calcSIPSWP'},
 };
 
 var _calcActive = 'sip';
