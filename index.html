@@ -5053,52 +5053,6 @@ function updateNavBadge() {}
 function updateNavDisplay(code,nav) { updateNav(code,nav); }
 function addMFNavHeader() {}
 function buildTopMovers() {}
-
-window.addEventListener('load', function() {
-  var expDate = document.getElementById('exp-date');
-  if (expDate) expDate.value = new Date().toISOString().split('T')[0];
-
-  // Show app
-  var appEl = document.getElementById('app');
-  if (appEl) appEl.style.display = 'flex';
-
-  // Hide splash after 2.2s
-  setTimeout(function() {
-    var splash = $('splash');
-    if (splash) {
-      splash.style.opacity = '0';
-      splash.style.transition = 'opacity 0.4s';
-      setTimeout(function() { if(splash) splash.style.display = 'none'; }, 400);
-    }
-  }, 2200);
-
-  // Init home page
-  buildHomeTips();
-  setTimeout(function() { if (typeof buildFlyers !== 'undefined') buildFlyers(); }, 100);
-
-  // Restore logged-in user
-  var user = JSON.parse(localStorage.getItem('stk_user') || 'null');
-  if (user) {
-    var btn = $('profile-btn');
-    if (btn) btn.textContent = user.name.charAt(0).toUpperCase();
-  }
-
-  // Show floating tip
-  showFloatingTip();
-
-  // Start market auto-refresh
-  startMarketAutoRefresh();
-});
-
-function startMarketAutoRefresh() {
-  setInterval(function() {
-    var pg = $('p-market');
-    if (pg && pg.classList.contains('active')) {
-      // market widgets auto-refresh themselves
-    }
-  }, 60000);
-}
-
 </script>
 </body>
 </html>
