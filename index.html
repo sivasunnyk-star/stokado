@@ -5443,6 +5443,135 @@ function calcMFSIP() {
   if(g) g.textContent = 'Rs.'+n(Math.round(gain));
 }
 
+// ═══════════════════════════════════════
+// SIP + STEPPED SWP CALCULATOR
+// Phase 1: Monthly SIP → builds corpus
+// Phase 2: Stepped SWP (3 phases)
+// Shows present value + full timeline
+// ═══════════════════════════════════════
+function calcSIPSWP() {
+  var sipAmt    = v('ss-sip-amt');
+  var sipRet    = v('ss-sip-ret');
+  var sipFrom   = parseInt((document.getElementById('ss-sip-from')||{}).value) || 1995;
+  var sipTo     = parseInt((document.getElementById('ss-sip-to')||{}).value)   || 2010;
+  var swp1      = v('ss-swp1');
+  var swp1Yrs   = v('ss-swp1-yrs');
+  var swp2      = v('ss-swp2');
+  var swp2Yrs   = v('ss-swp2-yrs');
+  var swp3      = v('ss-swp3');
+  var swpRet    = v('ss-swp-ret');
+
+  sv('ss-swp1-yrs-v', swp1Yrs+' yrs');
+  sv('ss-swp2-yrs-v', swp2Yrs+' yrs');
+
+  var sipYears  = sipTo - sipFrom;
+  if (sipYears <= 0) {
+    showResult('sipswp','--','SIP end year must be after start year',[]);
+    return;
+  }
+
+  // ── PHASE 1: Build SIP corpus ──────────────────
+  var r_sip  = sipRet / 12 / 100;
+  var months_sip = sipYears * 12;
+  var corpus = sipAmt * ((Math.pow(1+r_sip, months_sip)-1)/r_sip) * (1+r_sip);
+  var totalInvested = sipAmt * months_sip;
+
+  // ── PHASE 2: Stepped SWP ──────────────────────
+  var r_swp  = swpRet / 12 / 100;
+  var totalWithdrawn = 0;
+  var corpusAfterEachPhase = corpus;
+
+  // SWP Phase 1
+  var c = corpusAfterEachPhase;
+  var months1 = swp1Yrs * 12;
+  for (var m = 0; m < months1; m++) {
+    c = c * (1 + r_swp) - swp1;
+    if (c < 0) { c = 0; break; }
+  }
+  totalWithdrawn += swp1 * months1;
+  var corpusAfterP1 = Math.max(0, c);
+
+  // SWP Phase 2
+  c = corpusAfterP1;
+  var months2 = swp2Yrs * 12;
+  for (var m = 0; m < months2; m++) {
+    c = c * (1 + r_swp) - swp2;
+    if (c < 0) { c = 0; break; }
+  }
+  totalWithdrawn += swp2 * months2;
+  var corpusAfterP2 = Math.max(0, c);
+
+  // SWP Phase 3 (ongoing — calculate until corpus depletes OR show current value)
+  var currentYear = new Date().getFullYear();
+  var swp3StartYear = sipTo + swp1Yrs + swp2Yrs;
+  var yearsInPhase3 = Math.max(0, currentYear - swp3StartYear);
+  c = corpusAfterP2;
+  var months3 = yearsInPhase3 * 12;
+  for (var m = 0; m < months3; m++) {
+    c = c * (1 + r_swp) - swp3;
+    if (c < 0) { c = 0; break; }
+  }
+  totalWithdrawn += swp3 * months3;
+  var presentValue = Math.max(0, c);
+
+  // How long will Phase 3 last from corpus after P2?
+  var phase3Duration = 0;
+  if (swp3 > 0 && corpusAfterP2 > 0) {
+    if (r_swp > 0) {
+      phase3Duration = Math.log(swp3/(swp3 - corpusAfterP2*r_swp)) / Math.log(1+r_swp) / 12;
+      phase3Duration = phase3Duration > 0 ? Math.floor(phase3Duration) : 999;
+    } else {
+      phase3Duration = Math.floor(corpusAfterP2 / swp3 / 12);
+    }
+  }
+
+  var totalGain = corpus - totalInvested;
+  var phaseDurStr = phase3Duration >= 999 ? 'Perpetual' : phase3Duration + ' yrs';
+
+  // ── Display result ──────────────────────────────
+  // Build timeline HTML
+  var timelineHtml = '<div style="margin-top:14px;">'
+    + '<div style="font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Investment Timeline</div>'
+    + _sipswpRow('📈 SIP Phase', sipFrom+' → '+sipTo, sipYears+' years', 'Rs.'+n(sipAmt)+'/mo invested', 'var(--blue3)', 'Corpus Built: Rs.'+n(Math.round(corpus)))
+    + _sipswpRow('💸 SWP Phase 1', sipTo+' → '+(sipTo+swp1Yrs), swp1Yrs+' years', 'Rs.'+n(swp1)+'/mo withdrawn', '#F59E0B', 'Remaining: Rs.'+n(Math.round(corpusAfterP1)))
+    + _sipswpRow('💸 SWP Phase 2', (sipTo+swp1Yrs)+' → '+(sipTo+swp1Yrs+swp2Yrs), swp2Yrs+' years', 'Rs.'+n(swp2)+'/mo withdrawn', '#EC4899', 'Remaining: Rs.'+n(Math.round(corpusAfterP2)))
+    + _sipswpRow('💸 SWP Phase 3', (sipTo+swp1Yrs+swp2Yrs)+' → Present', yearsInPhase3+' years so far', 'Rs.'+n(swp3)+'/mo withdrawn', '#10B981', 'Present Value: Rs.'+n(Math.round(presentValue)))
+    + '</div>';
+
+  var resEl = document.getElementById('calc-result-sipswp');
+  if (resEl) {
+    setTimeout(function() {
+      var existing = resEl.querySelector('.sipswp-timeline');
+      if (!existing) {
+        var div = document.createElement('div');
+        div.className = 'sipswp-timeline';
+        div.innerHTML = timelineHtml;
+        resEl.appendChild(div);
+      } else {
+        existing.innerHTML = timelineHtml;
+      }
+    }, 100);
+  }
+
+  showResult('sipswp', 'Rs.'+n(Math.round(presentValue)), 'Present Portfolio Value', [
+    {val:'Rs.'+n(Math.round(corpus)),       lbl:'Corpus at '+sipTo},
+    {val:'Rs.'+n(Math.round(totalInvested)),lbl:'Total SIP Invested'},
+    {val:'Rs.'+n(Math.round(totalWithdrawn)),lbl:'Total Withdrawn'},
+    {val:phaseDurStr,                        lbl:'Phase 3 Can Last'}
+  ]);
+}
+
+function _sipswpRow(phase, period, duration, amount, color, balance) {
+  return '<div style="border-left:3px solid '+color+';padding:10px 12px;margin-bottom:8px;background:rgba(255,255,255,0.03);border-radius:0 10px 10px 0;">'
+    + '<div style="display:flex;justify-content:space-between;align-items:flex-start;">'
+    + '<div><div style="font-size:12px;font-weight:700;color:var(--white);">'+phase+'</div>'
+    + '<div style="font-size:10px;color:var(--gray);margin-top:2px;">'+period+' &nbsp;|&nbsp; '+duration+'</div>'
+    + '<div style="font-size:11px;color:'+color+';margin-top:4px;font-weight:600;">'+amount+'</div>'
+    + '</div>'
+    + '<div style="text-align:right;font-size:10px;color:var(--gray);margin-top:2px;">'+balance+'</div>'
+    + '</div></div>';
+}
+
 window.addEventListener('load', function() {
   var expDate = document.getElementById('exp-date');
   if (expDate) expDate.value = new Date().toISOString().split('T')[0];
