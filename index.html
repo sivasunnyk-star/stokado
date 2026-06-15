@@ -1489,6 +1489,30 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 <!-- TOAST -->
 <div id="toast"></div>
 
+
+<!-- BOTTOM NAV -->
+<nav class="bnav">
+  <button class="bnav-btn active" id="nb-home" onclick="navTo('p-home','nb-home')">
+    <span class="bnav-icon">&#127968;</span>
+    <span class="bnav-label">Home</span>
+  </button>
+  <button class="bnav-btn" id="nb-calc" onclick="navTo('p-calc','nb-calc')">
+    <span class="bnav-icon">&#129518;</span>
+    <span class="bnav-label">Calculate</span>
+  </button>
+  <button class="bnav-btn" id="nb-ins" onclick="navTo('p-ins','nb-ins')">
+    <span class="bnav-icon">&#128737;</span>
+    <span class="bnav-label">Insurance</span>
+  </button>
+  <button class="bnav-btn" id="nb-mf" onclick="navTo('p-mf','nb-mf')">
+    <span class="bnav-icon">&#128202;</span>
+    <span class="bnav-label">Funds</span>
+  </button>
+  <button class="bnav-btn" id="nb-more" onclick="navTo('p-more','nb-more')">
+    <span class="bnav-icon">&#8943;</span>
+    <span class="bnav-label">More</span>
+  </button>
+</nav>
 </div>
 </body>
 </html>
