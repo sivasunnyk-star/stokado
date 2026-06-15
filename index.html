@@ -1275,7 +1275,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     <div style="font-size:11px;color:var(--gray);margin-bottom:10px;" id="mf-count">Showing 40 funds</div>
     <div id="mf-list"></div>
     <div style="display:flex;gap:8px;margin-top:4px;margin-bottom:16px;">
-      <button id="nav-refresh-btn" class="btn btn-primary btn-sm" style="padding:8px 16px;font-weight:700;">&#8635; Refresh NAV</button>
+      <button id="nav-refresh-btn" class="btn btn-primary btn-sm" style="padding:8px 18px;font-weight:700;border-radius:12px;">Refresh NAV</button>
     </div>
 
     <!-- SIP QUICK CALCULATOR -->
@@ -2131,9 +2131,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 
   <!-- SIP TAB -->
   <div class="bud-pane" id="bud-sip" style="display:none;">
-    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;">
-<script>
-// ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;"// ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
 // Build: June 2026
 
 // ═══════════════════════════════════════
@@ -3540,22 +3538,71 @@ function filterMF() {
   var el=$('mf-list'); if(el) el.innerHTML=h;
 }
 function fetchMFNavs() {
-  if(_mfNavDone) return; _mfNavDone=true;
-  var cache=JSON.parse(localStorage.getItem('stk_nav_cache')||'{}');
-  var today=new Date().toLocaleDateString('en-IN');
-  mfData.forEach(function(f){
-    if(cache[f.code]&&cache[f.code].date===today){ updateNav(f.code,cache[f.code].nav); return; }
-    fetch('https://api.mfapi.in/mf/'+f.code+'/latest')
-      .then(function(r){return r.json();})
-      .then(function(d){
-        if(d&&d.data&&d.data[0]){
-          var nav=d.data[0].nav; f.nav=nav;
-          cache[f.code]={nav:nav,date:today};
-          localStorage.setItem('stk_nav_cache',JSON.stringify(cache));
-          updateNav(f.code,nav);
+  var btn = document.getElementById('nav-refresh-btn');
+  var cache = JSON.parse(localStorage.getItem('stk_nav_cache') || '{}');
+  var now = Date.now();
+  var cacheAge = (cache._ts) ? Math.round((now - cache._ts) / 60000) : null;
+
+  // Show cache status
+  var countEl = document.getElementById('mf-count');
+  if (cacheAge !== null && cacheAge < 60) {
+    if (countEl) countEl.textContent = 'NAV updated ' + cacheAge + ' min ago — tap Refresh for latest';
+    // Apply cached NAVs immediately
+    mfData.forEach(function(f) {
+      if (cache[f.code]) {
+        f.nav = cache[f.code];
+        var el = document.getElementById('nav-' + f.code);
+        if (el) el.textContent = 'Rs.' + parseFloat(cache[f.code]).toFixed(2);
+      }
+    });
+    if (_mfNavDone) return; // don't re-fetch if recently done
+  }
+
+  _mfNavDone = true;
+  if (btn) { btn.disabled = true; btn.textContent = 'Fetching NAV...'; }
+
+  var fetched = 0;
+  var total = mfData.length;
+  var failed = 0;
+  var newCache = { _ts: now };
+
+  function onDone() {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Refresh NAV';
+    }
+    localStorage.setItem('stk_nav_cache', JSON.stringify(newCache));
+    if (countEl) {
+      var msg = 'NAV updated just now';
+      if (failed > 0) msg += ' (' + failed + ' funds unavailable)';
+      countEl.textContent = msg;
+    }
+  }
+
+  mfData.forEach(function(f) {
+    if (!f.code) { total--; return; }
+    // Try primary API
+    var url = 'https://api.mfapi.in/mf/' + f.code + '/latest';
+    fetch(url, { signal: AbortSignal.timeout(8000) })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        var nav = d && d.data && d.data[0] && d.data[0].nav;
+        if (nav) {
+          f.nav = nav;
+          newCache[f.code] = nav;
+          var el = document.getElementById('nav-' + f.code);
+          if (el) el.textContent = 'Rs.' + parseFloat(nav).toFixed(2);
         }
-      }).catch(function(){});
+      })
+      .catch(function() { failed++; })
+      .finally(function() {
+        fetched++;
+        if (fetched >= total) onDone();
+      });
   });
+
+  // Fallback if no mfData has codes
+  if (total === 0) onDone();
 }
 function updateNav(code,nav) {
   var el=$('nav-'+code); if(!el) return;
@@ -3623,7 +3670,7 @@ function buildIPO(tab) {
 // UNLISTED SHARES
 // ═══════════════════════════════════════
 function buildUnlisted() {
-  var el=$('unlisted-list'); if(!el||el.innerHTML) return;
+  var el=$('unlisted-list'); if(!el) return; el.innerHTML='';
   var h='';
   unlistedData.forEach(function(s){
     h+='<div class="unlisted-card">'
@@ -5687,6 +5734,8 @@ function startMarketAutoRefresh() {
       // market widgets auto-refresh themselves
     }
   }, 60000);
+}
+}60000);
 }
 }
 </script>
