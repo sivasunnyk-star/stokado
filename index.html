@@ -370,55 +370,196 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 <!-- ══════════════ HOME PAGE ══════════════ -->
 <div class="pg active" id="p-home">
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-tag">Investment Intelligence</div>
-    <div class="hero-title">Your Smart<br/><span>Financial Partner</span></div>
-    <div class="hero-sub">SEBI Registered • Motilal Oswal Certified<br/>Vijayawada's Most Trusted Advisory</div>
-    <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-val">₹150Cr</div><div class="hero-stat-lbl">AUM</div></div>
-      <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,0.1);padding-left:16px;"><div class="hero-stat-val">4000+</div><div class="hero-stat-lbl">Clients</div></div>
-      <div class="hero-stat" style="border-left:1px solid rgba(255,255,255,0.1);padding-left:16px;"><div class="hero-stat-val">10+</div><div class="hero-stat-lbl">Certs</div></div>
+  <!-- ── HERO ── -->
+  <div style="background:linear-gradient(160deg,#050709 0%,#0A1628 40%,#0D1F3C 70%,#0A2463 100%);padding:28px 16px 24px;position:relative;overflow:hidden;">
+    <!-- Glow orbs -->
+    <div style="position:absolute;top:-40px;right:-30px;width:180px;height:180px;background:radial-gradient(circle,rgba(242,201,76,0.12) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-20px;left:-20px;width:140px;height:140px;background:radial-gradient(circle,rgba(47,128,237,0.1) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+
+    <!-- Top row: logo + profile -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:38px;height:38px;background:linear-gradient(135deg,#F2C94C,#C9890A);border-radius:11px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:800;font-size:18px;color:#050709;flex-shrink:0;box-shadow:0 4px 14px rgba(242,201,76,0.3);">S</div>
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:800;color:#F0F4FF;line-height:1.1;">Stokado <span style="color:#F2C94C;">Financial</span></div>
+          <div style="font-size:9px;color:#6B7A99;letter-spacing:0.5px;">Your Trust, Our Solutions</div>
+        </div>
+      </div>
+      <button class="hdr-btn" onclick="navTo('p-profile','nb-more')" id="profile-btn" style="width:34px;height:34px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;font-size:15px;">&#128100;</button>
     </div>
-    <div class="cert-row">
-      <span class="cert-badge">NISM 5A</span>
-      <span class="cert-badge">IRDAI IC38</span>
-      <span class="cert-badge">Motilal Oswal</span>
-      <span class="cert-badge">SEBI Reg</span>
+
+    <!-- Hero headline -->
+    <div style="font-size:10px;font-weight:700;color:#F2C94C;text-transform:uppercase;letter-spacing:2.5px;margin-bottom:6px;">Investment Intelligence</div>
+    <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:800;color:#F0F4FF;line-height:1.2;margin-bottom:8px;">Grow Wealth.<br/><span style="color:#F2C94C;">Beat Inflation.</span></div>
+    <div style="font-size:12px;color:#6B7A99;line-height:1.6;margin-bottom:18px;">SEBI Registered &#8226; NISM Certified &#8226; Motilal Oswal Partner<br/>Vijayawada&#8217;s most trusted financial advisory</div>
+
+    <!-- Stats row -->
+    <div style="display:flex;gap:0;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;margin-bottom:16px;">
+      <div style="flex:1;padding:12px 8px;text-align:center;border-right:1px solid rgba(255,255,255,0.07);">
+        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:#F2C94C;">Rs.150Cr</div>
+        <div style="font-size:9px;color:#6B7A99;margin-top:2px;text-transform:uppercase;letter-spacing:0.5px;">AUM</div>
+      </div>
+      <div style="flex:1;padding:12px 8px;text-align:center;border-right:1px solid rgba(255,255,255,0.07);">
+        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:#F2C94C;">4,000+</div>
+        <div style="font-size:9px;color:#6B7A99;margin-top:2px;text-transform:uppercase;letter-spacing:0.5px;">Clients</div>
+      </div>
+      <div style="flex:1;padding:12px 8px;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:#F2C94C;">10+</div>
+        <div style="font-size:9px;color:#6B7A99;margin-top:2px;text-transform:uppercase;letter-spacing:0.5px;">Certs</div>
+      </div>
+    </div>
+
+    <!-- CTA buttons -->
+    <div style="display:flex;gap:10px;">
+      <button onclick="navTo('p-appt','nb-more')" style="flex:1;background:linear-gradient(135deg,#F2C94C,#C9890A);border:none;border-radius:12px;padding:12px;font-size:13px;font-weight:800;color:#050709;cursor:pointer;font-family:var(--font);">
+        &#128197; Book Free Call
+      </button>
+      <button onclick="navTo('p-calc','nb-calc')" style="flex:1;background:rgba(47,128,237,0.15);border:1.5px solid rgba(47,128,237,0.4);border-radius:12px;padding:12px;font-size:13px;font-weight:700;color:#F0F4FF;cursor:pointer;font-family:var(--font);">
+        &#129518; Calculators
+      </button>
     </div>
   </div>
 
-  <div class="pg-content" style="padding-top:10px;">
-
-    <!-- FEATURED FLYER — full width, random, auto-rotates every 4s -->
-    <div id="featured-flyer" style="margin-bottom:14px;"></div>
-
-    <!-- QUICK ACCESS -->
-    <div class="sec-title">Quick Access</div>
-    <div class="qa-grid" style="margin-bottom:12px;">
-      <div class="qa-btn" onclick="navTo('p-calc','nb-calc')"><div class="qa-icon">🧮</div><div class="qa-label">Calculators</div></div>
-      <div class="qa-btn" onclick="navTo('p-ins','nb-ins')"><div class="qa-icon">🛡️</div><div class="qa-label">Insurance</div></div>
-      <div class="qa-btn" onclick="navTo('p-mf','nb-mf')"><div class="qa-icon">📊</div><div class="qa-label">Mutual Funds</div></div>
-      <div class="qa-btn" onclick="navTo('p-budget','nb-more')"><div class="qa-icon">📋</div><div class="qa-label">Budget</div></div>
-      <div class="qa-btn" onclick="navTo('p-appt','nb-more')"><div class="qa-icon">📅</div><div class="qa-label">Book Appt</div></div>
-      <div class="qa-btn" onclick="navTo('p-ipo','nb-more')"><div class="qa-icon">🚀</div><div class="qa-label">IPO</div></div>
-      <div class="qa-btn" onclick="navTo('p-portfolio','nb-more')"><div class="qa-icon">💼</div><div class="qa-label">Portfolio</div></div>
-      <div class="qa-btn" onclick="navTo('p-more','nb-more')"><div class="qa-icon">⋯</div><div class="qa-label">More</div></div>
+  <!-- ── MARKET TICKER ── -->
+  <div style="background:#080C14;border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);padding:8px 0;overflow:hidden;white-space:nowrap;">
+    <div style="display:inline-flex;gap:28px;animation:tick 28s linear infinite;padding:0 14px;" id="home-ticker-inner">
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">NIFTY 50</span><span style="color:#F0F4FF;">23,165</span><span style="color:#27AE60;">+0.82%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">SENSEX</span><span style="color:#F0F4FF;">76,490</span><span style="color:#27AE60;">+0.74%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">GOLD</span><span style="color:#F0F4FF;">Rs.95,200</span><span style="color:#27AE60;">+0.3%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">USD/INR</span><span style="color:#F0F4FF;">83.48</span><span style="color:#FF6B6B;">-0.12%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">BANK NIFTY</span><span style="color:#F0F4FF;">49,840</span><span style="color:#27AE60;">+1.1%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">SILVER</span><span style="color:#F0F4FF;">Rs.94,100/kg</span><span style="color:#27AE60;">+0.5%</span></span>
+      <!-- Repeat for seamless loop -->
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">NIFTY 50</span><span style="color:#F0F4FF;">23,165</span><span style="color:#27AE60;">+0.82%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">SENSEX</span><span style="color:#F0F4FF;">76,490</span><span style="color:#27AE60;">+0.74%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">GOLD</span><span style="color:#F0F4FF;">Rs.95,200</span><span style="color:#27AE60;">+0.3%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">USD/INR</span><span style="color:#F0F4FF;">83.48</span><span style="color:#FF6B6B;">-0.12%</span></span>
     </div>
+  </div>
 
-    <!-- MOTILAL BANNER -->
-    <div class="card card-blue" style="display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:12px;" onclick="window.open('https://mosl.co/PCgNPj07W1','_blank')">
-      <div style="font-size:28px;">🏆</div>
-      <div>
-        <div style="font-size:13px;font-weight:700;color:white;">Open Demat Account</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px;">Motilal Oswal Certified Partner</div>
+  <div style="padding:14px 16px 80px;">
+
+    <!-- ── QUICK ACCESS ── -->
+    <div style="font-size:10px;font-weight:700;color:#6B7A99;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">Quick Access</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">
+      <div onclick="navTo('p-calc','nb-calc')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:all 0.2s;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
+        <div style="width:38px;height:38px;background:linear-gradient(135deg,#1A56DB,#0A2463);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;">&#129518;</div>
+        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Calculators</div>
       </div>
-      <div style="margin-left:auto;font-size:18px;">→</div>
+      <div onclick="navTo('p-ins','nb-ins')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
+        <div style="width:38px;height:38px;background:linear-gradient(135deg,#059669,#064E3B);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;">&#128737;</div>
+        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Insurance</div>
+      </div>
+      <div onclick="navTo('p-mf','nb-mf')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
+        <div style="width:38px;height:38px;background:linear-gradient(135deg,#7C3AED,#4C1D95);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;">&#128202;</div>
+        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Mutual Funds</div>
+      </div>
+      <div onclick="navTo('p-ipo','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
+        <div style="width:38px;height:38px;background:linear-gradient(135deg,#DC2626,#7F1D1D);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;">&#128640;</div>
+        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">IPO Tracker</div>
+      </div>
+      <div onclick="navTo('p-budget','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
+        <div style="width:38px;height:38px;background:linear-gradient(135deg,#F59E0B,#78350F);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;">&#128203;</div>
+        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Budget</div>
+      </div>
+      <div onclick="navTo('p-unlisted','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
+        <div style="width:38px;height:38px;background:linear-gradient(135deg,#0891B2,#0E7490);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;">&#128196;</div>
+        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Unlisted</div>
+      </div>
+      <div onclick="navTo('p-portfolio','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
+        <div style="width:38px;height:38px;background:linear-gradient(135deg,#10B981,#065F46);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;">&#128188;</div>
+        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Portfolio</div>
+      </div>
+      <div onclick="navTo('p-more','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
+        <div style="width:38px;height:38px;background:linear-gradient(135deg,#374151,#111827);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;color:#F0F4FF;font-weight:800;">&#8943;</div>
+        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">All Features</div>
+      </div>
     </div>
 
-    <!-- TIPS -->
-    <div class="sec-title">Market Insights</div>
+    <!-- ── FEATURED FLYER ── -->
+    <div id="featured-flyer" style="margin-bottom:16px;"></div>
+
+    <!-- ── TODAY'S SIP INSIGHT ── -->
+    <div style="background:linear-gradient(135deg,#0F1520,#151E2E);border:1.5px solid rgba(242,201,76,0.2);border-radius:18px;padding:16px;margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:#F2C94C;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">&#128200; SIP Insight</div>
+          <div style="font-size:14px;font-weight:800;color:#F0F4FF;">Power of Rs.5,000/month</div>
+        </div>
+        <div style="background:rgba(242,201,76,0.1);border:1px solid rgba(242,201,76,0.2);border-radius:8px;padding:5px 10px;font-size:10px;font-weight:700;color:#F2C94C;">@12% p.a.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
+        <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:10px;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:800;color:#F2C94C;">Rs.11.6L</div>
+          <div style="font-size:9px;color:#6B7A99;margin-top:3px;">10 years</div>
+        </div>
+        <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:10px;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:800;color:#F2C94C;">Rs.49.9L</div>
+          <div style="font-size:9px;color:#6B7A99;margin-top:3px;">20 years</div>
+        </div>
+        <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:10px;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:800;color:#27AE60;">Rs.1.76Cr</div>
+          <div style="font-size:9px;color:#6B7A99;margin-top:3px;">30 years</div>
+        </div>
+      </div>
+      <button onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('sip');},300);" style="width:100%;background:linear-gradient(135deg,#F2C94C,#C9890A);border:none;border-radius:12px;padding:11px;font-size:12px;font-weight:800;color:#050709;cursor:pointer;font-family:var(--font);">Calculate My SIP Returns &#8594;</button>
+    </div>
+
+    <!-- ── MOTILAL OSWAL BANNER ── -->
+    <div onclick="window.open('https://mosl.co/PCgNPj07W1','_blank')" style="background:linear-gradient(135deg,#0A1628,#1A56DB 80%,#2563EB);border-radius:16px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;cursor:pointer;position:relative;overflow:hidden;">
+      <div style="position:absolute;right:-10px;top:-10px;font-size:70px;opacity:0.08;">&#127941;</div>
+      <div style="width:44px;height:44px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#127881;</div>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:800;color:#FFFFFF;margin-bottom:2px;">Open Free Demat Account</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.7);">via Motilal Oswal &#8226; Certified Partner &#8226; Zero brokerage</div>
+      </div>
+      <div style="font-size:20px;color:rgba(255,255,255,0.7);flex-shrink:0;">&#8594;</div>
+    </div>
+
+    <!-- ── SERVICES HIGHLIGHT ── -->
+    <div style="font-size:10px;font-weight:700;color:#6B7A99;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">What We Offer</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
+      <div onclick="navTo('p-ins','nb-ins')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px;cursor:pointer;">
+        <div style="font-size:24px;margin-bottom:6px;">&#128737;</div>
+        <div style="font-size:12px;font-weight:800;color:#F0F4FF;margin-bottom:3px;">Insurance</div>
+        <div style="font-size:10px;color:#6B7A99;line-height:1.5;">Term &#8226; Health &#8226; Car &#8226; Home<br/>13 companies compared</div>
+      </div>
+      <div onclick="navTo('p-mf','nb-mf')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px;cursor:pointer;">
+        <div style="font-size:24px;margin-bottom:6px;">&#128202;</div>
+        <div style="font-size:12px;font-weight:800;color:#F0F4FF;margin-bottom:3px;">Mutual Funds</div>
+        <div style="font-size:10px;color:#6B7A99;line-height:1.5;">40 curated funds<br/>SIP from Rs.500/month</div>
+      </div>
+      <div onclick="navTo('p-ipo','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px;cursor:pointer;">
+        <div style="font-size:24px;margin-bottom:6px;">&#128640;</div>
+        <div style="font-size:12px;font-weight:800;color:#F0F4FF;margin-bottom:3px;">IPO &#38; Stocks</div>
+        <div style="font-size:10px;color:#6B7A99;line-height:1.5;">IPO applications<br/>Unlisted shares access</div>
+      </div>
+      <div onclick="navTo('p-appt','nb-more')" style="background:linear-gradient(135deg,rgba(242,201,76,0.08),rgba(242,201,76,0.03));border:1px solid rgba(242,201,76,0.2);border-radius:16px;padding:14px;cursor:pointer;">
+        <div style="font-size:24px;margin-bottom:6px;">&#128197;</div>
+        <div style="font-size:12px;font-weight:800;color:#F2C94C;margin-bottom:3px;">Free Consultation</div>
+        <div style="font-size:10px;color:#6B7A99;line-height:1.5;">Book with K. Shiva<br/>or Manish Kumar Jain</div>
+      </div>
+    </div>
+
+    <!-- ── CERT BADGES ── -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+      <span style="font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(47,128,237,0.12);border:1px solid rgba(47,128,237,0.25);color:#C5CFE0;">SEBI Reg</span>
+      <span style="font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(47,128,237,0.12);border:1px solid rgba(47,128,237,0.25);color:#C5CFE0;">NISM 5A</span>
+      <span style="font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(47,128,237,0.12);border:1px solid rgba(47,128,237,0.25);color:#C5CFE0;">IRDAI IC38</span>
+      <span style="font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(242,201,76,0.1);border:1px solid rgba(242,201,76,0.2);color:#F2C94C;">Motilal Oswal</span>
+      <span style="font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(47,128,237,0.12);border:1px solid rgba(47,128,237,0.25);color:#C5CFE0;">NISM PMS</span>
+      <span style="font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(47,128,237,0.12);border:1px solid rgba(47,128,237,0.25);color:#C5CFE0;">NISM F&#38;O</span>
+    </div>
+
+    <!-- ── DAILY TIPS ── -->
+    <div style="font-size:10px;font-weight:700;color:#6B7A99;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">&#128161; Market Insights</div>
     <div id="home-tips"></div>
+
+    <!-- WhatsApp quick contact -->
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <button onclick="window.open('https://wa.me/916300716517','_blank')" style="flex:1;background:rgba(37,211,102,0.1);border:1.5px solid rgba(37,211,102,0.3);border-radius:12px;padding:11px;font-size:11px;font-weight:700;color:#25D366;cursor:pointer;font-family:var(--font);">&#128241; K. Shiva</button>
+      <button onclick="window.open('https://wa.me/919030061988','_blank')" style="flex:1;background:rgba(37,211,102,0.1);border:1.5px solid rgba(37,211,102,0.3);border-radius:12px;padding:11px;font-size:11px;font-weight:700;color:#25D366;cursor:pointer;font-family:var(--font);">&#128241; Manish</button>
+    </div>
 
   </div>
 </div>
