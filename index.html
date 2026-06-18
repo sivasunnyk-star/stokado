@@ -370,195 +370,264 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 <!-- ══════════════ HOME PAGE ══════════════ -->
 <div class="pg active" id="p-home">
 
-  <!-- ── HERO ── -->
-  <div style="background:linear-gradient(160deg,#050709 0%,#0A1628 40%,#0D1F3C 70%,#0A2463 100%);padding:28px 16px 24px;position:relative;overflow:hidden;">
-    <!-- Glow orbs -->
-    <div style="position:absolute;top:-40px;right:-30px;width:180px;height:180px;background:radial-gradient(circle,rgba(242,201,76,0.12) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
-    <div style="position:absolute;bottom:-20px;left:-20px;width:140px;height:140px;background:radial-gradient(circle,rgba(47,128,237,0.1) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+  <!-- ══ HERO ══ -->
+  <div style="background:linear-gradient(160deg,#050709 0%,#080C14 45%,#0A1628 100%);padding:22px 16px 20px;position:relative;overflow:hidden;">
 
-    <!-- Top row: logo + profile -->
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+    <!-- Gold glow top-right -->
+    <div style="position:absolute;top:-60px;right:-40px;width:220px;height:220px;background:radial-gradient(circle,rgba(242,201,76,0.1) 0%,transparent 65%);border-radius:50%;pointer-events:none;"></div>
+    <!-- Blue glow bottom-left -->
+    <div style="position:absolute;bottom:-40px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,rgba(47,128,237,0.08) 0%,transparent 65%);border-radius:50%;pointer-events:none;"></div>
+
+    <!-- Top bar -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;position:relative;z-index:1;">
       <div style="display:flex;align-items:center;gap:10px;">
-        <div style="width:38px;height:38px;background:linear-gradient(135deg,#F2C94C,#C9890A);border-radius:11px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:800;font-size:18px;color:#050709;flex-shrink:0;box-shadow:0 4px 14px rgba(242,201,76,0.3);">S</div>
+        <!-- SVG Logo -->
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="38" height="38" rx="11" fill="url(#logoGrad)"/>
+          <text x="19" y="27" text-anchor="middle" font-family="Georgia,serif" font-weight="900" font-size="20" fill="#050709">S</text>
+          <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#F2C94C"/><stop offset="100%" stop-color="#C9890A"/></linearGradient></defs>
+        </svg>
         <div>
           <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:800;color:#F0F4FF;line-height:1.1;">Stokado <span style="color:#F2C94C;">Financial</span></div>
-          <div style="font-size:9px;color:#6B7A99;letter-spacing:0.5px;">Your Trust, Our Solutions</div>
+          <div style="font-size:9px;color:#6B7A99;letter-spacing:0.8px;margin-top:1px;">YOUR TRUST, OUR SOLUTIONS</div>
         </div>
       </div>
-      <button class="hdr-btn" onclick="navTo('p-profile','nb-more')" style="width:34px;height:34px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;font-size:15px;">&#128100;</button>
-    </div>
-
-    <!-- Hero headline -->
-    <div style="font-size:10px;font-weight:700;color:#F2C94C;text-transform:uppercase;letter-spacing:2.5px;margin-bottom:6px;">Investment Intelligence</div>
-    <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:800;color:#F0F4FF;line-height:1.2;margin-bottom:8px;">Grow Wealth.<br/><span style="color:#F2C94C;">Beat Inflation.</span></div>
-    <div style="font-size:12px;color:#6B7A99;line-height:1.6;margin-bottom:18px;">SEBI Registered &#8226; NISM Certified &#8226; Motilal Oswal Partner<br/>Vijayawada&#8217;s most trusted financial advisory</div>
-
-    <!-- Stats row -->
-    <div style="display:flex;gap:0;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;margin-bottom:16px;">
-      <div style="flex:1;padding:12px 8px;text-align:center;border-right:1px solid rgba(255,255,255,0.07);">
-        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:#F2C94C;">Rs.150Cr</div>
-        <div style="font-size:9px;color:#6B7A99;margin-top:2px;text-transform:uppercase;letter-spacing:0.5px;">AUM</div>
-      </div>
-      <div style="flex:1;padding:12px 8px;text-align:center;border-right:1px solid rgba(255,255,255,0.07);">
-        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:#F2C94C;">4,000+</div>
-        <div style="font-size:9px;color:#6B7A99;margin-top:2px;text-transform:uppercase;letter-spacing:0.5px;">Clients</div>
-      </div>
-      <div style="flex:1;padding:12px 8px;text-align:center;">
-        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:#F2C94C;">10+</div>
-        <div style="font-size:9px;color:#6B7A99;margin-top:2px;text-transform:uppercase;letter-spacing:0.5px;">Certs</div>
-      </div>
-    </div>
-
-    <!-- CTA buttons -->
-    <div style="display:flex;gap:10px;">
-      <button onclick="navTo('p-appt','nb-more')" style="flex:1;background:linear-gradient(135deg,#F2C94C,#C9890A);border:none;border-radius:12px;padding:12px;font-size:13px;font-weight:800;color:#050709;cursor:pointer;font-family:var(--font);">
-        &#128197; Book Free Call
+      <button onclick="navTo('p-profile','nb-more')" style="width:34px;height:34px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#C5CFE0" stroke-width="2"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#C5CFE0" stroke-width="2" stroke-linecap="round"/></svg>
       </button>
-      <button onclick="navTo('p-calc','nb-calc')" style="flex:1;background:rgba(47,128,237,0.15);border:1.5px solid rgba(47,128,237,0.4);border-radius:12px;padding:12px;font-size:13px;font-weight:700;color:#F0F4FF;cursor:pointer;font-family:var(--font);">
-        &#129518; Calculators
+    </div>
+
+    <!-- Headline -->
+    <div style="position:relative;z-index:1;">
+      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(242,201,76,0.08);border:1px solid rgba(242,201,76,0.2);border-radius:999px;padding:4px 12px;margin-bottom:10px;">
+        <span style="width:6px;height:6px;background:#F2C94C;border-radius:50%;display:inline-block;"></span>
+        <span style="font-size:9px;font-weight:700;color:#F2C94C;text-transform:uppercase;letter-spacing:2px;">Vijayawada&#8217;s #1 Advisory</span>
+      </div>
+      <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:800;color:#F0F4FF;line-height:1.15;margin-bottom:8px;">Grow Wealth.<br/><span style="color:#F2C94C;">Beat Inflation.</span></div>
+      <div style="font-size:12px;color:#6B7A99;line-height:1.7;margin-bottom:18px;">SEBI Registered &bull; NISM Certified &bull; Motilal Oswal Partner</div>
+    </div>
+
+    <!-- Stats bar -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:18px;position:relative;z-index:1;">
+      <div style="background:rgba(242,201,76,0.06);border:1px solid rgba(242,201,76,0.15);border-radius:14px;padding:12px 8px;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:800;color:#F2C94C;">Rs.150Cr</div>
+        <div style="font-size:9px;color:#6B7A99;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;">AUM</div>
+      </div>
+      <div style="background:rgba(47,128,237,0.06);border:1px solid rgba(47,128,237,0.15);border-radius:14px;padding:12px 8px;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:800;color:#2F80ED;">4,000+</div>
+        <div style="font-size:9px;color:#6B7A99;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;">Clients</div>
+      </div>
+      <div style="background:rgba(39,174,96,0.06);border:1px solid rgba(39,174,96,0.15);border-radius:14px;padding:12px 8px;text-align:center;">
+        <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:800;color:#27AE60;">10+</div>
+        <div style="font-size:9px;color:#6B7A99;margin-top:3px;text-transform:uppercase;letter-spacing:0.5px;">Certs</div>
+      </div>
+    </div>
+
+    <!-- CTA row -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;z-index:1;">
+      <button onclick="navTo('p-appt','nb-more')" style="background:linear-gradient(135deg,#F2C94C,#C9890A);border:none;border-radius:13px;padding:13px;font-size:13px;font-weight:800;color:#050709;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:7px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="3" stroke="#050709" stroke-width="2.2"/><path d="M3 9h18M8 2v4M16 2v4" stroke="#050709" stroke-width="2.2" stroke-linecap="round"/></svg>
+        Book Free Call
+      </button>
+      <button onclick="navTo('p-calc','nb-calc')" style="background:rgba(47,128,237,0.12);border:1.5px solid rgba(47,128,237,0.35);border-radius:13px;padding:13px;font-size:13px;font-weight:700;color:#F0F4FF;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:7px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="18" rx="3" stroke="#C5CFE0" stroke-width="2"/><path d="M7 8h2m4 0h2M7 12h2m4 0h2M7 16h2m4 0h2" stroke="#C5CFE0" stroke-width="2" stroke-linecap="round"/></svg>
+        Calculators
       </button>
     </div>
   </div>
 
-  <!-- ── MARKET TICKER ── -->
-  <div style="background:#080C14;border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);padding:8px 0;overflow:hidden;white-space:nowrap;">
-    <div style="display:inline-flex;gap:28px;animation:tick 28s linear infinite;padding:0 14px;" id="home-ticker-inner">
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">NIFTY 50</span><span style="color:#F0F4FF;">23,165</span><span style="color:#27AE60;">+0.82%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">SENSEX</span><span style="color:#F0F4FF;">76,490</span><span style="color:#27AE60;">+0.74%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">GOLD</span><span style="color:#F0F4FF;">Rs.95,200</span><span style="color:#27AE60;">+0.3%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">USD/INR</span><span style="color:#F0F4FF;">83.48</span><span style="color:#FF6B6B;">-0.12%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">BANK NIFTY</span><span style="color:#F0F4FF;">49,840</span><span style="color:#27AE60;">+1.1%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">SILVER</span><span style="color:#F0F4FF;">Rs.94,100/kg</span><span style="color:#27AE60;">+0.5%</span></span>
-      <!-- Repeat for seamless loop -->
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">NIFTY 50</span><span style="color:#F0F4FF;">23,165</span><span style="color:#27AE60;">+0.82%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">SENSEX</span><span style="color:#F0F4FF;">76,490</span><span style="color:#27AE60;">+0.74%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">GOLD</span><span style="color:#F0F4FF;">Rs.95,200</span><span style="color:#27AE60;">+0.3%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">USD/INR</span><span style="color:#F0F4FF;">83.48</span><span style="color:#FF6B6B;">-0.12%</span></span>
+  <!-- ══ TICKER ══ -->
+  <div style="background:#080C14;border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);padding:9px 0;overflow:hidden;white-space:nowrap;">
+    <div style="display:inline-flex;gap:28px;animation:tick 28s linear infinite;padding:0 14px;">
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">NIFTY 50</span><span style="color:#F0F4FF;">23,165</span><span style="color:#27AE60;">&#9650; 0.82%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">SENSEX</span><span style="color:#F0F4FF;">76,490</span><span style="color:#27AE60;">&#9650; 0.74%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">GOLD</span><span style="color:#F0F4FF;">95,200</span><span style="color:#27AE60;">&#9650; 0.3%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">USD/INR</span><span style="color:#F0F4FF;">83.48</span><span style="color:#FF6B6B;">&#9660; 0.12%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">BANK NIFTY</span><span style="color:#F0F4FF;">49,840</span><span style="color:#27AE60;">&#9650; 1.1%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">SILVER</span><span style="color:#F0F4FF;">94,100</span><span style="color:#27AE60;">&#9650; 0.5%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">NIFTY 50</span><span style="color:#F0F4FF;">23,165</span><span style="color:#27AE60;">&#9650; 0.82%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">SENSEX</span><span style="color:#F0F4FF;">76,490</span><span style="color:#27AE60;">&#9650; 0.74%</span></span>
+      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">GOLD</span><span style="color:#F0F4FF;">95,200</span><span style="color:#27AE60;">&#9650; 0.3%</span></span>
     </div>
   </div>
 
-  <div style="padding:14px 16px 80px;">
+  <div style="padding:16px 16px 80px;background:#050709;">
 
-    <!-- ── QUICK ACCESS ── -->
+    <!-- ══ QUICK ACCESS WITH SVG ICONS ══ -->
     <div style="font-size:10px;font-weight:700;color:#6B7A99;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">Quick Access</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">
-      <div onclick="navTo('p-calc','nb-calc')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:all 0.2s;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
-        <div style="width:38px;height:38px;background:linear-gradient(135deg,#1A56DB,#0A2463);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;">&#129518;</div>
-        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Calculators</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;">
+
+      <!-- Calculators -->
+      <div onclick="navTo('p-calc','nb-calc')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 6px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;active:opacity:0.7;" ontouchstart="this.style.transform='scale(0.93)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="width:42px;height:42px;background:linear-gradient(135deg,#1A56DB,#0A2463);border-radius:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(26,86,219,0.3);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="18" rx="3" stroke="white" stroke-width="1.8"/><path d="M7 8h2m4 0h2M7 12h2m4 0h2M7 16h2m4 0h2" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div style="font-size:9.5px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Calculators</div>
       </div>
-      <div onclick="navTo('p-ins','nb-ins')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
-        <div style="width:38px;height:38px;background:linear-gradient(135deg,#059669,#064E3B);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;">&#128737;</div>
-        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Insurance</div>
+
+      <!-- Insurance -->
+      <div onclick="navTo('p-ins','nb-ins')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 6px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;" ontouchstart="this.style.transform='scale(0.93)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="width:42px;height:42px;background:linear-gradient(135deg,#059669,#064E3B);border-radius:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(5,150,105,0.3);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5 3.5 9.7 8 11 4.5-1.3 8-6 8-11V6l-8-4z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div style="font-size:9.5px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Insurance</div>
       </div>
-      <div onclick="navTo('p-mf','nb-mf')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
-        <div style="width:38px;height:38px;background:linear-gradient(135deg,#7C3AED,#4C1D95);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;">&#128202;</div>
-        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Mutual Funds</div>
+
+      <!-- Mutual Funds -->
+      <div onclick="navTo('p-mf','nb-mf')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 6px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;" ontouchstart="this.style.transform='scale(0.93)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="width:42px;height:42px;background:linear-gradient(135deg,#7C3AED,#4C1D95);border-radius:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(124,58,237,0.3);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 18l4-8 4 5 3-3 4 6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 18h18" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div style="font-size:9.5px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Mutual Funds</div>
       </div>
-      <div onclick="navTo('p-ipo','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
-        <div style="width:38px;height:38px;background:linear-gradient(135deg,#DC2626,#7F1D1D);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;">&#128640;</div>
-        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">IPO Tracker</div>
+
+      <!-- IPO -->
+      <div onclick="navTo('p-ipo','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 6px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;" ontouchstart="this.style.transform='scale(0.93)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="width:42px;height:42px;background:linear-gradient(135deg,#DC2626,#7F1D1D);border-radius:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(220,38,38,0.3);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </div>
+        <div style="font-size:9.5px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">IPO Tracker</div>
       </div>
-      <div onclick="navTo('p-budget','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
-        <div style="width:38px;height:38px;background:linear-gradient(135deg,#F59E0B,#78350F);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;">&#128203;</div>
-        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Budget</div>
+
+      <!-- Budget -->
+      <div onclick="navTo('p-budget','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 6px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;" ontouchstart="this.style.transform='scale(0.93)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="width:42px;height:42px;background:linear-gradient(135deg,#F59E0B,#78350F);border-radius:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(245,158,11,0.3);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="white" stroke-width="1.8"/><path d="M8 10h8M8 14h5" stroke="white" stroke-width="1.8" stroke-linecap="round"/><path d="M8 6h1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div style="font-size:9.5px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Budget</div>
       </div>
-      <div onclick="navTo('p-unlisted','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
-        <div style="width:38px;height:38px;background:linear-gradient(135deg,#0891B2,#0E7490);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;">&#128196;</div>
-        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Unlisted</div>
+
+      <!-- Unlisted -->
+      <div onclick="navTo('p-unlisted','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 6px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;" ontouchstart="this.style.transform='scale(0.93)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="width:42px;height:42px;background:linear-gradient(135deg,#0891B2,#0E7490);border-radius:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(8,145,178,0.3);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="white" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div style="font-size:9.5px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Unlisted</div>
       </div>
-      <div onclick="navTo('p-portfolio','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
-        <div style="width:38px;height:38px;background:linear-gradient(135deg,#10B981,#065F46);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;">&#128188;</div>
-        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Portfolio</div>
+
+      <!-- Portfolio -->
+      <div onclick="navTo('p-portfolio','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 6px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;" ontouchstart="this.style.transform='scale(0.93)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="width:42px;height:42px;background:linear-gradient(135deg,#10B981,#065F46);border-radius:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(16,185,129,0.3);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="20" height="15" rx="2" stroke="white" stroke-width="1.8"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke="white" stroke-width="1.8"/><path d="M12 12v4M10 14h4" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div style="font-size:9.5px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">Portfolio</div>
       </div>
-      <div onclick="navTo('p-more','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;" ontouchstart="this.style.opacity='0.7'" ontouchend="this.style.opacity='1'">
-        <div style="width:38px;height:38px;background:linear-gradient(135deg,#374151,#111827);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;color:#F0F4FF;font-weight:800;">&#8943;</div>
-        <div style="font-size:10px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">All Features</div>
+
+      <!-- More -->
+      <div onclick="navTo('p-more','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px 6px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;" ontouchstart="this.style.transform='scale(0.93)'" ontouchend="this.style.transform='scale(1)'">
+        <div style="width:42px;height:42px;background:linear-gradient(135deg,#374151,#111827);border-radius:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.3);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.5" fill="white"/><circle cx="12" cy="12" r="1.5" fill="white"/><circle cx="19" cy="12" r="1.5" fill="white"/></svg>
+        </div>
+        <div style="font-size:9.5px;font-weight:700;color:#C5CFE0;text-align:center;line-height:1.3;">All Features</div>
       </div>
+
     </div>
 
-    <!-- ── FEATURED FLYER ── -->
-    <div id="featured-flyer" style="margin-bottom:16px;"></div>
+    <!-- ══ FEATURED FLYER ══ -->
+    <div id="featured-flyer" style="margin-bottom:18px;"></div>
 
-    <!-- ── TODAY'S SIP INSIGHT ── -->
-    <div style="background:linear-gradient(135deg,#0F1520,#151E2E);border:1.5px solid rgba(242,201,76,0.2);border-radius:18px;padding:16px;margin-bottom:16px;">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+    <!-- ══ SIP POWER CARD ══ -->
+    <div style="background:linear-gradient(135deg,#0A1628 0%,#0D1F3C 100%);border:1px solid rgba(242,201,76,0.18);border-radius:20px;padding:18px;margin-bottom:18px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:radial-gradient(circle,rgba(242,201,76,0.08) 0%,transparent 70%);border-radius:50%;"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
         <div>
-          <div style="font-size:11px;font-weight:700;color:#F2C94C;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">&#128200; SIP Insight</div>
-          <div style="font-size:14px;font-weight:800;color:#F0F4FF;">Power of Rs.5,000/month</div>
+          <div style="font-size:10px;font-weight:700;color:#F2C94C;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">SIP Growth Calculator</div>
+          <div style="font-size:15px;font-weight:800;color:#F0F4FF;">Rs.5,000/month @ 12% p.a.</div>
         </div>
-        <div style="background:rgba(242,201,76,0.1);border:1px solid rgba(242,201,76,0.2);border-radius:8px;padding:5px 10px;font-size:10px;font-weight:700;color:#F2C94C;">@12% p.a.</div>
+        <div style="background:rgba(242,201,76,0.1);border:1px solid rgba(242,201,76,0.2);border-radius:10px;padding:6px 10px;text-align:center;">
+          <div style="font-size:16px;font-weight:800;color:#F2C94C;">12%</div>
+          <div style="font-size:8px;color:#6B7A99;">p.a.</div>
+        </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
-        <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:10px;text-align:center;">
-          <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:800;color:#F2C94C;">Rs.11.6L</div>
+        <div style="background:rgba(0,0,0,0.25);border-radius:13px;padding:11px 8px;text-align:center;border:1px solid rgba(255,255,255,0.05);">
+          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:800;color:#F2C94C;">Rs.11.6L</div>
           <div style="font-size:9px;color:#6B7A99;margin-top:3px;">10 years</div>
         </div>
-        <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:10px;text-align:center;">
-          <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:800;color:#F2C94C;">Rs.49.9L</div>
+        <div style="background:rgba(0,0,0,0.25);border-radius:13px;padding:11px 8px;text-align:center;border:1px solid rgba(255,255,255,0.05);">
+          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:800;color:#F2C94C;">Rs.49.9L</div>
           <div style="font-size:9px;color:#6B7A99;margin-top:3px;">20 years</div>
         </div>
-        <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:10px;text-align:center;">
-          <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:800;color:#27AE60;">Rs.1.76Cr</div>
+        <div style="background:rgba(39,174,96,0.1);border-radius:13px;padding:11px 8px;text-align:center;border:1px solid rgba(39,174,96,0.2);">
+          <div style="font-family:'Playfair Display',serif;font-size:16px;font-weight:800;color:#27AE60;">Rs.1.76Cr</div>
           <div style="font-size:9px;color:#6B7A99;margin-top:3px;">30 years</div>
         </div>
       </div>
-      <button onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('sip');},300);" style="width:100%;background:linear-gradient(135deg,#F2C94C,#C9890A);border:none;border-radius:12px;padding:11px;font-size:12px;font-weight:800;color:#050709;cursor:pointer;font-family:var(--font);">Calculate My SIP Returns &#8594;</button>
+      <button onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('sip');},300);" style="width:100%;background:linear-gradient(135deg,#F2C94C,#C9890A);border:none;border-radius:12px;padding:12px;font-size:12px;font-weight:800;color:#050709;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 18l4-8 4 5 3-3 4 6" stroke="#050709" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Calculate My SIP Returns
+      </button>
     </div>
 
-    <!-- ── MOTILAL OSWAL BANNER ── -->
-    <div onclick="window.open('https://mosl.co/PCgNPj07W1','_blank')" style="background:linear-gradient(135deg,#0A1628,#1A56DB 80%,#2563EB);border-radius:16px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;cursor:pointer;position:relative;overflow:hidden;">
-      <div style="position:absolute;right:-10px;top:-10px;font-size:70px;opacity:0.08;">&#127941;</div>
-      <div style="width:44px;height:44px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">&#127881;</div>
-      <div style="flex:1;">
+    <!-- ══ MOTILAL BANNER ══ -->
+    <div onclick="window.open('https://mosl.co/PCgNPj07W1','_blank')" style="background:linear-gradient(135deg,#0A1628,#1A3A8A);border:1px solid rgba(47,128,237,0.25);border-radius:18px;padding:15px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;cursor:pointer;position:relative;overflow:hidden;">
+      <div style="position:absolute;right:-15px;top:-15px;width:80px;height:80px;background:radial-gradient(circle,rgba(47,128,237,0.15) 0%,transparent 70%);border-radius:50%;"></div>
+      <div style="width:46px;height:46px;background:linear-gradient(135deg,#2F80ED,#1A56DB);border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(47,128,237,0.3);">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 3h18v18H3z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" fill="white"/></svg>
+      </div>
+      <div style="flex:1;min-width:0;">
         <div style="font-size:13px;font-weight:800;color:#FFFFFF;margin-bottom:2px;">Open Free Demat Account</div>
-        <div style="font-size:10px;color:rgba(255,255,255,0.7);">via Motilal Oswal &#8226; Certified Partner &#8226; Zero brokerage</div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.6);">Motilal Oswal &bull; Certified Partner &bull; Zero brokerage</div>
       </div>
-      <div style="font-size:20px;color:rgba(255,255,255,0.7);flex-shrink:0;">&#8594;</div>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"><path d="M9 18l6-6-6-6" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round"/></svg>
     </div>
 
-    <!-- ── SERVICES HIGHLIGHT ── -->
-    <div style="font-size:10px;font-weight:700;color:#6B7A99;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">What We Offer</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">
-      <div onclick="navTo('p-ins','nb-ins')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px;cursor:pointer;">
-        <div style="font-size:24px;margin-bottom:6px;">&#128737;</div>
-        <div style="font-size:12px;font-weight:800;color:#F0F4FF;margin-bottom:3px;">Insurance</div>
-        <div style="font-size:10px;color:#6B7A99;line-height:1.5;">Term &#8226; Health &#8226; Car &#8226; Home<br/>13 companies compared</div>
+    <!-- ══ SERVICES GRID ══ -->
+    <div style="font-size:10px;font-weight:700;color:#6B7A99;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">Our Services</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;">
+      <div onclick="navTo('p-ins','nb-ins')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:16px;cursor:pointer;">
+        <div style="width:40px;height:40px;background:linear-gradient(135deg,#059669,#064E3B);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5 3.5 9.7 8 11 4.5-1.3 8-6 8-11V6l-8-4z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div style="font-size:13px;font-weight:800;color:#F0F4FF;margin-bottom:4px;">Insurance</div>
+        <div style="font-size:10px;color:#6B7A99;line-height:1.5;">Term &bull; Health<br/>Car &bull; Home &bull; 13 cos.</div>
       </div>
-      <div onclick="navTo('p-mf','nb-mf')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px;cursor:pointer;">
-        <div style="font-size:24px;margin-bottom:6px;">&#128202;</div>
-        <div style="font-size:12px;font-weight:800;color:#F0F4FF;margin-bottom:3px;">Mutual Funds</div>
-        <div style="font-size:10px;color:#6B7A99;line-height:1.5;">40 curated funds<br/>SIP from Rs.500/month</div>
+      <div onclick="navTo('p-mf','nb-mf')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:16px;cursor:pointer;">
+        <div style="width:40px;height:40px;background:linear-gradient(135deg,#7C3AED,#4C1D95);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 18l4-8 4 5 3-3 4 6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 18h18" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div style="font-size:13px;font-weight:800;color:#F0F4FF;margin-bottom:4px;">Mutual Funds</div>
+        <div style="font-size:10px;color:#6B7A99;line-height:1.5;">40 curated funds<br/>SIP from Rs.500/mo</div>
       </div>
-      <div onclick="navTo('p-ipo','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px;cursor:pointer;">
-        <div style="font-size:24px;margin-bottom:6px;">&#128640;</div>
-        <div style="font-size:12px;font-weight:800;color:#F0F4FF;margin-bottom:3px;">IPO &#38; Stocks</div>
-        <div style="font-size:10px;color:#6B7A99;line-height:1.5;">IPO applications<br/>Unlisted shares access</div>
+      <div onclick="navTo('p-ipo','nb-more')" style="background:#0F1520;border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:16px;cursor:pointer;">
+        <div style="width:40px;height:40px;background:linear-gradient(135deg,#DC2626,#7F1D1D);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        </div>
+        <div style="font-size:13px;font-weight:800;color:#F0F4FF;margin-bottom:4px;">IPO &amp; Stocks</div>
+        <div style="font-size:10px;color:#6B7A99;line-height:1.5;">IPO applications<br/>Unlisted shares</div>
       </div>
-      <div onclick="navTo('p-appt','nb-more')" style="background:linear-gradient(135deg,rgba(242,201,76,0.08),rgba(242,201,76,0.03));border:1px solid rgba(242,201,76,0.2);border-radius:16px;padding:14px;cursor:pointer;">
-        <div style="font-size:24px;margin-bottom:6px;">&#128197;</div>
-        <div style="font-size:12px;font-weight:800;color:#F2C94C;margin-bottom:3px;">Free Consultation</div>
-        <div style="font-size:10px;color:#6B7A99;line-height:1.5;">Book with K. Shiva<br/>or Manish Kumar Jain</div>
+      <div onclick="navTo('p-appt','nb-more')" style="background:linear-gradient(135deg,rgba(242,201,76,0.06),rgba(242,201,76,0.02));border:1px solid rgba(242,201,76,0.18);border-radius:18px;padding:16px;cursor:pointer;">
+        <div style="width:40px;height:40px;background:linear-gradient(135deg,#F2C94C,#C9890A);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="3" stroke="#050709" stroke-width="1.8"/><path d="M3 9h18M8 2v4M16 2v4" stroke="#050709" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div style="font-size:13px;font-weight:800;color:#F2C94C;margin-bottom:4px;">Free Consultation</div>
+        <div style="font-size:10px;color:#6B7A99;line-height:1.5;">K. Shiva &amp; Manish<br/>Book appointment</div>
       </div>
     </div>
 
-    <!-- ── CERT BADGES ── -->
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
-      <span style="font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(47,128,237,0.12);border:1px solid rgba(47,128,237,0.25);color:#C5CFE0;">SEBI Reg</span>
-      <span style="font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(47,128,237,0.12);border:1px solid rgba(47,128,237,0.25);color:#C5CFE0;">NISM 5A</span>
-      <span style="font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(47,128,237,0.12);border:1px solid rgba(47,128,237,0.25);color:#C5CFE0;">IRDAI IC38</span>
-      <span style="font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(242,201,76,0.1);border:1px solid rgba(242,201,76,0.2);color:#F2C94C;">Motilal Oswal</span>
-      <span style="font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(47,128,237,0.12);border:1px solid rgba(47,128,237,0.25);color:#C5CFE0;">NISM PMS</span>
-      <span style="font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(47,128,237,0.12);border:1px solid rgba(47,128,237,0.25);color:#C5CFE0;">NISM F&#38;O</span>
+    <!-- ══ CERT BADGES ══ -->
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;">
+      <span style="font-size:10px;font-weight:600;padding:5px 11px;border-radius:999px;background:rgba(47,128,237,0.1);border:1px solid rgba(47,128,237,0.2);color:#C5CFE0;">SEBI Reg</span>
+      <span style="font-size:10px;font-weight:600;padding:5px 11px;border-radius:999px;background:rgba(47,128,237,0.1);border:1px solid rgba(47,128,237,0.2);color:#C5CFE0;">NISM 5A</span>
+      <span style="font-size:10px;font-weight:600;padding:5px 11px;border-radius:999px;background:rgba(47,128,237,0.1);border:1px solid rgba(47,128,237,0.2);color:#C5CFE0;">IRDAI IC38</span>
+      <span style="font-size:10px;font-weight:600;padding:5px 11px;border-radius:999px;background:rgba(242,201,76,0.08);border:1px solid rgba(242,201,76,0.2);color:#F2C94C;">Motilal Oswal</span>
+      <span style="font-size:10px;font-weight:600;padding:5px 11px;border-radius:999px;background:rgba(47,128,237,0.1);border:1px solid rgba(47,128,237,0.2);color:#C5CFE0;">NISM PMS</span>
     </div>
 
-    <!-- ── DAILY TIPS ── -->
-    <div style="font-size:10px;font-weight:700;color:#6B7A99;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">&#128161; Market Insights</div>
+    <!-- ══ MARKET INSIGHTS ══ -->
+    <div style="font-size:10px;font-weight:700;color:#6B7A99;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">Market Insights</div>
     <div id="home-tips"></div>
 
-    <!-- WhatsApp quick contact -->
-    <div style="display:flex;gap:8px;margin-top:8px;">
-      <button onclick="window.open('https://wa.me/916300716517','_blank')" style="flex:1;background:rgba(37,211,102,0.1);border:1.5px solid rgba(37,211,102,0.3);border-radius:12px;padding:11px;font-size:11px;font-weight:700;color:#25D366;cursor:pointer;font-family:var(--font);">&#128241; K. Shiva</button>
-      <button onclick="window.open('https://wa.me/919030061988','_blank')" style="flex:1;background:rgba(37,211,102,0.1);border:1.5px solid rgba(37,211,102,0.3);border-radius:12px;padding:11px;font-size:11px;font-weight:700;color:#25D366;cursor:pointer;font-family:var(--font);">&#128241; Manish</button>
+    <!-- ══ WHATSAPP CONTACT ══ -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
+      <button onclick="window.open('https://wa.me/916300716517','_blank')" style="background:rgba(37,211,102,0.08);border:1.5px solid rgba(37,211,102,0.25);border-radius:13px;padding:12px;font-size:11px;font-weight:700;color:#25D366;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:7px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.37 5.07L2 22l5.1-1.34A10 10 0 1012 2z" stroke="#25D366" stroke-width="1.8"/><path d="M9 9c0 3.31 2.69 6 6 6" stroke="#25D366" stroke-width="1.8" stroke-linecap="round"/></svg>
+        K. Shiva
+      </button>
+      <button onclick="window.open('https://wa.me/919030061988','_blank')" style="background:rgba(37,211,102,0.08);border:1.5px solid rgba(37,211,102,0.25);border-radius:13px;padding:12px;font-size:11px;font-weight:700;color:#25D366;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:7px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.37 5.07L2 22l5.1-1.34A10 10 0 1012 2z" stroke="#25D366" stroke-width="1.8"/><path d="M9 9c0 3.31 2.69 6 6 6" stroke="#25D366" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Manish
+      </button>
     </div>
 
   </div>
