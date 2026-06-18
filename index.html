@@ -116,10 +116,10 @@ label { font-size: 12px; font-weight: 600; color: var(--light2); margin-bottom: 
 /* BOTTOM NAV */
 .bnav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--navy2); border-top: 1px solid var(--border); display: flex; padding: 8px 0; padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)); z-index: 100; }
 .bnav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 4px; cursor: pointer; border: none; background: transparent; font-family: var(--font); }
-.bnav-icon { font-size: 20px; line-height: 1; }
+.bnav-icon{font-size:20px;line-height:1;display:flex;align-items:center;justify-content:center;color:var(--gray);}
 .bnav-label { font-size: 9px; font-weight: 600; color: var(--gray); }
 .bnav-btn.active .bnav-label { color: var(--gold); }
-.bnav-btn.active .bnav-icon { filter: none; }
+.bnav-btn.active .bnav-icon { filter: none; color:var(--gold);}
 
 /* TICKER STRIP */
 .ticker-wrap { background: linear-gradient(90deg, var(--navy3), var(--navy2)); border-bottom: 1px solid var(--border); overflow: hidden; padding: 8px 0; white-space: nowrap; }
@@ -824,187 +824,44 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 </div>
 
 <!-- ══════════════ MARKET ══════════════ -->
+<!-- ══════════════ FINANCE HUB ══════════════ -->
 <div class="pg" id="p-market">
 <div class="pg-hdr">
   <button class="pg-back" onclick="navTo('p-home','nb-home')">&#8592; Back</button>
   <div class="pg-title">Finance <span>Hub</span></div>
-  <div class="pg-sub">Learn • Plan • Grow</div>
+  <div class="pg-sub">Learn &bull; Plan &bull; Grow</div>
 </div>
 <div class="pg-content">
-
-<!-- TABS -->
-<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none;">
-  <button class="hub-tab btn btn-primary btn-sm" data-hub="learn">📚 Learn</button>
-  <button class="hub-tab btn btn-outline btn-sm" data-hub="goals">🎯 Goals</button>
-  <button class="hub-tab btn btn-outline btn-sm" data-hub="funds">🏆 Top Funds</button>
-  <button class="hub-tab btn btn-outline btn-sm" data-hub="calendar">📅 Calendar</button>
-  <button class="hub-tab btn btn-outline btn-sm" data-hub="news">💡 Tips</button>
+<div style="display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;">
+  <button class="tab-btn active" onclick="switchHub('learn')" id="hub-tab-learn">Learn</button>
+  <button class="tab-btn" onclick="switchHub('goals')" id="hub-tab-goals">Goals</button>
+  <button class="tab-btn" onclick="switchHub('topfunds')" id="hub-tab-topfunds">Top Funds</button>
+  <button class="tab-btn" onclick="switchHub('calendar')" id="hub-tab-calendar">Calendar</button>
+  <button class="tab-btn" onclick="switchHub('tips')" id="hub-tab-tips">Daily Tips</button>
 </div>
-
-<!-- LEARN TAB -->
-<div class="hub-pane" id="hub-learn">
-  <div class="sec-title">Financial Education</div>
-
-  <div class="card" style="margin-bottom:10px;">
-    <div style="display:flex;gap:12px;align-items:flex-start;">
-      <div style="font-size:28px;">📈</div>
-      <div>
-        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">What is SIP?</div>
-        <div style="font-size:12px;color:var(--gray);line-height:1.7;">Systematic Investment Plan (SIP) lets you invest a fixed amount every month in mutual funds. Even ₹500/month can build wealth!<br/><br/><strong style="color:var(--gold);">Example:</strong> ₹5,000/month at 12% for 20 years = <strong style="color:var(--green);">₹49.9 Lakhs</strong></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card" style="margin-bottom:10px;">
-    <div style="display:flex;gap:12px;align-items:flex-start;">
-      <div style="font-size:28px;">💰</div>
-      <div>
-        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Rule of 72</div>
-        <div style="font-size:12px;color:var(--gray);line-height:1.7;">Divide 72 by your return rate to know when your money doubles.<br/><br/>
-        <strong style="color:var(--gold);">At 12%:</strong> 72÷12 = <strong style="color:var(--green);">6 years to double!</strong><br/>
-        <strong style="color:var(--gold);">At 8%:</strong> 72÷8 = 9 years<br/>
-        <strong style="color:var(--gold);">At 6%:</strong> 72÷6 = 12 years</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card" style="margin-bottom:10px;">
-    <div style="display:flex;gap:12px;align-items:flex-start;">
-      <div style="font-size:28px;">🛡️</div>
-      <div>
-        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Term Insurance — Why It's a Must</div>
-        <div style="font-size:12px;color:var(--gray);line-height:1.7;">₹1 Crore cover costs just <strong style="color:var(--green);">₹8,000-12,000/year</strong> for a 30-year-old!<br/><br/>If something happens to you, your family is protected. No investment returns this — pure protection.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card" style="margin-bottom:10px;">
-    <div style="display:flex;gap:12px;align-items:flex-start;">
-      <div style="font-size:28px;">💸</div>
-      <div>
-        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Save Tax Under 80C</div>
-        <div style="font-size:12px;color:var(--gray);line-height:1.7;">Invest up to ₹1.5 Lakh and save up to <strong style="color:var(--green);">₹46,800 in tax!</strong><br/><br/>
-        Best options: ELSS funds (3yr lock-in) • PPF • NPS • Life Insurance premium</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card" style="margin-bottom:10px;">
-    <div style="display:flex;gap:12px;align-items:flex-start;">
-      <div style="font-size:28px;">🥇</div>
-      <div>
-        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Gold — Smart Ways to Invest</div>
-        <div style="font-size:12px;color:var(--gray);line-height:1.7;">
-        <strong style="color:var(--gold);">Sovereign Gold Bonds (SGB)</strong> — Best! Get gold price + 2.5% extra interest<br/>
-        <strong style="color:var(--light2);">Gold ETFs</strong> — Trade on exchange, no making charges<br/>
-        <strong style="color:var(--light2);">Digital Gold</strong> — Buy from ₹1, stored safely<br/>
-        <strong style="color:var(--light2);">Physical Gold</strong> — High making charges (10-20%)</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card" style="margin-bottom:10px;">
-    <div style="display:flex;gap:12px;align-items:flex-start;">
-      <div style="font-size:28px;">📊</div>
-      <div>
-        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">MF Types Explained</div>
-        <div style="font-size:12px;color:var(--gray);line-height:1.7;">
-        <strong style="color:var(--green);">Large Cap</strong> — Top 100 companies. Stable, lower risk<br/>
-        <strong style="color:var(--gold);">Mid Cap</strong> — 101-250 companies. Higher growth, more risk<br/>
-        <strong style="color:var(--red);">Small Cap</strong> — Below 250. Highest growth potential + risk<br/>
-        <strong style="color:var(--blue3);">ELSS</strong> — Tax saving + equity returns<br/>
-        <strong style="color:var(--light2);">Index Fund</strong> — Tracks Nifty/Sensex, lowest cost</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div style="display:flex;gap:12px;align-items:flex-start;">
-      <div style="font-size:28px;">🏠</div>
-      <div>
-        <div style="font-size:14px;font-weight:700;margin-bottom:4px;">Buy House or Invest in MF?</div>
-        <div style="font-size:12px;color:var(--gray);line-height:1.7;">House: 6-8% returns, illiquid, high cost<br/>MF SIP: 12-15% historical returns, liquid, start from ₹500<br/><br/><strong style="color:var(--gold);">Verdict:</strong> SIP first, house later — build your down payment via SIP!</div>
-      </div>
-    </div>
+<div id="hub-learn" class="hub-pane">
+  <div style="display:grid;gap:10px;">
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;"><div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">What is SIP?</div><div style="font-size:11px;color:var(--light2);line-height:1.7;">Systematic Investment Plan lets you invest a fixed amount monthly in mutual funds. Starting Rs.500/month, you benefit from rupee cost averaging and compounding over time.</div><button onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('sip');},300);" style="margin-top:10px;padding:8px 14px;background:var(--blue3);border:none;border-radius:10px;color:white;font-size:11px;font-weight:700;cursor:pointer;">Try SIP Calculator &#8594;</button></div>
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;"><div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">Term Insurance &mdash; Why You Need It</div><div style="font-size:11px;color:var(--light2);line-height:1.7;">Rs.1 Crore term plan costs just Rs.700/month for age 30. Protects your family. Buy early for lowest premium.</div><button onclick="navTo('p-ins','nb-ins')" style="margin-top:10px;padding:8px 14px;background:var(--blue3);border:none;border-radius:10px;color:white;font-size:11px;font-weight:700;cursor:pointer;">Get Quote &#8594;</button></div>
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;"><div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">Rule of 72</div><div style="font-size:11px;color:var(--light2);line-height:1.7;">Divide 72 by your return rate to know doubling time. At 12% SIP: 6 years. At 8% FD: 9 years to double your money.</div></div>
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;"><div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">Emergency Fund First</div><div style="font-size:11px;color:var(--light2);line-height:1.7;">Build 6 months of expenses as emergency fund before investing. Keep it in liquid fund or savings account.</div></div>
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;"><div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">ELSS &mdash; Save Tax + Grow</div><div style="font-size:11px;color:var(--light2);line-height:1.7;">ELSS qualifies for Rs.1.5L deduction u/s 80C with only 3-year lock-in. Average returns 12-15% over 5 years.</div><button onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('tax');},300);" style="margin-top:10px;padding:8px 14px;background:var(--blue3);border:none;border-radius:10px;color:white;font-size:11px;font-weight:700;cursor:pointer;">Tax Calculator &#8594;</button></div>
   </div>
 </div>
-
-<!-- GOALS TAB -->
-<div class="hub-pane" id="hub-goals" style="display:none;">
-  <div class="sec-title">Financial Goal Planner</div>
-
-  <div class="card" style="margin-bottom:14px;">
-    <label>Select Your Goal</label>
-    <select id="goal-type" onchange="updateGoalPlanner()">
-      <option value="child">👶 Child Education</option>
-      <option value="house">🏠 Buy a House</option>
-      <option value="retire">🌅 Retirement</option>
-      <option value="wedding">💒 Child Wedding</option>
-      <option value="car">🚗 Buy a Car</option>
-      <option value="travel">✈️ Dream Vacation</option>
-      <option value="emergency">🆘 Emergency Fund</option>
-    </select>
-    <label>Target Amount (₹)</label>
-    <input type="number" id="goal-target" value="5000000" onchange="updateGoalPlanner()"/>
-    <label>Years to Achieve</label>
-    <input type="range" id="goal-years" min="1" max="30" value="10" oninput="updateGoalPlanner()"/>
-    <div class="range-row"><span>1 yr</span><span class="range-val" id="goal-years-v">10 yrs</span><span>30 yrs</span></div>
-    <label>Expected Returns (% p.a.)</label>
-    <input type="range" id="goal-returns" min="6" max="18" step="0.5" value="12" oninput="updateGoalPlanner()"/>
-    <div class="range-row"><span>6%</span><span class="range-val" id="goal-returns-v">12%</span><span>18%</span></div>
+<div id="hub-goals" class="hub-pane" style="display:none;">
+  <div style="display:grid;gap:10px;">
+    <div onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('ret');},300);" style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;"><div style="width:40px;height:40px;background:linear-gradient(135deg,#C2410C,#7C2D12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#127749;</div><div><div style="font-size:12px;font-weight:700;color:var(--white);">Retirement Planning</div><div style="font-size:10px;color:var(--gray);margin-top:2px;">SIP needed to retire comfortably</div></div></div>
+    <div onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('edufund');},300);" style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;"><div style="width:40px;height:40px;background:linear-gradient(135deg,#1D4ED8,#1E3A5F);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#127891;</div><div><div style="font-size:12px;font-weight:700;color:var(--white);">Child Education Fund</div><div style="font-size:10px;color:var(--gray);margin-top:2px;">Future cost with education inflation</div></div></div>
+    <div onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('goal');},300);" style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;"><div style="width:40px;height:40px;background:linear-gradient(135deg,#059669,#064E3B);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#127968;</div><div><div style="font-size:12px;font-weight:700;color:var(--white);">Home / Car / Dream Goal</div><div style="font-size:10px;color:var(--gray);margin-top:2px;">SIP needed to reach target</div></div></div>
+    <div onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('sipswp');},300);" style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;"><div style="width:40px;height:40px;background:linear-gradient(135deg,#7C3AED,#4C1D95);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#128260;</div><div><div style="font-size:12px;font-weight:700;color:var(--white);">SIP + Stepped SWP Journey</div><div style="font-size:10px;color:var(--gray);margin-top:2px;">Invest now, withdraw in phases</div></div></div>
   </div>
-
-  <div class="result-card" id="goal-result">
-    <div class="result-main" id="goal-sip">--</div>
-    <div class="result-sub">Monthly SIP Required</div>
-    <div class="result-breakdown">
-      <div class="rb-item"><div class="rb-val" id="goal-lump">--</div><div class="rb-lbl">Lumpsum Alternative</div></div>
-      <div class="rb-item"><div class="rb-val" id="goal-inv">--</div><div class="rb-lbl">Total Investment</div></div>
-      <div class="rb-item"><div class="rb-val" id="goal-gain">--</div><div class="rb-lbl">Market Returns</div></div>
-      <div class="rb-item"><div class="rb-val" id="goal-yr-v">--</div><div class="rb-lbl">Timeline</div></div>
-    </div>
-  </div>
-
-  <button class="btn btn-gold" style="margin-top:12px;" onclick="navTo('p-appt','nb-more')">📅 Book Free Goal Planning Session</button>
 </div>
-
-<!-- TOP FUNDS TAB -->
-<div class="hub-pane" id="hub-funds" style="display:none;">
-  <div class="sec-title">Top Performing Funds — June 2026</div>
-
-  <div style="background:rgba(26,86,219,0.1);border:1px solid rgba(26,86,219,0.2);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--gray);margin-bottom:12px;line-height:1.6;">
-    📌 Returns as of June 2026. Past performance does not guarantee future returns. Consult Stokado advisors before investing.
-  </div>
-
-  <div class="sec-title">🏆 Large Cap — Stable Growth</div>
-  <div id="top-largecap"></div>
-
-  <div class="sec-title" style="margin-top:4px;">🚀 Mid Cap — High Growth</div>
-  <div id="top-midcap"></div>
-
-  <div class="sec-title" style="margin-top:4px;">💸 ELSS — Tax Saving</div>
-  <div id="top-elss"></div>
-
-  <div class="sec-title" style="margin-top:4px;">📊 Index — Low Cost</div>
-  <div id="top-index"></div>
-
-  <button class="btn btn-primary" style="margin-top:8px;" onclick="navTo('p-mf','nb-mf')">View All 40 Funds →</button>
-</div>
-
-<!-- CALENDAR TAB -->
-<div class="hub-pane" id="hub-calendar" style="display:none;">
-  <div class="sec-title">Financial Calendar 2026</div>
-  <div id="fin-calendar"></div>
-</div>
-
-<!-- TIPS TAB -->
-<div class="hub-pane" id="hub-news" style="display:none;">
-  <div class="sec-title">💡 Weekly Financial Tips</div>
-  <div id="fin-tips"></div>
-</div>
-
+<div id="hub-topfunds" class="hub-pane" style="display:none;"><div id="hub-topfunds-list"></div></div>
+<div id="hub-calendar" class="hub-pane" style="display:none;"><div id="hub-calendar-list"></div></div>
+<div id="hub-tips" class="hub-pane" style="display:none;"><div id="hub-tips-list"></div></div>
 </div>
 </div>
+
 <div class="pg" id="p-appt">
   <div class="pg-hdr">
     <button class="pg-back" onclick="navTo('p-more','nb-more')">&#8592; Back</button>
@@ -1703,28 +1560,30 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 <!-- BOTTOM NAV -->
 <nav class="bnav">
   <button class="bnav-btn active" id="nb-home" onclick="navTo('p-home','nb-home')">
-    <span class="bnav-icon">&#127968;</span>
+    <span class="bnav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 3l9 9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v10a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1V10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="bnav-label">Home</span>
   </button>
   <button class="bnav-btn" id="nb-calc" onclick="navTo('p-calc','nb-calc')">
-    <span class="bnav-icon">&#129518;</span>
+    <span class="bnav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="18" rx="3" stroke="currentColor" stroke-width="2.2"/><path d="M7 8h2m4 0h2M7 12h2m4 0h2M7 16h2m4 0h2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
     <span class="bnav-label">Calculate</span>
   </button>
   <button class="bnav-btn" id="nb-ins" onclick="navTo('p-ins','nb-ins')">
-    <span class="bnav-icon">&#128737;</span>
+    <span class="bnav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5 3.5 9.7 8 11 4.5-1.3 8-6 8-11V6l-8-4z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="bnav-label">Insurance</span>
   </button>
   <button class="bnav-btn" id="nb-mf" onclick="navTo('p-mf','nb-mf')">
-    <span class="bnav-icon">&#128202;</span>
+    <span class="bnav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 18l4-8 4 5 3-3 4 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 18h18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
     <span class="bnav-label">Funds</span>
   </button>
   <button class="bnav-btn" id="nb-more" onclick="navTo('p-more','nb-more')">
-    <span class="bnav-icon">&#8943;</span>
+    <span class="bnav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="5" cy="12" r="1.8" fill="currentColor"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/><circle cx="19" cy="12" r="1.8" fill="currentColor"/></svg></span>
     <span class="bnav-label">More</span>
   </button>
 </nav>
 </div>
 </div>
+
+<script>
 
 <script>
 // ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
@@ -2262,10 +2121,10 @@ function buildCalcTabs() {
 
   // Category map
   var cats = {
-    sip:'sip',lump:'sip',stepup:'sip',combo:'sip',swp:'sip',goal:'sip',
-    emi:'loan',loan:'loan',budget:'loan',
+    sip:'sip',lump:'sip',stepup:'sip',swp:'sip',goal:'sip',mfcompare:'sip',sipswp:'sip',
+    emi:'loan',loan:'loan',emivssip:'loan',budget:'loan',
     tax:'tax',ppf:'tax',nps:'tax',sgb:'tax',hraexempt:'tax',
-    rental:'property',edufund:'property',mfcompare:'other',emivssip:'other',
+    rental:'property',edufund:'property',
     fd:'other',gold:'other',cagr:'other',inflation:'other',ret:'other'
   };
   var catLabels = {sip:'SIP & MF',loan:'Loan & EMI',tax:'Tax & Savings',property:'Property',other:'Other'};
@@ -2295,7 +2154,7 @@ function buildCalcTabs() {
   paneBox.innerHTML = paneH;
 
   // Render grid
-  renderCalcGrid('all', cats, catColors);
+  renderCalcGrid('sip', cats, catColors);
 }
 
 function renderCalcGrid(filterCat, cats, catColors) {
@@ -3135,15 +2994,14 @@ function filterMF() {
 }
 function fetchMFNavs() {
   var btn = document.getElementById('nav-refresh-btn');
-  var cache = JSON.parse(localStorage.getItem('stk_nav_cache') || '{}');
-  var now = Date.now();
-  var cacheAge = (cache._ts) ? Math.round((now - cache._ts) / 60000) : null;
-
-  // Show cache status
   var countEl = document.getElementById('mf-count');
+  var cache = {};
+  try { cache = JSON.parse(localStorage.getItem('stk_nav_cache') || '{}'); } catch(e) {}
+  var now = Date.now();
+  var cacheAge = cache._ts ? Math.round((now - cache._ts) / 60000) : null;
+
+  // Apply cached NAVs immediately
   if (cacheAge !== null && cacheAge < 60) {
-    if (countEl) countEl.textContent = 'NAV updated ' + cacheAge + ' min ago — tap Refresh for latest';
-    // Apply cached NAVs immediately
     mfData.forEach(function(f) {
       if (cache[f.code]) {
         f.nav = cache[f.code];
@@ -3151,35 +3009,21 @@ function fetchMFNavs() {
         if (el) el.textContent = 'Rs.' + parseFloat(cache[f.code]).toFixed(2);
       }
     });
-    if (_mfNavDone) return; // don't re-fetch if recently done
+    if (countEl && !_mfNavDone) countEl.textContent = 'NAV updated ' + cacheAge + ' min ago';
+    if (_mfNavDone) return;
   }
 
   _mfNavDone = true;
-  if (btn) { btn.disabled = true; btn.textContent = 'Fetching NAV...'; }
+  if (btn) { btn.disabled = true; btn.textContent = 'Fetching...'; }
 
-  var fetched = 0;
-  var total = mfData.length;
-  var failed = 0;
+  var fetched = 0; var failed = 0;
+  var total = mfData.filter(function(f){ return f.code; }).length;
+  if (!total) { if (btn) { btn.disabled=false; btn.textContent='Refresh NAV'; } return; }
   var newCache = { _ts: now };
 
-  function onDone() {
-    if (btn) {
-      btn.disabled = false;
-      btn.textContent = 'Refresh NAV';
-    }
-    localStorage.setItem('stk_nav_cache', JSON.stringify(newCache));
-    if (countEl) {
-      var msg = 'NAV updated just now';
-      if (failed > 0) msg += ' (' + failed + ' funds unavailable)';
-      countEl.textContent = msg;
-    }
-  }
-
   mfData.forEach(function(f) {
-    if (!f.code) { total--; return; }
-    // Try primary API
-    var url = 'https://api.mfapi.in/mf/' + f.code + '/latest';
-    fetch(url, { signal: AbortSignal.timeout(8000) })
+    if (!f.code) return;
+    fetch('https://api.mfapi.in/mf/' + f.code + '/latest', { signal: AbortSignal.timeout(8000) })
       .then(function(r) { return r.json(); })
       .then(function(d) {
         var nav = d && d.data && d.data[0] && d.data[0].nav;
@@ -3193,12 +3037,15 @@ function fetchMFNavs() {
       .catch(function() { failed++; })
       .finally(function() {
         fetched++;
-        if (fetched >= total) onDone();
+        if (fetched >= total) {
+          if (btn) { btn.disabled = false; btn.textContent = 'Refresh NAV'; }
+          try { localStorage.setItem('stk_nav_cache', JSON.stringify(newCache)); } catch(e) {}
+          if (countEl) countEl.textContent = failed > 0
+            ? 'NAV updated (' + failed + ' funds unavailable)'
+            : 'NAV updated just now';
+        }
       });
   });
-
-  // Fallback if no mfData has codes
-  if (total === 0) onDone();
 }
 function updateNav(code,nav) {
   var el=$('nav-'+code); if(!el) return;
@@ -3245,10 +3092,10 @@ function buildIPO(tab) {
     var gmpC=ipo.gmp&&ipo.gmp.startsWith('+')?'gmp-pos':'gmp-neg';
     h+='<div class="ipo-card">'
       +'<div style="display:flex;justify-content:space-between;">'
-      +'<div class="ipo-name">'+ipo.name+'</div>'
+      +'<div class="ipo-name">'+(ipo.n||ipo.name||'Unknown')+'</div>'
       +(ipo.gmp?'<div class="'+gmpC+'">GMP '+ipo.gmp+'</div>':'')
       +'</div>'
-      +'<div style="font-size:11px;color:var(--blue3);">'+ipo.type+'</div>'
+      +'<div style="font-size:11px;color:var(--blue3);">'+(ipo.sector||ipo.type||'')+'</div>'
       +'<div class="ipo-detail">'
       +(ipo.price?'<div><div class="ipo-key">Price Band</div><div class="ipo-val2">'+ipo.price+'</div></div>':'')
       +(ipo.size?'<div><div class="ipo-key">Issue Size</div><div class="ipo-val2">'+ipo.size+'</div></div>':'')
