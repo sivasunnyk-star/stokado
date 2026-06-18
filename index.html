@@ -116,10 +116,11 @@ label { font-size: 12px; font-weight: 600; color: var(--light2); margin-bottom: 
 /* BOTTOM NAV */
 .bnav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--navy2); border-top: 1px solid var(--border); display: flex; padding: 8px 0; padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)); z-index: 100; }
 .bnav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 4px; cursor: pointer; border: none; background: transparent; font-family: var(--font); }
-.bnav-icon { font-size: 20px; line-height: 1; }
+.bnav-icon { font-size: 20px; line-height: 1; display:flex; align-items:center; justify-content:center; color:var(--gray); }
 .bnav-label { font-size: 9px; font-weight: 600; color: var(--gray); }
 .bnav-btn.active .bnav-label { color: var(--gold); }
-.bnav-btn.active .bnav-icon { filter: none; }
+.bnav-btn.active .bnav-icon { filter: none;   color:var(--gold);
+}
 
 /* TICKER STRIP */
 .ticker-wrap { background: linear-gradient(90deg, var(--navy3), var(--navy2)); border-bottom: 1px solid var(--border); overflow: hidden; padding: 8px 0; white-space: nowrap; }
@@ -1703,33 +1704,18 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 <!-- BOTTOM NAV -->
 <nav class="bnav">
   <button class="bnav-btn active" id="nb-home" onclick="navTo('p-home','nb-home')">
-    <span class="bnav-icon">&#127968;</span>
+    <span class="bnav-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 12L12 3L21 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M5 10V20C5 20.6 5.4 21 6 21H10V16H14V21H18C18.6 21 19 20.6 19 20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
     <span class="bnav-label">Home</span>
   </button>
   <button class="bnav-btn" id="nb-calc" onclick="navTo('p-calc','nb-calc')">
-    <span class="bnav-icon">&#129518;</span>
-    <span class="bnav-label">Calculate</span>
-  </button>
-  <button class="bnav-btn" id="nb-ins" onclick="navTo('p-ins','nb-ins')">
-    <span class="bnav-icon">&#128737;</span>
-    <span class="bnav-label">Insurance</span>
-  </button>
-  <button class="bnav-btn" id="nb-mf" onclick="navTo('p-mf','nb-mf')">
-    <span class="bnav-icon">&#128202;</span>
-    <span class="bnav-label">Funds</span>
-  </button>
-  <button class="bnav-btn" id="nb-more" onclick="navTo('p-more','nb-more')">
-    <span class="bnav-icon">&#8943;</span>
-    <span class="bnav-label">More</span>
-  </button>
-</nav>
-</div>
-</div>
-</body>
-</html>
-
-<script>
-// ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
+    <span class="bnav-icon">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="3" width="// ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
 // Build: June 2026
 
 // ═══════════════════════════════════════
@@ -2091,6 +2077,7 @@ function navTo(pgId, btnId) {
   document.querySelectorAll('.pg').forEach(function(p){ p.classList.remove('active'); });
   document.querySelectorAll('.bnav-btn').forEach(function(b){ b.classList.remove('active'); });
   var pg = $(pgId); if (pg) pg.classList.add('active');
+  updateHdrVisibility(id);
   var btn = $(btnId); if (btn) btn.classList.add('active');
   $('pages').scrollTop = 0;
   // Page-specific init
@@ -5213,6 +5200,75 @@ function _sipswpRow(phase, period, duration, amount, color, balance) {
     + '<div><div style="font-size:12px;font-weight:700;color:var(--white);">'+phase+'</div>'
     + '<div style="font-size:10px;color:var(--gray);margin-top:2px;">'+period+' &nbsp;|&nbsp; '+duration+'</div>'
     + '<div style="font-size:11px;color:'+color+';margin-top:4px;font-weight:600;">'+amount+'</div>'
+    + '</div>'
+    + '<div style="text-align:right;font-size:10px;color:var(--gray);margin-top:2px;">'+balance+'</div>'
+    + '</div></div>';
+}
+
+// Hide/show header based on page
+function updateHdrVisibility(pageId) {
+  var hdr = document.querySelector('.hdr');
+  if (!hdr) return;
+  hdr.style.display = (pageId === 'p-home') ? 'none' : 'flex';
+}
+
+window.addEventListener('load', function() {
+  var expDate = document.getElementById('exp-date');
+  if (expDate) expDate.value = new Date().toISOString().split('T')[0];
+
+  // Show app
+  var appEl = document.getElementById('app');
+  if (appEl) appEl.style.display = 'flex';
+
+  // Hide splash after 2.2s
+  setTimeout(function() {
+    var splash = $('splash');
+    if (splash) {
+      splash.style.opacity = '0';
+      splash.style.transition = 'opacity 0.4s';
+      setTimeout(function() { if(splash) splash.style.display = 'none'; }, 400);
+    }
+  }, 2200);
+
+  // Init home page
+  buildHomeTips();
+  setTimeout(function() { if (typeof buildFlyers !== 'undefined') buildFlyers(); }, 100);
+
+  // Restore logged-in user
+  var user = JSON.parse(localStorage.getItem('stk_user') || 'null');
+  if (user) {
+    var btn = $('profile-btn');
+    if (btn) btn.textContent = user.name.charAt(0).toUpperCase();
+  }
+
+  // Show floating tip
+  showFloatingTip();
+  updateHdrVisibility('p-home');
+
+  // Start market auto-refresh
+  startMarketAutoRefresh();
+});
+
+function startMarketAutoRefresh() {
+  setInterval(function() {
+    var pg = $('p-market');
+    if (pg && pg.classList.contains('active')) {
+      // market widgets auto-refresh themselves
+    }
+  }, 60000);
+}
+function loadMarket() {}
+function fetchLiveMarketData() {}
+function mktRenderStatic() {}
+function mktSet() {}
+function mktNum(n) { return Math.round(n).toLocaleString('en-IN'); }
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
+function updateNavBadge() {}
+function updateNavDisplay(code,nav) { updateNav(code,nav); }
+function addMFNavHeader() {}
+function buildTopMovers() {}gin-top:4px;font-weight:600;">'+amount+'</div>'
     + '</div>'
     + '<div style="text-align:right;font-size:10px;color:var(--gray);margin-top:2px;">'+balance+'</div>'
     + '</div></div>';
