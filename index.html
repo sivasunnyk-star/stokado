@@ -125,7 +125,6 @@ label { font-size: 12px; font-weight: 600; color: var(--light2); margin-bottom: 
 .ticker-wrap { background: linear-gradient(90deg, var(--navy3), var(--navy2)); border-bottom: 1px solid var(--border); overflow: hidden; padding: 8px 0; white-space: nowrap; }
 .ticker-inner { display: inline-flex; gap: 24px; animation: tick 30s linear infinite; }
 .ticker-inner:hover { animation-play-state: paused; }
-@keyframes tick { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
 .ti { display: inline-flex; gap: 6px; align-items: center; font-size: 11px; font-weight: 600; }
 .ti-name { color: var(--gray); }
 .ti-val { color: var(--white); }
@@ -436,20 +435,6 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
     </div>
   </div>
 
-  <!-- ══ TICKER ══ -->
-  <div style="background:#080C14;border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);padding:9px 0;overflow:hidden;white-space:nowrap;">
-    <div style="display:inline-flex;gap:28px;animation:tick 28s linear infinite;padding:0 14px;">
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">NIFTY 50</span><span style="color:#F0F4FF;">23,165</span><span style="color:#27AE60;">&#9650; 0.82%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">SENSEX</span><span style="color:#F0F4FF;">76,490</span><span style="color:#27AE60;">&#9650; 0.74%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">GOLD</span><span style="color:#F0F4FF;">95,200</span><span style="color:#27AE60;">&#9650; 0.3%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">USD/INR</span><span style="color:#F0F4FF;">83.48</span><span style="color:#FF6B6B;">&#9660; 0.12%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">BANK NIFTY</span><span style="color:#F0F4FF;">49,840</span><span style="color:#27AE60;">&#9650; 1.1%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">SILVER</span><span style="color:#F0F4FF;">94,100</span><span style="color:#27AE60;">&#9650; 0.5%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">NIFTY 50</span><span style="color:#F0F4FF;">23,165</span><span style="color:#27AE60;">&#9650; 0.82%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">SENSEX</span><span style="color:#F0F4FF;">76,490</span><span style="color:#27AE60;">&#9650; 0.74%</span></span>
-      <span style="display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;"><span style="color:#6B7A99;">GOLD</span><span style="color:#F0F4FF;">95,200</span><span style="color:#27AE60;">&#9650; 0.3%</span></span>
-    </div>
-  </div>
 
   <div style="padding:16px 16px 80px;background:#050709;">
 
@@ -825,7 +810,6 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 
 <!-- ══════════════ MARKET ══════════════ -->
 <!-- ══════════════ FINANCE HUB ══════════════ -->
-<!-- ══════════════ FINANCE HUB ══════════════ -->
 <div class="pg" id="p-market">
 <div class="pg-hdr">
   <button class="pg-back" onclick="navTo('p-home','nb-home')">&#8592; Back</button>
@@ -842,58 +826,19 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 </div>
 <div id="hub-learn" class="hub-pane">
   <div style="display:grid;gap:10px;">
-    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;">
-      <div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">What is SIP?</div>
-      <div style="font-size:11px;color:var(--light2);line-height:1.7;">Systematic Investment Plan lets you invest a fixed amount monthly in mutual funds. Starting Rs.500/month, you benefit from rupee cost averaging and compounding over time.</div>
-      <button onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('sip');},300);" style="margin-top:10px;padding:8px 14px;background:var(--blue3);border:none;border-radius:10px;color:white;font-size:11px;font-weight:700;cursor:pointer;">Try SIP Calculator &#8594;</button>
-    </div>
-    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;">
-      <div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">Term Insurance &mdash; Why You Need It</div>
-      <div style="font-size:11px;color:var(--light2);line-height:1.7;">Rs.1 Crore term plan costs just Rs.700/month for age 30. Protects your family. Buy early for lowest premium.</div>
-      <button onclick="navTo('p-ins','nb-ins')" style="margin-top:10px;padding:8px 14px;background:var(--blue3);border:none;border-radius:10px;color:white;font-size:11px;font-weight:700;cursor:pointer;">Get Quote &#8594;</button>
-    </div>
-    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;">
-      <div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">Rule of 72</div>
-      <div style="font-size:11px;color:var(--light2);line-height:1.7;">Divide 72 by your return rate to know doubling time. At 12% SIP: 6 years to double. At 8% FD: 9 years.</div>
-    </div>
-    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;">
-      <div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">Emergency Fund First</div>
-      <div style="font-size:11px;color:var(--light2);line-height:1.7;">Build 6 months of expenses as emergency fund before investing. Keep in liquid fund or savings account.</div>
-    </div>
-    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;">
-      <div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">ELSS &mdash; Save Tax + Grow</div>
-      <div style="font-size:11px;color:var(--light2);line-height:1.7;">ELSS qualifies for Rs.1.5L deduction u/s 80C with only 3-year lock-in. Average returns 12-15% over 5 years.</div>
-      <button onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('tax');},300);" style="margin-top:10px;padding:8px 14px;background:var(--blue3);border:none;border-radius:10px;color:white;font-size:11px;font-weight:700;cursor:pointer;">Tax Calculator &#8594;</button>
-    </div>
-    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;">
-      <div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">NPS &mdash; Save Tax + Build Retirement</div>
-      <div style="font-size:11px;color:var(--light2);line-height:1.7;">National Pension System gives extra Rs.50,000 deduction under 80CCD(1B) over and above 80C limit. Lock-in till 60 years with partial withdrawal allowed.</div>
-      <button onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('nps');},300);" style="margin-top:10px;padding:8px 14px;background:var(--blue3);border:none;border-radius:10px;color:white;font-size:11px;font-weight:700;cursor:pointer;">NPS Calculator &#8594;</button>
-    </div>
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;"><div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">What is SIP?</div><div style="font-size:11px;color:var(--light2);line-height:1.7;">Systematic Investment Plan lets you invest a fixed amount monthly in mutual funds. Starting Rs.500/month, you benefit from rupee cost averaging and compounding over time.</div><button onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('sip');},300);" style="margin-top:10px;padding:8px 14px;background:var(--blue3);border:none;border-radius:10px;color:white;font-size:11px;font-weight:700;cursor:pointer;">Try SIP Calculator &#8594;</button></div>
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;"><div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">Term Insurance &mdash; Why You Need It</div><div style="font-size:11px;color:var(--light2);line-height:1.7;">Rs.1 Crore term plan costs just Rs.700/month for age 30. Protects your family. Buy early for lowest premium.</div><button onclick="navTo('p-ins','nb-ins')" style="margin-top:10px;padding:8px 14px;background:var(--blue3);border:none;border-radius:10px;color:white;font-size:11px;font-weight:700;cursor:pointer;">Get Quote &#8594;</button></div>
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;"><div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">Rule of 72</div><div style="font-size:11px;color:var(--light2);line-height:1.7;">Divide 72 by your return rate to know doubling time. At 12% SIP: 6 years. At 8% FD: 9 years to double your money.</div></div>
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;"><div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">Emergency Fund First</div><div style="font-size:11px;color:var(--light2);line-height:1.7;">Build 6 months of expenses as emergency fund before investing. Keep it in liquid fund or savings account.</div></div>
+    <div style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:16px;"><div style="font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px;">ELSS &mdash; Save Tax + Grow</div><div style="font-size:11px;color:var(--light2);line-height:1.7;">ELSS qualifies for Rs.1.5L deduction u/s 80C with only 3-year lock-in. Average returns 12-15% over 5 years.</div><button onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('tax');},300);" style="margin-top:10px;padding:8px 14px;background:var(--blue3);border:none;border-radius:10px;color:white;font-size:11px;font-weight:700;cursor:pointer;">Tax Calculator &#8594;</button></div>
   </div>
 </div>
 <div id="hub-goals" class="hub-pane" style="display:none;">
   <div style="display:grid;gap:10px;">
-    <div onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('ret');},300);" style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;">
-      <div style="width:40px;height:40px;background:linear-gradient(135deg,#C2410C,#7C2D12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#127749;</div>
-      <div><div style="font-size:12px;font-weight:700;color:var(--white);">Retirement Planning</div><div style="font-size:10px;color:var(--gray);margin-top:2px;">SIP needed to retire comfortably</div></div>
-    </div>
-    <div onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('edufund');},300);" style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;">
-      <div style="width:40px;height:40px;background:linear-gradient(135deg,#1D4ED8,#1E3A5F);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#127891;</div>
-      <div><div style="font-size:12px;font-weight:700;color:var(--white);">Child Education Fund</div><div style="font-size:10px;color:var(--gray);margin-top:2px;">Future cost with education inflation</div></div>
-    </div>
-    <div onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('goal');},300);" style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;">
-      <div style="width:40px;height:40px;background:linear-gradient(135deg,#059669,#064E3B);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#127968;</div>
-      <div><div style="font-size:12px;font-weight:700;color:var(--white);">Home / Car / Dream Goal</div><div style="font-size:10px;color:var(--gray);margin-top:2px;">SIP needed to reach target</div></div>
-    </div>
-    <div onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('sipswp');},300);" style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;">
-      <div style="width:40px;height:40px;background:linear-gradient(135deg,#7C3AED,#4C1D95);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#128260;</div>
-      <div><div style="font-size:12px;font-weight:700;color:var(--white);">SIP + Stepped SWP Journey</div><div style="font-size:10px;color:var(--gray);margin-top:2px;">Invest now, withdraw in phases</div></div>
-    </div>
-    <div onclick="navTo('p-appt','nb-more')" style="background:linear-gradient(135deg,rgba(242,201,76,0.08),rgba(242,201,76,0.02));border:1px solid rgba(242,201,76,0.2);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;">
-      <div style="width:40px;height:40px;background:linear-gradient(135deg,#F2C94C,#C9890A);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#128197;</div>
-      <div><div style="font-size:12px;font-weight:700;color:var(--gold);">Book Free Consultation</div><div style="font-size:10px;color:var(--gray);margin-top:2px;">Discuss your goals with K. Shiva</div></div>
-    </div>
+    <div onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('ret');},300);" style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;"><div style="width:40px;height:40px;background:linear-gradient(135deg,#C2410C,#7C2D12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#127749;</div><div><div style="font-size:12px;font-weight:700;color:var(--white);">Retirement Planning</div><div style="font-size:10px;color:var(--gray);margin-top:2px;">SIP needed to retire comfortably</div></div></div>
+    <div onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('edufund');},300);" style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;"><div style="width:40px;height:40px;background:linear-gradient(135deg,#1D4ED8,#1E3A5F);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#127891;</div><div><div style="font-size:12px;font-weight:700;color:var(--white);">Child Education Fund</div><div style="font-size:10px;color:var(--gray);margin-top:2px;">Future cost with education inflation</div></div></div>
+    <div onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('goal');},300);" style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;"><div style="width:40px;height:40px;background:linear-gradient(135deg,#059669,#064E3B);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#127968;</div><div><div style="font-size:12px;font-weight:700;color:var(--white);">Home / Car / Dream Goal</div><div style="font-size:10px;color:var(--gray);margin-top:2px;">SIP needed to reach target</div></div></div>
+    <div onclick="navTo('p-calc','nb-calc');setTimeout(function(){switchCalc('sipswp');},300);" style="background:var(--navy2);border:1px solid var(--border);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;"><div style="width:40px;height:40px;background:linear-gradient(135deg,#7C3AED,#4C1D95);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">&#128260;</div><div><div style="font-size:12px;font-weight:700;color:var(--white);">SIP + Stepped SWP Journey</div><div style="font-size:10px;color:var(--gray);margin-top:2px;">Invest now, withdraw in phases</div></div></div>
   </div>
 </div>
 <div id="hub-topfunds" class="hub-pane" style="display:none;"><div id="hub-topfunds-list"></div></div>
@@ -1622,6 +1567,8 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px;
 </nav>
 </div>
 </div>
+<script>
+
 <script>
 // ✅ VERSION 8.0 — STOKADO PROFESSIONAL CORPORATE
 // Build: June 2026
@@ -4943,18 +4890,18 @@ function buildInsPDF() {
   showToast('Insurance PDF downloaded!');
 }
 
-
-
-
-
-
-
-
-
+function loadMarket() {}
+function fetchLiveMarketData() {}
+function mktRenderStatic() {}
+function mktSet() {}
+function mktNum(n) { return Math.round(n).toLocaleString('en-IN'); }
+function renderMarketData() {}
+function renderTopMovers() {}
+function updateHomeTicker() {}
 function updateNavBadge() {}
 function updateNavDisplay(code,nav) { updateNav(code,nav); }
 function addMFNavHeader() {}
-
+function buildTopMovers() {}
 
 function calcMFSIP() {
   var amt = parseFloat((document.getElementById('mf-sip-amt')||{}).value) || 5000;
